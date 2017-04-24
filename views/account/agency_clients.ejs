@@ -1,0 +1,37 @@
+<div class="tile white m-b-10 padding-20">
+	<div class="tile-title">
+		<h3 class="m-t-0 m-b-10"><%= title %></h4>
+		<%- toolsService.getFlashMessage(req.flash()) %>
+	</div>
+	<div class="tile-body p-t-20">
+		<div class="account-form">
+			<table class="table table-hover table-condensed admin-table" id="example-table">
+				<thead>
+					<tr>
+						<th style="width:10%">Cod</th>
+						<th style="width:22%">Nume</th>
+						<th style="width:15%">Cod fiscal</th>
+						<th style="width:15%">Numar inregistrare</th>
+						<th style="width:21%">Nume companie</th>							
+					</tr>
+				</thead>
+				<tbody>
+					<% if(items.length>0) { 
+						_.each(items,function(item) { 
+							if(item.ID_Agency == req.session.currentUser.ID_Agency){
+							%>
+								<tr>
+									<td class="v-align-middle"><%= item.Code %></td>
+									<td class="v-align-middle bold"><%= item.ClientName %></td>
+									<td class="v-align-middle"><span class="muted"><%= item.FiscalCode %></span></td>
+									<td class="v-align-middle"><span class="muted"><%= item.RegisterCode %></span></td>
+									<td class="v-align-middle"><span class="muted"><%= item.CompanyName %></span></td>
+								</tr>
+						<% }
+						}); 
+					} %>
+				</tbody>
+			</table>
+		</div>
+    </div>
+</div>

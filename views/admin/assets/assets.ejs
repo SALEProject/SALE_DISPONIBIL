@@ -1,0 +1,81 @@
+<div class="content" style="min-width:1200px">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/assets" class="active">Active</a>
+			</li>
+		</ul>
+	</div>
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="grid simple">
+			<div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+				<div class="">
+					<div class="pull-left col-md-3">
+						<a href="/admin/assets/add<%- ring ? '?ring='+ring.ID : assetType ? '?asset_type='+assetType.ID : '' %>" class="btn btn-info"><i class="fa fa-plus-circle"></i>&nbsp;Adauga activ</a>
+					</div>
+					<div class="pull-left col-md-1 p-t-10">
+						<label>Ring</label>
+					</div>
+					<div class="pull-left col-md-3">
+						<div class="form-group">
+							<div class="controls">
+								<select class="list-filter form-control select2" data-url="/admin/assets?ring=">
+								  <option value=""></option>
+								  <% _.each(sails.storage.rings,function(item) { %>
+								  <option value="<%= item.ID %>" <%- ((ring && ring.ID==item.ID) || (assetType && assetType.ID_Ring==item.ID) ? 'selected=""' : '') %>><%= req.session.getTranslation(item.Name) %></option>
+								  <% }); %>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="pull-left col-md-1 p-t-10">
+						<label>Activ suport</label>
+					</div>
+					<div class="pull-left col-md-3">
+						<div class="form-group">
+							<div class="controls">
+								<select class="list-filter form-control select2" data-url="/admin/assets?asset_type=">
+								  <option value=""></option>
+								  <% _.each(sails.storage.assetTypes,function(item) { %>
+									<% if((ring && ring.ID==item.ID_Ring) || (assetType && assetType.ID_Ring==item.ID_Ring)) { %>
+										<option value="<%= item.ID %>" <%- ((assetType && assetType.ID==item.ID) ? 'selected=""' : '') %>><%= req.session.getTranslation(item.Name) %></option>
+									<% } %>
+								  <% }); %>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="grid-body no-border">
+				<table class="table table-hover table-condensed admin-table ajax-table" id="example-table" data-source="/admin/assets<%- ring ? '?ring='+ring.ID : assetType ? '?asset_type='+assetType.ID : '' %>">
+					<thead>
+						<tr>
+							<th class="v-align-middle" style="width:25%">Nume</th>
+							<th class="v-align-middle" style="width:10%">Cod</th>
+							<th class="v-align-middle" style="width:10%">Ring</th>
+							<th class="v-align-middle" style="width:5%">Activ</th>
+							<th class="v-align-middle" style="width:5%">Sedinta electronica</th>
+							<th class="v-align-middle" style="width:5%">Directie</th>
+							<th class="v-align-middle" style="width:5%">Client</th>
+							<th class="v-align-middle" style="width:5%">Valabilitate</th>
+							<th class="v-align-middle" style="width:5%">&nbsp;</th>
+							<th class="v-align-middle" style="width:5%">&nbsp;</th>
+							<th class="v-align-middle" style="width:5%">&nbsp;</th>
+							<th class="v-align-middle" style="width:5%">&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+          </div>
+        </div>
+      </div>
+    </div>

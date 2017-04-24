@@ -1,0 +1,101 @@
+<div class="login-container">
+	<div class="row">
+    <div class="col-md-12 col-xs-12 text-center">
+      <a href="http://fonduri-ue.ro" target="_blank" title="Ministerul Fondurilor Europene"><img src="/img/logo-ue.png" class="logo-ue" /></a>
+      <p class="text-black m-t-20 m-b-5"><%- req.session.getTranslation('Program_operational_sectorial') %></p>
+      <p class="text-black m-b-5"><%- req.session.getTranslation('Proiect_cofinantat') %></p>
+      <div class="text-center m-t-10 m-b-10"><img src="/img/logo-disponibil.png" /></div>
+    </div>
+  </div>
+	<div class="row">
+		<div class="col-md-5 col-md-offset-1 col-xs-12">
+			<div class="tile">
+				<div class="tile-title m-t-0 p-l-5">
+					<h4 class="bold"><%- req.session.getTranslation('Authentication') %></h4>
+				</div>
+				<form id="login-form" class="login-form" action="" method="post">
+					<div class="tiles-body">
+					<%- toolsService.getFlashMessage(req.flash()) %>
+						<p class="text-center error"><%- errorMsg %></p>
+						<div class="clearfix"></div>
+						<div class="row p-t-10 no-margin">
+							<div class="col-sm-12 col-xs-12 col-md-12 pull-left m-b-10 m-t-0">
+								<input type="text" name="txtusername" id="txtusername" class="form-control" autofocus="" placeholder="<%- req.session.getTranslation('User') %>" <% if(typeof submit != 'undefined') { %>value="<%- submit.username %>" disabled=""<% } %> />
+							</div>
+							<div class="col-sm-12 col-xs-12 col-md-12 pull-left m-b-10 m-t-0">
+								<input type="password" name="txtpassword" id="txtpassword" class="form-control" placeholder="<%- req.session.getTranslation('Password') %>" <% if(typeof submit != 'undefined') { %>value="<%- submit.password %>" disabled=""<% } %> />
+							</div>
+							<div class="col-sm-12 col-xs-12 col-md-12 pull-left m-b-10 m-t-0">
+								<label for="Language"><%- req.session.getTranslation('Language') %></label>
+								<select name="Language" id="Language" class="form-control" <% if(typeof submit != 'undefined') { %>disabled=""<% } %>>
+									<option value="RO" <%- (typeof submit != 'undefined' && submit.language == 'RO' ? 'selected=""' : '') %>><%- req.session.getTranslation('Romanian') %></option>
+									<option value="EN" <%- (typeof submit != 'undefined' && submit.language == 'EN' ? 'selected=""' : '') %>><%- req.session.getTranslation('English') %></option>
+								</select>
+							</div>
+							<% if(typeof submit != 'undefined' && typeof submit.roles != 'undefined') { %>
+							<div class="col-sm-12 col-xs-12 col-md-12 pull-left m-b-10 m-t-0">
+								<label for="ID_Role"><%- req.session.getTranslation('Role') %></label>
+								<select name="ID_UserRole" id="ID_UserRole" class="form-control">
+									<% _.each(submit.roles,function(role_id){ %>
+										<% var role = toolsService.getArrayItem(req.session.userRoles,role_id) %>
+									<option value="<%- role.ID %>"><%- role.Name %></option>
+									<% }); %>
+								</select>
+							</div>
+							<% } %>
+						</div>
+						<div class="row no-margin">
+							<div class="p-l-5 p-r-5">
+							</div>
+						</div>
+					</div>
+					<div class="p-t-10 p-b-5 p-l-5 p-r-5 text-center">
+						<button class="btn btn-primary btn-cons" type="submit">Login</button>
+					</div>
+					<div class="clearfix"></div>
+				</form>
+			</div>
+		</div>
+		<div class="col-md-5 col-xs-12">
+			<div class="tile">
+				<div class="tile-title m-t-0">
+					<h4 class="bold"><%- req.session.getTranslation('Recent_transactions') %></h4>
+					<% if(transactions.length>0) { %>
+					<table class="table no-more-tables no-margin">
+						<thead>
+							<tr>
+								<th><%- req.session.getTranslation('Ring') %></th>
+								<th><%- req.session.getTranslation('Asset') %></th>
+								<th><%- req.session.getTranslation('Date') %></th>
+								<th><%- req.session.getTranslation('Quantity') %></th>
+								<th><%- req.session.getTranslation('Price') %></th>
+							</tr>
+						</thead>
+						<tbody>
+							<% _.each(transactions,function(item){ %>
+							<%
+							var tm = item.ID_MeasuringUnit ? toolsService.getArrayItem(sails.storage.measuringUnits,item.ID_MeasuringUnit) : null;
+							var tc = item.ID_Currency ? toolsService.getArrayItem(sails.storage.currencies,item.ID_Currency) : null;
+							%>
+							<tr>
+								<td class="v-align-middle"><%- req.session.getTranslation(item.Ring) %></td>
+								<td class="v-align-middle"><%- req.session.getTranslation(item.Asset) %></td>
+								<td class="v-align-middle text-narrow"><%- timeService.formatDate(item.TransactionDate,req.session.lang.dateFormat+' HH:mm') %></td>
+								<td class="v-align-middle text-right"><%- req.session.formatLocale(item.Quantity,(formatService.getSteppingDecimal(item.QuantityStepping)>2 ? 2 : formatService.getSteppingDecimal(item.QuantityStepping))) %> <span><%- tm ? req.session.getTranslation(tm.Name) : '' %></span></td>
+								<td class="v-align-middle text-right"><%- req.session.formatLocale(item.Price,(formatService.getSteppingDecimal(item.PriceStepping)>2 ? 2 : formatService.getSteppingDecimal(item.PriceStepping))) %> <span><%- tc ? req.session.getTranslation(tc.Name) : '' %></span></td>
+							</tr>
+							<% }); %>
+						</tbody>
+					</table>
+					<% } %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+    <div class="col-md-6 col-md-offset-3 col-xs-12 text-center">
+      <p class="text-white m-t-20 m-b-10"><%- req.session.getTranslation('Informatii_fonduri_ue') %></p>
+      <p class="text-white m-b-20"><%- req.session.getTranslation('Continut_material') %></p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,108 @@
+<div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<% if(asset) { %>
+			<li>
+				<a href="/admin/assets" class="">Active</a>
+			</li>
+			<li>
+				<a href="/admin/assets/edit/<%- asset.ID %>" class=""><%- req.session.getTranslation(asset.Name) %></a>
+			</li>
+			<li>
+				<a href="/admin/documents/asset_documents?asset=<%- req.param('asset') %>" class="">Documente</a>
+			</li>
+			<li>
+				<a href="/admin/documents/<%- req.param('id') ? 'edit/'+req.param('id') : 'add' %>?asset=<%- req.param('asset') %>" class="active"><%- (req.param('id')?'Modificare':'Adaugare') %> document</a>
+			</li>
+			<% } else { %>
+			<li>
+				<a href="/admin/documents" class="">Documente</a>
+			</li>
+			<li>
+				<a href="/admin/documents/<%- req.param('id') ? 'edit/'+req.param('id') : 'add' %>" class="active"><%- (req.param('id')?'Modificare':'Adaugare') %> document</a>
+			</li>
+			<% } %>
+		</ul>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="grid simple">
+				<div class="grid-title no-border">
+					<%- toolsService.getFlashMessage(req.flash()) %>
+				</div>
+				<div class="grid-body no-border">
+					<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off" enctype="multipart/form-data">   
+						<div class="row column-seperation">
+							<div class="col-md-12">
+								<h4>Informatii generale</h4>            
+								<div class="row form-row">
+									<div class="col-md-6">
+										<label for="Name">Nume Document</label>
+										<div class="widget-col">
+											<input name="Name" id="Name" type="text" class="form-control required max-length" value="<%- (typeof item.Name!='undefined'?item.Name:'') %>" />
+										</div>
+									</div>											
+									<div class="col-md-6">
+										<label for="ID_DocumentType">Tip Document</label>
+										<div class="widget-col">
+											<select name="ID_DocumentType" id="ID_DocumentType" class="select2 form-control">
+												<% _.each(req.session.documentTypes,function(documentType) { %>              
+												<option value="<%= documentType.ID %>" <%-((typeof item.DocumentType!='undefined' && item.ID_DocumentType==documentType.ID)?'selected=""':'') %> /><%= req.session.getTranslation(documentType.Name) %></option>
+												<% }); %>
+											</select>
+										</div>
+									</div>									        
+								</div>
+								<div class="row form-row">
+									<div class="col-md-6 m-b-10">
+										<label for="ID_Asset">Activ</label>
+										<div class="widget-col">
+											<% if (req.param('asset')!= null) { %>
+												<input type="hidden" name="ID_Asset" id="ID_Asset" value="<%= req.param('asset') %>" />
+												<h4><%- req.session.asset.NameTR %></h4>
+											<% } else { %>
+											<select name="ID_Asset" id="ID_Asset" class="form-control select2 ajax-search" data-source="/admin/search_assets">
+												<% _.each(req.session.assets,function(asset) { %>              
+												<option value="<%- asset.ID %>" <%-((typeof item.ID_Asset!='undefined' && item.ID_Asset==asset.ID)?'selected=""':'') %> /><%- req.session.getTranslation(asset.Name) %></option>
+												<% }); %>
+												<% if(req.session.asset) { %>
+													<option value="<%- req.session.asset.ID %>" <%-((typeof item.ID_Asset!='undefined' && item.ID_Asset==req.session.asset.ID)?'selected=""':'') %> /><%- req.session.asset.NameTR %></option>
+												<% } %>
+											</select>
+											<% } %>
+										</div>
+									</div>																				       	 
+								</div>
+								<div class="row form-row">										
+									<div class="col-md-6 pull-right">
+									<label>&nbsp;</label>
+									  <div class="checkbox check-default">
+										<input id="isPublic" name="isPublic" type="checkbox" value="1" <% if(typeof item.isPublic!='undefined' && item.isPublic) { %>checked=""<% } %> />
+										<label for="isPublic">Document Public</label>
+									  </div>  
+									</div>		 							        
+									<div class="col-md-6">
+										<label for="Document" class="pull-left">Document</label><% if(typeof item.DocumentURL!='undefined') { %><span class="bold pull-left m-l-10"><a href="<%- item.DocumentURL %>"><%- item.DocumentURL %></a></span><% } %>
+										<div class="widget-col clearfix">
+											<input type="file" class="form-control" id="Document" name="Document" />
+										</div>
+									</div>							        
+								</div>										
+								<br />
+							</div>									
+						</div>
+						<div class="form-actions">
+							<div class="pull-left">
+								<button class="btn btn-primary btn-cons" type="submit"><i class="icon-ok"></i> Salveaza</button>
+								<a class="btn btn-white btn-cons" href="<%- asset && typeof asset.ID!='undefined' ? '/admin/documents/asset_documents?asset='+asset.ID : '/admin/documents' %>">Renunta</a>
+							</div>
+						</div>
+					</form>
+				</div>						
+			</div>
+		</div>
+	</div>
+</div>

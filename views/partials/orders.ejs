@@ -1,0 +1,77 @@
+<%
+var order_prototype = '<li> \
+				<div id="order-__ID__" class="order-item self"> \
+					<div> \
+						<h5 class="order-asset-name m-t-5 m-b-5"> \
+							<a class="market-asset-context own-order-asset-name" data-ring-id="__ID_RING__" data-id="__ID_ASSET__"></a> \
+						</h5> \
+						<p style="line-height:1.2"> \
+							<span class="own-order-id"></span> \
+							<span>|</span> \
+							<span class="own-order-direction"></span> \
+							<span>|</span> \
+							<span class="order-quantity" data-value=""><strong class="own-order-quantity"></strong> \
+							<span class="muted own-order-measuring-unit"></span> \
+							<span class="own-order-price-set"> \
+								<span>&nbsp;' + req.session.getTranslation('at') + '&nbsp;</span> \
+								<span class="order-col-price" data-value=""><strong class="own-order-price"></strong> \
+								<span class="muted"> \
+									<span class="own-order-currency"></span>/<span class="own-order-measuring-unit"></span> \
+								</span> \
+							</span> \
+						</p> \
+						<p style="font-size:0.9em;line-height:1.2" class="own-order-initial"> \
+							<span>' + req.session.getTranslation('for') + ' </span> \
+							<span class="order-asset-order" data-value=""> \
+								<strong><u><span class="own-order-initial-direction"></span></u></strong> \
+								<span> de </span> \
+								<span class="order-col-quantity" data-value=""> \
+									<strong class="own-order-initial-quantity"></strong> \
+								</span> \
+								<span class="muted own-order-measuring-unit"></span> \
+								<span class="own-order-initial-price-set"> \
+									<span>&nbsp;' + req.session.getTranslation('at') + '&nbsp;</span> \
+									<span class="order-col-price" data-value=""> \
+										<strong class="own-order-initial-price"></strong> \
+										<span class="muted own-order-initial-currency"></span>/<span class="own-order-initial-measuring-unit"></span> \
+									</span> \
+								</span> \
+							</span> \
+						</p> \
+						<p style="font-size:0.9em;line-height:1.2"> \
+							<span class="order-col-date" data-value="">' + req.session.getTranslation('Available_till') + ' <strong class="own-order-expiration-date"></strong></span> \
+						</p> \
+					</div> \
+					<div class="order-actions"> \
+						<a href="" class="tip edit-order-button" data-value="__ID__" data-toggle="tooltip" data-placement="left" data-original-title="' + req.session.getTranslation('Change_order') + '" title="' + req.session.getTranslation('Change_order') + '">M</a> \
+						<a href="/order/cancel/__ID__" data-value="__ID__" class="tip cancel-order-button" data-toggle="tooltip" data-placement="left" data-original-title="' + req.session.getTranslation('Cancel_order') + '" title="' + req.session.getTranslation('Cancel_order') + '">A</a> \
+					</div> \
+					<div class="clearfix"></div> \
+				</div> \
+			</li>';
+%>
+<div class="orders toggleable-widget" id="orders-container">
+	<div class="tile m-b-10 collapsed">
+		<div class="tile-title">
+			<div class="controller">
+				<a href="" class="collapse pull-right m-l-15">&nbsp;</a>
+			</div>
+			<h3 id="orders-title" class="m-t-0"><%- req.session.getTranslation('My_orders') %></h3>
+		</div>
+		<div class="tile-body">
+			<div class="text-center padding-20 loader"><img src="/img/loader-white.gif"></div>
+			<ul class="asset-orders-list" id="orders-list" data-prototype="<%= order_prototype %>">
+			</ul>
+			<% /* if(accessService.checkOperation('dashboard_myorders','addOrder',req)) { %>
+			<div class="btn-group" id="add-inital-order" style="display:none">
+				<a href="#" class="btn btn-small btn-primary dropdown-toggle m-t-10" data-toggle="dropdown"><%- req.session.getTranslation('Add_initiating_order') %> <span class="caret"></span> </a>
+				<ul class="dropdown-menu dropdown-primary">
+					<li><a href="/order/add?type=sell" class="btn-small add-order-button" data-type="S" data-initial="true"><%- req.session.getTranslation('Sell') %></a></li>
+					<li><a href="/order/add?type=buy" class="btn-small add-order-button" data-type="B" data-initial="true"><%- req.session.getTranslation('Buy') %></a></li>
+				</ul>
+			</div>
+			<% } */ %>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>

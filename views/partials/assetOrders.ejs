@@ -1,0 +1,123 @@
+<%
+var assetOrderPrototype = '<tr id="asset-order-__ID__" class="' +(accessService.isSessionCoordonator(req.session.currentUser) ? '' : 'osimple') + '">' +
+			'<td class="v-align-middle asset-order-timestamp" style="display:none"></td>' +
+			(accessService.isSessionCoordonator(req.session.currentUser) ? '<td class="v-align-middle asset-order-client"></td>' : '') +
+			'<td class="v-align-middle asset-order-quantity"></td>' +
+			'<td class="v-align-middle asset-order-price"></td>' +
+			'<td class="v-align-middle asset-order-partial"></td>' +
+			'<td class="v-align-middle asset-order-expiration-date"></td>' +
+			'<td class="v-align-middle">' +
+				'<div class="order-actions">' +
+					'<a class="tip add-matching-order" data-value="__ID__" data-toggle="tooltip" data-placement="left" data-original-title="' + req.session.getTranslation('Add_matching_order') + '" title="' + req.session.getTranslation('Add_matching_order') + '" style="display:none">T</a>' +
+					'<a data-value="__ID__" class="tip edit-order-button" data-toggle="tooltip" data-placement="left" data-original-title="' + req.session.getTranslation('Change_order') + '" title="' + req.session.getTranslation('Change_order') + '" style="display:none">M</a>' +
+					'<a href="/order/cancel/__ID__" data-value="__ID__" class="tip cancel-order-button" data-toggle="tooltip" data-placement="left" data-original-title="' + req.session.getTranslation('Cancel_order') + '" title="' + req.session.getTranslation('Cancel_order') + '" style="display:none">A</a>' +
+					(accessService.isSessionCoordonator(req.session.currentUser) ? '<a href="/order/suspend/__ID__" data-value="__ID__" class="suspend-order-button" title="' + req.session.getTranslation('Suspend_order') + '"></a>' : '') +
+				'</div>' +
+			'</td>' +
+		'</tr>';
+%>
+		<div id="asset-orders-container" style="display:none" class="<%- accessService.isSessionCoordonator(req.session.currentUser) ? 'coordonator' : '' %>">
+			<div class="row no-margin">
+				<div class="col-md-12 col-sm-12" style="padding:0 !important">
+					<div class="tile yellow m-b-10" id="asset-details-container">
+						<h4 class="m-t-0"><%- req.session.getTranslation('Asset') %>: <strong id="asset-name"></strong></h4>
+						<p id="asset-description"></p>
+						<a class="download-docs" data-toggle="modal" data-target="#documents-modal" title="<%- req.session.getTranslation('Documents') %>"><%- req.session.getTranslation('Documents') %> <i class="fa fa-download"></i></a>
+						<div class="row no-margin">
+							<div class="col-md-2">
+								<h4 class="session-time"><span class="server-time"></span></h4>
+								<h4 class="session-delta">&#916;T: <strong><span id="delta-t"></span></strong></h4>
+								<h4 class="session-delta">
+                  &#916;T1: <strong><span id="delta-t1"></span></strong>
+                  <span class="delta-tooltip"><%- req.session.getTranslation('until_transaction') %></span>
+                </h4>
+							</div>
+							<div class="col-md-10">
+								<div class="progress" id="asset-schedule">
+									<span class="progress-time t1"></span>
+									<span class="progress-time t2"></span>
+									<span class="progress-time t3"></span>
+									<span class="progress-time t4"></span>
+									<span class="progress-interval i1"><%- req.session.getTranslation('Phase') %> 1 (<%- req.session.getTranslation('Openning') %>)</span>
+									<span class="progress-interval i2"><%- req.session.getTranslation('Phase') %> 2 (<%- req.session.getTranslation('Transacting') %>)</span>
+									<span class="progress-interval i3"><%- req.session.getTranslation('Phase') %> 3 (<%- req.session.getTranslation('Closing') %>)</span>
+									<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+										<span class="sr-only"></span>
+									</div>
+								</div>
+								<div id="session-restrictions">
+								</div>
+							</div>
+						</div>
+						<% if(accessService.isSessionCoordonator(req.session.currentUser)) { %>
+						<a class="trade-params btn btn-primary btn-small" data-toggle="modal" data-target="#parameters-modal" title="<%- req.session.getTranslation('Change_session_parameters') %>"><%- req.session.getTranslation('Change_session_parameters') %></a>
+						<% } %>
+					</div>
+				</div>
+			</div>
+		<% if(accessService.checkState('dashboard','dashboard_myorders',req)) { %>
+			<%- partial('../partials/orderForm') %>
+		<% } %>
+			<div class="row no-margin">
+				<div class="col-md-6 col-sm-6" style="padding-left:0 !important" id="buy-orders">
+					<div class="tile white m-b-10">
+						<div class="tile-title">
+							<a href="" id="add-bid-button" class="btn btn-small btn-primary no-margin add-order-button pull-right" data-type="B"><%- req.session.getTranslation('Buy') %></a>
+							<h3 class="m-t-0" class="asset-orders-title"><%- req.session.getTranslation('Buy_orders') %> (BID)</h3>
+						</div>
+						<div class="tile-body">
+							<table class="table no-more-tables no-margin tablesorter" id="buy-orders-list" data-prototype="<%= assetOrderPrototype %>">
+								<thead>
+									<tr>
+										<th style="display:none">&nbsp;</th>
+									<% if(accessService.isSessionCoordonator(req.session.currentUser)) { %>
+										<th style="width:5%" class="client-order-code"><%- req.session.getTranslation('Client') %></th>
+									<% } %>
+										<th style="width:10%"><%- req.session.getTranslation('Quantity') %></th>
+										<th style="width:9%" class=""><%- req.session.getTranslation('Price') %></th>
+										<th style="width:8%" class="{sorter:\'text\'}">T/P</th>
+										<th style="width:10%" class="{sorter:\'text\'}"><%- req.session.getTranslation('Availability') %></th>
+										<th style="width:5%" class="{sorter: false} no-sort"><%- req.session.getTranslation('Actions') %></th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+							<div class="text-center padding-20 loader"><img src="/img/loader-white.gif"></div>
+							<p class="empty-message text-center p-t-10 m-b-0" style="display:none"><%- req.session.getTranslation('No_order_available') %></p>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-sm-6" style="padding-right:0 !important" id="sell-orders">
+					<div class="tile white m-b-10">
+						<div class="tile-title">
+							<a href="" id="add-ask-button" class="btn btn-small btn-primary no-margin add-order-button pull-right" data-type="S"><%- req.session.getTranslation('Sell') %></a>
+							<h3 class="m-t-0" class="asset-orders-title"><%- req.session.getTranslation('Sell_orders') %> (ASK)</h3>
+						</div>
+						<div class="tile-body">
+							<table class="table no-more-tables no-margin tablesorter" id="sell-orders-list" data-prototype="<%= assetOrderPrototype %>">
+								<thead>
+									<tr>
+										<th style="display:none">&nbsp;</th>
+									<% if(accessService.isSessionCoordonator(req.session.currentUser)) { %>
+										<th style="width:5%" class="client-order-code"><%- req.session.getTranslation('Client') %></th>
+									<% } %>
+										<th style="width:10%"><%- req.session.getTranslation('Quantity') %></th>
+										<th style="width:9%" class=""><%- req.session.getTranslation('Price') %></th>
+										<th style="width:8%" class="{sorter:\'text\'}">T/P</th>
+										<th style="width:10%" class="{sorter:\'text\'}"><%- req.session.getTranslation('Availability') %></th>
+										<th style="width:5%" class="{sorter: false} no-sort"><%- req.session.getTranslation('Actions') %></th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+							<div class="text-center padding-20 loader"><img src="/img/loader-white.gif"></div>
+							<p class="empty-message text-center p-t-10 m-b-0" style="display:none"><%- req.session.getTranslation('No_order_available') %></p>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>

@@ -1,0 +1,160 @@
+<div class="tile white m-b-10 padding-20">
+	<div class="tile-title">
+		<h3 class="m-t-0 m-b-10"><%= title %></h4>
+		<%- toolsService.getFlashMessage(req.flash()) %>
+	</div>
+	<div class="tile-body p-t-20">
+		<form class="" method="post" autocomplete="off">							
+			<div class="account-form">
+				<div class="m-b-20 col-md-offset-1">
+					<label><strong><%- req.session.getTranslation('General_information') %></strong></label>
+				</div>
+				<div class="row m-b-10">
+					<div class="col-md-3 col-md-offset-2">
+						<label for="Name"><%- req.session.getTranslation('Name') %></label>
+					</div>
+					<div class="col-md-4">
+						<div class="widget-col">
+							<input name="Name" id="Name" type="text" class="form-control" value="<%- item.AgencyName %>" />
+						</div>
+					</div>
+				</div>
+				<div class="row m-b-10">
+					<div class="col-md-3 col-md-offset-2">
+						<label for="Code"><%- req.session.getTranslation('Code') %></label>
+					</div>
+					<div class="col-md-4">
+						<div class="widget-col">
+							<input name="Code" id="Code" type="text" class="form-control" value="<%- item.Code %>" />
+						</div>
+					</div>
+				</div>
+				<div class="m-b-20 col-md-offset-1">
+					<label><strong><%- req.session.getTranslation('Registration_info') %></strong></label>
+				</div>
+				<div class="row m-b-10">
+					<div class="col-md-3 col-md-offset-2">
+						<label for="FiscalCode"><%- req.session.getTranslation('Fiscal_code') %></label>
+					</div>
+					<div class="col-md-4">
+						<div class="widget-col">
+							<input name="FiscalCode" id="FiscalCode" type="text" class="form-control" value="<%- item.FiscalCode %>" />
+						</div>
+					</div>
+				</div>
+				<div class="row m-b-10">
+					<div class="col-md-3 col-md-offset-2">
+						<label for="RegisterCode"><%- req.session.getTranslation('Registration_number') %></label>
+					</div>
+					<div class="col-md-4">
+						<div class="widget-col">
+							<input name="RegisterCode" id="RegisterCode" type="text" class="form-control" value="<%- item.RegisterCode %>" />
+						</div>
+					</div>
+				</div>
+				<div class="m-b-20 col-md-offset-1">
+					<label><strong><%- req.session.getTranslation('Contact_information') %></strong></label>
+				</div>
+				<div class="row m-b-10">
+					<div class="col-md-3 col-md-offset-2">
+						<label for="Website"><%- req.session.getTranslation('Website') %></label>
+					</div>
+					<div class="col-md-4">
+						<div class="widget-col">
+							<input name="Website" id="Website" type="text" class="form-control" value="<%- item.Website %>" />
+						</div>
+					</div>
+				</div>
+				<div class="row m-b-10">
+					<div class="col-md-3 col-md-offset-2">
+						<label for="Email"><%- req.session.getTranslation('Email') %></label>
+					</div>
+					<div class="col-md-4">
+						<div class="widget-col">
+							<input name="Email" id="Email" type="text" class="form-control" value="<%- item.Email %>" />
+						</div>
+					</div>
+				</div>
+				<div class="row m-b-10">
+					<div class="col-md-3 col-md-offset-2">
+						<label for="Phone"><%- req.session.getTranslation('Phone') %></label>
+					</div>
+					<div class="col-md-4">
+						<div class="widget-col">
+							<input name="Phone" id="Phone" type="text" class="form-control" value="<%- item.Phone %>" />
+						</div>
+					</div>
+				</div>
+				<div class="row m-b-10">
+					<div class="col-md-3 col-md-offset-2">
+						<label for="Mobile"><%- req.session.getTranslation('Mobile') %></label>
+					</div>
+					<div class="col-md-4">
+						<div class="widget-col">
+							<input name="Mobile" id="Mobile" type="text" class="form-control" value="<%- item.Mobile %>" />
+						</div>
+					</div>
+				</div>
+				<div class="row m-b-10">
+					<div class="col-md-3 col-md-offset-2">
+						<label for="Fax"><%- req.session.getTranslation('Fax') %></label>
+					</div>
+					<div class="col-md-4">
+						<div class="widget-col">
+							<input name="Fax" id="Fax" type="text" class="form-control" value="<%- item.Fax %>" />
+						</div>
+					</div>
+				</div>
+				<div class="row m-b-10">
+					<div class="col-md-3 col-md-offset-2">
+						<label for="StreetAddress"><%- req.session.getTranslation('Address') %></label>
+					</div>
+					<div class="col-md-4">
+						<div class="widget-col">
+							<input name="StreetAddress" id="StreetAddress" type="text" class="form-control" value="<%- item.StreetAddress %>" />
+						</div>
+					</div>
+				</div>
+				<div class="row m-b-10">
+					<div class="col-md-3 col-md-offset-2">
+						<label for="City"><%- req.session.getTranslation('City') %></label>
+					</div>
+					<div class="col-md-4">
+						<div class="widget-col">
+							<input name="City" id="City" type="text" class="form-control" value="<%- item.City %>" />
+						</div>
+					</div>
+				</div>
+				<div class="row m-b-10">
+					<div class="col-md-3 col-md-offset-2">
+						<label for="County"><%- req.session.getTranslation('County') %></label>
+					</div>
+					<div class="col-md-4">
+						<div class="widget-col">
+							<select name="ID_County" id="ID_County" class="form-control">
+								<% _.each(req.session.counties,function(county) { %>
+									<option value="<%= county.ID %>" <%- ((typeof item!='undefined' && item.ID_County==county.ID)?'selected=""':'') %>><%= county.Name %></option>
+								<% }); %>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row m-b-10">
+					<div class="col-md-3 col-md-offset-2">
+						<label for="PostalCode"><%- req.session.getTranslation('Postal_code') %></label>
+					</div>
+					<div class="col-md-4">
+						<div class="widget-col">
+							<input name="PostalCode" id="PostalCode" type="text" class="form-control" value="<%- item.PostalCode %>" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="text-center m-t-20">
+				<button class="btn btn-primary btn-cons" type="submit"><%- req.session.getTranslation('Save') %></button>
+				<a class="btn btn-white btn-cons" href="/account/agency_view"><%- req.session.getTranslation('Cancel') %></a>
+			</div>
+		</form>
+	</div>
+</div>
+

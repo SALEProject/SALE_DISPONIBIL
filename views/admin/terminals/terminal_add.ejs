@@ -1,0 +1,143 @@
+    <div class="content">
+      <div class="page-title"> <i class="icon-custom-left"></i>
+        <h3><%- (req.param('id')?'Modificare':'Adaugare') %> terminal</h3>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+			</div>
+            <div class="grid-body no-border">
+			<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">	
+              <div class="row column-seperation">
+                <div class="col-md-6">
+                  <h4>Detalii Terminal</h4>            
+                    <div class="row form-row">
+                      <div class="col-md-6">
+						<label for="Code">Cod</label>
+						<div class="widget-col">
+							<input name="Code" id="Code" type="text"  class="form-control required max-length" value="<%- (typeof item!='undefined'?item.Code:'') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<label for="Name">Nume Terminal</label>
+						<div class="widget-col">
+							<input name="Name" id="Name" type="text"  class="form-control required max-length" value="<%- (typeof item!='undefined'?item.Name:'') %>" />
+						</div>
+                      </div>
+                    </div>					
+                    <div class="row form-row">
+                      <div class="col-md-6">
+						<label for="Administrator">Administrator terminal</label>
+						<div class="widget-col">
+							<input name="Administrator" id="Administrator" type="text"  class="form-control required max-length" value="<%- (typeof item!='undefined'?item.Administrator:'') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<div class="checkbox check-default">
+				        	<input id="isActive" name="isActive" type="checkbox" value="1" <% if(typeof item!='undefined' && item.isActive) { %>checked=""<% } %> />
+				            <label for="isActive">Este activ</label>
+				        </div>  
+                      </div>
+                    </div>
+					<br />
+                  <h4>Conducere</h4>            
+                    <div class="row form-row">
+                      <div class="col-md-6">
+						<label for="Chairman">Presedinte</label>
+						<div class="widget-col">
+							<input name="Chairman" id="Chairman" type="text"  class="form-control required max-length" value="<%- (typeof item!='undefined'?item.Chairman:'') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<label for="CEO">Director Executiv</label>
+						<div class="widget-col">
+							<input name="CEO" id="CEO" type="text"  class="form-control required max-length" value="<%- (typeof item!='undefined'?item.CEO:'') %>" />
+						</div>
+                      </div>
+                    </div>                    
+                </div>
+                <div class="col-md-6">
+				
+                	<h4>Date Contact Terminal</h4>
+                  
+                    <div class="row form-row">
+                      <div class="col-md-6">
+						<label for="Email">Email</label>
+						<div class="widget-col">
+							<input name="Email" id="Email" type="email"  class="form-control" value="<%- (typeof item!='undefined'?item.Email:'') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<label for="Phone">Telefon</label>
+						<div class="widget-col">
+							<input name="Phone" id="Phone" type="text" class="form-control required" value="<%- (typeof item!='undefined'?item.Phone:'') %>" />
+						</div>
+                      </div>
+                    </div>		
+                    <div class="row form-row">
+                      <div class="col-md-6">
+						<label for="Fax">Fax</label>
+						<div class="widget-col">
+							<input name="Fax" id="Fax" type="text"  class="form-control" value="<%- (typeof item!='undefined'?item.Fax:'') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<label for="Website">Website</label>
+						<div class="widget-col">
+							<input name="Website" id="Website" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.Website:'') %>" />
+						</div>
+                      </div>
+                    </div>		
+
+                  <h4>Adresa Terminal</h4>
+                  
+                    <div class="row form-row">
+                      <div class="col-md-12">
+						<label for="StreetAddress">Adresa</label>
+						<div class="widget-col">
+							<input name="StreetAddress" id="StreetAddress" type="text"  class="form-control required" value="<%- (typeof item!='undefined'?item.StreetAddress:'') %>" />
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-6">
+						<label for="City">Oras</label>
+						<div class="widget-col">
+							<input name="City" id="City" type="text"  class="form-control required" value="<%- (typeof item!='undefined'?item.City:'') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<label for="ID_County">Judet</label>
+						<div class="widget-col">
+							<select name="ID_County" id="ID_County" class="select2 form-control">
+							  <% _.each(req.session.counties,function(county) { %>
+							  <option value="<%= county.ID %>" <%-((typeof item!='undefined' && item.ID_County==county.ID)?'selected=""':'') %> /><%= county.Name %></option>
+							  <% }); %>
+							</select>
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-4">
+						<label for="PostalCode">Cod postal</label>
+						<div class="widget-col">
+							<input name="PostalCode" id="PostalCode" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.PostalCode:'') %>" />
+						</div>
+                      </div>
+                    </div>						                            
+                </div>
+              </div>
+				<div class="form-actions">
+					<div class="pull-left">
+					  <button class="btn btn-success btn-cons" type="submit"><i class="icon-ok"></i> Salveaza</button>
+					  <a class="btn btn-white btn-cons" href="/admin/terminals">Renunta</a>
+					</div>
+				  </div>
+			</form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

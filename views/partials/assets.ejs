@@ -1,0 +1,47 @@
+<div class="tile collapsed m-b-10 toggleable-widget" id="market-assets-container">
+	<div class="tile-title">
+		<div class="controller">
+			<a href="" class="collapse pull-right m-l-15">&nbsp;</a>
+		</div>
+		<h3 id="rings-title" class="m-t-0"><%- req.session.getTranslation('Other_assets_on_the_market') %></h3>
+	</div>
+	<div class="tile-body">
+		<div class="row market-assets-filters no-margin">
+			<div class="pull-left m-r-10">
+				<select id="Ring-filter" class="market-asset-filter" data-filter="ring">
+					<option value="-1"><%- req.session.getTranslation('All_rings') %></option>
+					<% _.each(req.session.activeRings,function(ring) { %>
+					<option value="<%= ring.ID %>"><%- req.session.getTranslation(ring.Name) %></option>
+			  <% }); %>
+				</select>
+			</div>
+			<div class="pull-left m-r-10" style="display:none">
+				<select id="AssetType-filter" class="market-asset-filter" data-filter="assetType">
+					<option value="-1"><%- req.session.getTranslation('All_asset_types') %></option>
+					<% _.each(sails.storage.assetTypes,function(asset) { %>
+					<option value="<%= asset.ID %>"><%- req.session.getTranslation(asset.Name) %></option>
+			  <% }); %>
+				</select>
+			</div>
+		</div>
+		<table class="table no-more-tables" id="market-assets-list" data-prototype="<%= '<tr id="market-asset-__ID_ASSET__" class="market-asset-context" data-ring-id="__ID_RING__" data-id="__ID_ASSET__"><td class="v-align-middle asset-status-col"><span class="asset-status __ASSET_STATUS__"><i class="fa fa-square"></i></span></td><td class="v-align-middle">__RINGNAME__</td><td class="v-align-middle">__ASSETNAME__</td><td class="v-align-middle">__PREOPENINGTIME__</td><td class="v-align-middle">__CLOSINGTIME__</td><td class="v-align-middle">__BIDQUANTITY__</td><td class="v-align-middle">__BIDPRICE__</td><td class="v-align-middle">__ASKQUANTITY__</td><td class="v-align-middle">__ASKPRICE__</td></tr>' %>">
+			<thead>
+				<tr>
+					<th class="asset-status-col">&nbsp;</th>
+					<th><%- req.session.getTranslation('Ring') %></th>
+					<th><%- req.session.getTranslation('Asset') %></th>
+					<th><%- req.session.getTranslation('Start_time') %></th>
+					<th><%- req.session.getTranslation('End_time') %></th>
+					<th><%- req.session.getTranslation('BID_Quant') %></th>
+					<th><%- req.session.getTranslation('BID_Price') %></th>
+					<th><%- req.session.getTranslation('ASK_Quant') %></th>
+					<th><%- req.session.getTranslation('ASK_Price') %></th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<div class="text-center padding-20 loader"><img src="/img/loader-white.gif"></div>
+	</div>
+	<div class="clearfix"></div>
+</div>

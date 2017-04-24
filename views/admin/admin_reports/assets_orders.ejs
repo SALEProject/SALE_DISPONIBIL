@@ -1,0 +1,65 @@
+    <div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/assets" class="">Active</a>
+			</li>
+			<li>
+				<span class="active"><%- asset.Code %> (<%- req.session.getTranslation(asset.Name) %>) - Raport ordine lansate</span>
+			</li>                    
+		</ul>
+	</div>
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="grid simple">
+			<div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+				
+				<div class="clearfix"></div>
+			</div>
+			<div class="grid-body no-border">
+				<table class="table table-hover table-condensed admin-table" id="example-table">
+					<thead>
+						<tr>
+							<th class="v-align-middle">Client</th>
+							<th class="v-align-middle">Cantitate</th>
+							<th class="v-align-middle">Pret</th>
+							<th class="v-align-middle">Stare ordin</th>
+							<th class="v-align-middle">Agentie</th>
+							<th class="v-align-middle">Client</th>
+							<th class="v-align-middle">Data Valabilitate Ordin</th>
+							<th class="v-align-middle">Data Creare Ordin</th>
+							<th class="v-align-middle">Data Modificare Ordin</th>
+							<th class="v-align-middle">Cantitate Tranzactionata</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% if(items.length>0) { _.each(items,function(item) { %>
+						<tr>
+							<td class="v-align-middle"><%= item.DenumireClient %></td>
+							<td class="v-align-middle"><%= item.Cantitate %></td>
+							<td class="v-align-middle"><%= item.Pret %></td>
+							<td class="v-align-middle"><%= item.StareOrdin %></td>
+							<td class="v-align-middle"><%= item.NumeAgentie %></td>
+							<td class="v-align-middle"><%= item.CodClient %></td>
+							<td class="v-align-middle"><%= timeService.formatDate(item.DataValabilitateOrdin,'DD-MM-YYYY HH:mm:ss') %></td>
+							<td class="v-align-middle"><%= timeService.formatDate(item.DataCreareOrdin,'DD-MM-YYYY HH:mm:ss') %></td>
+							<td class="v-align-middle"><%= timeService.formatDate(item.DataModificareOrdin,'DD-MM-YYYY HH:mm:ss') %></td>
+							<td class="v-align-middle"><%= item.CantitateTranzactionata %></td>
+						</tr>
+						<% }); } %>
+					</tbody>
+				</table>
+			</div>
+          </div>
+          <div class="form-actions">
+					<div class="text-center">
+						<a class="btn btn-white btn-cons" href="javascript:history.back()">Inapoi</a>
+					</div>
+				</div>
+        </div>
+      </div>
+    </div>

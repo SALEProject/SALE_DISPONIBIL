@@ -1,0 +1,25 @@
+<div class="tile m-b-10" id="context-container">
+	<div class="tile-title">
+		<h3 class="m-t-0 p-r-20"><%- req.session.getTranslation('Available_assets') %></h3>
+	</div>
+	<div class="tile-body">
+		<ul id="ring-list"
+			data-prototype="<%= '<li id="ring-__ID__" data-id="__ID__" class="collapsed ring-item"><div class="ring-title"><a class="expand-toggle"><i class="fa"></i></a> <a class="ring-name">__NAME__</a></div><ul class="ring-assets"></ul></li>' %>"
+			data-prototype-asset="<%= '<li class="asset-item" id="asset-__ID__" data-id="__ID__" data-ring-id="__ID_RING__"><div class="asset-data" title=""><a class="asset-name">[__CODE__] __NAME__</a> <span class="asset-status"><i class="fa fa-square"></i></span></div></li>' %>"></ul>
+		<div class="text-center padding-20 loader"><img src="/img/loader-white.gif"></div>
+		<div id="legend2" data-toggle="popup" data-target="#legend-box" data-trigger="hover">
+			<div class="">
+				<i class="fa fa-info-circle fa-1x"></i> Legenda
+			</div>
+			<div class="" id="legend-box" style="display:none">
+				<ul class="message-list">
+					<li><span class="ring-status"><i class="fa fa-square"></i></span> <%- req.session.getTranslation('Future_session') %></li>
+					<li><span class="ring-status opening"><i class="fa fa-square"></i></span> <%- req.session.getTranslation('Openning_session') %></li>
+					<li><span class="ring-status opened"><i class="fa fa-square"></i></span> <%- req.session.getTranslation('Transactions') %></li>
+					<li><span class="ring-status closing"><i class="fa fa-square"></i></span> <%- req.session.getTranslation('Closing_session') %></li>
+					<li><span class="ring-status closed"><i class="fa fa-square"></i></span> <%- req.session.getTranslation('Closed_session') %></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,71 @@
+<div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/assets" class="">Active</a>
+			</li>
+			<li>
+				<span class="active"><%- asset.Code %> (<%- req.session.getTranslation(asset.Name) %>) - Raport participanti</span>
+			</li>                    
+		</ul>
+	</div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+			</div>
+            <div class="grid-body no-border">
+					<br/><br/><br/>
+				<div class="col-md-12">                       
+					<div class="grid-body no-border">
+						<table class="table table-hover table-condensed admin-table" id="example-table">
+							<thead>
+								<tr>
+									<th class="v-align-middle" style="width:5%">Sens</th>                                
+									<th style="width:5%">Cod</th>
+									<th style="width:22%">Nume</th>
+									<th style="width:15%">Cod fiscal</th>
+									<th style="width:15%">Numar inregistrare</th>
+									<th style="width:21%">Nume companie</th>
+								</tr>
+							</thead>
+							<tbody>
+							<% if(items.length>0) { 
+								_.each(items,function(client) { %>
+									<tr>
+										<td class="v-align-middle">
+											<% if(client.canBuy) { %>Cumparare<% } else { %> Vanzare <%} %>
+										</td>                                
+										<td class="v-align-middle"><%= client.Code %></td>
+										<td class="v-align-middle bold"><%= client.Name %></td>
+										<td class="v-align-middle"><span class="muted"><%= client.FiscalCode %></span></td>
+										<td class="v-align-middle"><span class="muted"><%= client.RegisterCode %></span></td>
+										<td class="v-align-middle"><span class="muted"><%= client.CompanyName %></span></td>                               
+									</tr>
+								<% }); %>
+							<% } %>
+							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan="7">
+										<div class="pagination pagination-centered hide-if-no-paging"></div>
+									</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>   
+				<div class="form-actions">
+					<div class="text-center">
+						<a class="btn btn-white btn-cons" href="javascript:history.back()">Inapoi</a>
+					</div>
+				</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

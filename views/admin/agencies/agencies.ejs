@@ -1,0 +1,39 @@
+    <div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/agencies" class="active">Agentii</a>
+			</li>
+		</ul>
+	</div>
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="grid simple">
+			<div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+				<a href="/admin/agencies/add" class="btn btn-info"><i class="fa fa-plus-circle"></i>&nbsp;<%- req.session.getSysTranslation('Agency_Add') %></a>
+			</div>
+			<div class="grid-body no-border">
+				<table class="table table-hover table-condensed admin-table ajax-table" id="example-table" data-source="/admin/agencies">
+					<thead>
+						<tr>
+							<th style="width:10%"><%- req.session.getSysTranslation('Code') %></th>
+							<th style="width:22%"><%- req.session.getSysTranslation('Name') %></th>
+							<th style="width:10%"><%- req.session.getSysTranslation('Status') %></th>
+							<th style="width:15%"><%- req.session.getSysTranslation('Tax_Code') %></th>
+							<th style="width:15%"><%- req.session.getSysTranslation('Registration_Number') %></th>
+							<th style="width:5%">&nbsp;</th>
+							<th style="width:5%">&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,77 @@
+    <div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/assets" class="active">Active</a>
+			</li>
+		</ul>
+	</div>
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="grid simple">
+			<div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+
+				<div class="clearfix"></div>
+			</div>
+			<div class="grid-body no-border">
+				<table class="table table-hover table-condensed admin-table" id="example-table">
+					<thead>
+						<tr>
+							<th class="v-align-middle" style="width:25%">Nume</th>
+							<th class="v-align-middle" style="width:10%">Cod</th>
+							<th class="v-align-middle" style="width:10%">Ring</th>
+							<th class="v-align-middle" style="width:5%">Activ</th>
+							<th class="v-align-middle" style="width:10%">Unitate de masura</th>
+							<th class="v-align-middle" style="width:5%">
+								<% if (req.param('report') =='participants') { %> Participanti<% } %>
+								<% if (req.param('report') =='orders') { %> Ordine<% } %>
+								<% if (req.param('report') =='transactions') { %> Tranzactii<% } %>
+								<% if (req.param('report') =='warranties') { %> Garantii<% } %>
+								<% if (req.param('report') =='documents') { %> Documente<% } %>
+								<% if (req.param('report') =='quotes') { %> Cotatii<% } %>
+								<% if (req.param('report') =='tradeparams') { %> Parametri tranzactionare<% } %>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% if(items.length>0) { _.each(items,function(item) { %>
+						<tr>
+							<td class="v-align-middle"><%= req.session.getTranslation(item.Name) %></td>
+							<td class="v-align-middle"><%= item.Code %></td>
+							<td class="v-align-middle"><%= (toolsService.searchIdInArray(item.ID_Ring,sails.storage.rings)>-1 ? sails.storage.rings[toolsService.searchIdInArray(item.ID_Ring,sails.storage.rings)]['Name'] : '-') %></td>
+							<td class="v-align-middle"><%- (item.isActive?'Da':'Nu') %></td>
+							<td class="v-align-middle"><%= item.MeasuringUnit %></td>
+							<% if (req.param('report') =='participants') { %>
+								<td><a href="/admin/reports/assets/participants/<%= item.ID %>" class="action-icon btn btn-small btn-primary" title="Vezi participanti la sedinta"><i class="fa fa-tasks"></i></a></td>
+							<% } %>
+							<% if (req.param('report') =='orders') { %>
+								<td><a href="/admin/reports/assets/orders/<%= item.ID %>" class="action-icon btn btn-small btn-primary" title="Vezi ordine lansate in sedinta"><i class="fa fa-tasks"></i></a></td>
+							<% } %>
+							<% if (req.param('report') =='transactions') { %>
+								<td><a href="/admin/reports/assets/transactions/<%= item.ID %>" class="action-icon btn btn-small btn-primary" title="Vezi tranzactii efectuate in sedinta"><i class="fa fa-tasks"></i></a></td>
+							<% } %>
+							<% if (req.param('report') =='warranties') { %>
+								<td><a href="/admin/reports/assets/warranties/<%= item.ID %>" class="action-icon btn btn-small btn-primary" title="Vezi garantii blocate pe activ"><i class="fa fa-tasks"></i></a></td>
+							<% } %>
+							<% if (req.param('report') =='documents') { %>
+								<td><a href="/admin/reports/assets/documents/<%= item.ID %>" class="action-icon btn btn-small btn-primary" title="Vezi documente pe sedinta"><i class="fa fa-tasks"></i></a></td>
+							<% } %>
+							<% if (req.param('report') =='quotes') { %>
+								<td><a href="/admin/reports/assets/quotes/<%= item.ID %>" class="action-icon btn btn-small btn-primary" title="Vezi cotatiile pe activ"><i class="fa fa-tasks"></i></a></td>
+							<% } %>
+							<% if (req.param('report') =='tradeparams') { %>
+								<td><a href="/admin/reports/assets/tradeparams/<%= item.ID %>" class="action-icon btn btn-small btn-primary" title="Vezi parametrii de tranzactionare pe activ"><i class="fa fa-tasks"></i></a></td>
+							<% } %>
+						</tr>
+						<% }); } %>
+					</tbody>
+				</table>
+			</div>
+          </div>
+        </div>
+      </div>
+    </div>

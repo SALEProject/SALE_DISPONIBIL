@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta charset="utf-8" />
+    <!--
+        For demonstration purposes, the `title` is dynamically set here based on
+        your `sails.config.appName` to show that you can inject data into layouts
+        exactly the same way as with your other view templates.
+    -->
+    <title><%- title %></title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <!--
+
+      Stylesheets
+      ========================
+
+      You can link any CSS, LESS, or image files in your `assets` directory
+      as you would normally: using <link/> tags.
+
+    -->
+	<!-- BEGIN PLUGIN CSS -->
+	<link href="/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="/plugins/jquery-slider/css/jquery.sidr.light.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="/plugins/boostrap-checkbox/css/bootstrap-checkbox.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="/plugins/bootstrap-select2/select2.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" type="text/css" />
+	<link href="/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" rel="stylesheet" type="text/css" />
+	<link href="/plugins/jquery-datatable/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>
+	<link href="/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="/plugins/footable/css/footable.core.css" rel="stylesheet" type="text/css" media="screen"/>
+<!-- END PLUGIN CSS -->
+	<!-- BEGIN CORE CSS FRAMEWORK -->
+	<link href="/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="/plugins/boostrapv3/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+	<link href="/plugins/boostrapv3/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+	<link href="/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
+	<link href="/css/animate.min.css" rel="stylesheet" type="text/css"/>
+	<link href="/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css"/>
+	<!-- END CORE CSS FRAMEWORK -->
+	<!-- BEGIN CSS TEMPLATE -->
+	<link href="/css/admin.css?_v=<%= sails.config.assets_version %>" rel="stylesheet" type="text/css"/>
+	<link href="/css/responsive-admin.css" rel="stylesheet" type="text/css"/>
+	<link href="/css/custom-icon-set.css" rel="stylesheet" type="text/css"/>
+	<link href="/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" media="screen"/>
+	<!-- END CSS TEMPLATE -->
+  <!--[if lt IE 9]>
+	<link href="/css/ie8.css" rel="stylesheet" type="text/css"/>
+  <![endif]-->
+
+    <!--
+
+      Support for LESS included by default
+      ================================================
+
+      LESS files are automatically compiled when they change using the Gruntfile
+      located in the top-level of this Sails app.  If you run into issues with styles
+      not reloading, check the Sails log output in your console for LESS compilation errors.
+      If necessary, shut down and then lift your app again.
+
+    -->
+
+    <script type="text/javascript">
+      var paceOptions = { ajax: true };
+    </script>
+
+  </head>
+
+	<!-- BEGIN BODY -->
+	<body class="error-body no-top">
+<!-- BEGIN HEADER -->
+<div class="header navbar navbar-inverse ">
+    <div class="header-seperation text-center">
+      <ul class="nav pull-left notifcation-center" id="main-menu-toggle-wrapper" style="display: flex;">
+        <li class="dropdown"> <a id="main-menu-toggle" href="#main-menu" class="">
+            <div class="iconset top-menu-toggle-white"></div>
+          </a> </li>
+      </ul>
+      <!-- BEGIN LOGO -->
+      <a href="/admin" class=""><img src="/img/logo-disponibil.png" class="logo" alt=""  data-src="/img/logo-disponibil.png" width="100" height="100"/></a>
+      <!-- END LOGO -->
+    </div>
+	<div class="container">
+  <!-- BEGIN TOP NAVIGATION BAR -->
+  <div class="navbar-inner">
+    <div class="header-quick-nav" >
+      <!-- BEGIN TOP NAVIGATION MENU -->
+      <!--<div class="pull-left">
+        <ul class="nav quick-section">
+          <li class="quicklinks"> <a href="#" class="" id="layout-condensed-toggle" >
+            <div class="iconset top-menu-toggle-dark"></div>
+            </a> </li>
+        </ul>
+        <ul class="nav quick-section">
+          <li class="quicklinks"> <a href="#" class="" >
+            <div class="iconset top-reload"></div>
+            </a> </li>
+          <li class="quicklinks"> <span class="h-seperate"></span></li>
+          <li class="quicklinks"> <a href="#" class="" >
+            <div class="iconset top-tiles"></div>
+            </a> </li>
+          <li class="m-r-10 input-prepend inside search-form no-boarder"> <span class="add-on"> <span class="iconset top-search"></span></span>
+            <input name="" type="text"  class="no-boarder " placeholder="Search Dashboard" style="width:250px;">
+          </li>
+        </ul>
+      </div>-->
+      <!-- END TOP NAVIGATION MENU -->
+      <!-- BEGIN CHAT TOGGLER -->
+      <div class="pull-right top-section">
+		<p class="user-info"><%- req.session.currentUser.FirstName %> <strong><%- req.session.currentUser.LastName %></strong></p>
+		<p class="user-info"><%- typeof req.session.currentUser.role != 'undefined' ? req.session.currentUser.role.Name : req.session.currentUser.isAdministrator ? 'Admin' : '' %></p>
+		<div class="user-data-box">
+			<a href="/logout/" class="pull-left user-logout-link">Logout</a>
+		</div>
+      </div>
+      <!-- END TOP SECTION -->
+      <div class="pull-left header-title">
+		<h2>Admin dashboard</h2>
+		<h3><%- sails.config.appName %></h3>
+      </div>
+      <!-- END TOP SECTION -->
+    </div>
+    <!-- END TOP NAVIGATION MENU -->
+  </div>
+  <!-- END TOP NAVIGATION BAR -->
+	</div>
+</div>
+<!-- END HEADER -->
+
+<!-- BEGIN CONTAINER -->
+<div class="page-container row-fluid">
+	<!-- BEGIN SIDEBAR -->
+	<div class="page-sidebar" id="main-menu">
+		<!-- BEGIN MINI-PROFILE -->
+		<div class="page-sidebar-wrapper" id="main-menu-wrapper">
+			<!-- BEGIN SIDEBAR MENU -->
+			<ul>
+				<% if(accessService.checkState('login','admin',req)) { %>
+				<li class="start <% if(accessService.isCurrentRoute('admin','index',req)) { %>active<% } %>">
+					<a href="/admin">
+						<i class="icon-custom-home"></i>
+						<span class="title">Acasa</span>
+						<span class="selected"></span>
+					</a>
+				</li>
+				<% } %>
+				<% if(accessService.checkState('login','adashboard',req)) { %>
+				<li class="">
+					<a href="/">
+						<i class="fa fa-globe"></i>
+						<span class="title">Mergi la site</span>
+						<span class="selected"></span>
+					</a>
+				</li>
+				<% } %>
+				<% if(accessService.checkState('admin','admin_rings',req)) { %>
+				<li class="<% if(accessService.isCurrentRoute('ring','rings',req) || accessService.isCurrentRoute('ring','ring_add',req) || accessService.isCurrentRoute('ring','ring_edit',req)) { %>active<% } %>">
+					<a href="/admin/rings">
+						<i class="fa fa-dot-circle-o"></i>
+						<span class="title">Ringuri</span>
+					</a>
+				</li>
+				<% } %>
+				<% if(accessService.checkState('admin','admin_asset_types',req)) { %>
+				<li class="<% if(accessService.isCurrentRoute('assettype','asset_types',req) || accessService.isCurrentRoute('assettype','asset_type_add',req) || accessService.isCurrentRoute('assettype','asset_type_edit',req)) { %>active<% } %>">
+					<a href="/admin/asset_types">
+						<i class="fa fa-sign-in"></i>
+						<span class="title">Active suport</span>
+					</a>
+				</li>
+				<% } %>
+				<% if(accessService.checkState('admin','admin_assets',req)) { %>
+				<li class="<% if(accessService.isCurrentRoute('asset','assets',req) || accessService.isCurrentRoute('asset','asset_save',req) || accessService.isCurrentRoute('asset','asset_add',req) || accessService.isCurrentRoute('asset','asset_edit',req) || accessService.isCurrentRoute('order','initial_order',req) || accessService.isCurrentRoute('assetschedule','schedules',req) || accessService.isCurrentRoute('asset','trade_parameters',req) || accessService.isCurrentRoute('client','asset_clients',req) || accessService.isCurrentRoute('document','asset_documents',req)) { %>active<% } %>">
+					<a href="/admin/assets">
+						<i class="fa fa-sign-in"></i>
+						<span class="title">Active</span>
+					</a>
+				</li>
+				<% } %>
+				<% if(accessService.checkState('admin','admin_documents',req)) { %>
+				<li class="<% if(accessService.isCurrentRoute('document','documents',req) || accessService.isCurrentRoute('document','document_add',req) || accessService.isCurrentRoute('document','document_edit',req)) { %>active<% } %>">
+					<a href="/admin/documents">
+						<i class="fa fa-file"></i>
+						<span class="title">Documente</span>
+					</a>
+				</li>
+				<% } %>
+				<% if(accessService.checkState('admin','admin_warranties',req)) { %>
+				<li class="<% if(accessService.isCurrentRoute('warranty','warranties',req) || accessService.isCurrentRoute('warranty','warranty_add',req) || accessService.isCurrentRoute('warranty','warranty_edit',req)) { %>active<% } %>">
+					<a href="/admin/warranties">
+						<i class="fa fa-tag"></i>
+						<span class="title">Garantii</span>
+					</a>
+				</li>
+				<li class="<% if(accessService.isCurrentRoute('warranty','warranties_buffer',req)) { %>active<% } %>">
+					<a href="/admin/warranties/buffer">
+						<i class="fa fa-tag"></i>
+						<span class="title">Buffer Tranzactii</span>
+					</a>
+				</li>
+				<% } %>
+				<% if(accessService.checkState('admin','admin_users',req)) { %>
+				<li class="<% if(accessService.isCurrentRoute('user','users',req) || accessService.isCurrentRoute('user','user_add',req) || accessService.isCurrentRoute('user','user_edit',req)) { %>active<% } %>">
+					<a href="/admin/users">
+						<i class="fa fa-users"></i>
+						<span class="title">Utilizatori</span>
+					</a>
+				</li>
+				<% } %>
+				<% if(accessService.checkState('admin','admin_agencies',req)) { %>
+				<li class="<% if(accessService.isCurrentRoute('agency','agencies',req) || accessService.isCurrentRoute('agency','agency_add',req) || accessService.isCurrentRoute('agency','agency_edit',req)) { %>active<% } %>">
+					<a href="/admin/agencies">
+						<i class="fa fa-building-o"></i>
+						<span class="title">Agentii</span>
+					</a>
+				</li>
+				<% } %>
+				<% if(accessService.checkState('admin','admin_clients',req)) { %>
+				<li class="<% if(accessService.isCurrentRoute('client','clients',req) || accessService.isCurrentRoute('client','client_add',req) || accessService.isCurrentRoute('client','client_edit',req)) { %>active<% } %>">
+					<a href="/admin/clients">
+						<i class="fa fa-briefcase"></i>
+						<span class="title">Clienti</span>
+					</a>
+				</li>
+				<% } %>
+				<% if(accessService.checkState('admin','admin_transactions',req)) { %>
+				<li class="<% if(accessService.isCurrentRoute('transaction','transactions',req) || accessService.isCurrentRoute('transaction','transaction_add',req) || accessService.isCurrentRoute('transaction','transaction_edit',req)) { %>active<% } %>">
+					<a href="/admin/transactions">
+						<i class="fa fa-ticket"></i>
+						<span class="title">Tranzactii</span>
+					</a>
+				</li>
+				<% } %>
+				<% /* %>
+				<li class="<% if(req.options.action=='asset_schedules' || req.options.action=='asset_schedule_add' || req.options.action=='asset_schedule_edit') { %>active<% } %>">
+					<a href="/admin/asset_schedules">
+						<i class="fa fa-clock-o"></i>
+						<span class="title">Sedinte active</span>
+					</a>
+				</li>
+				<li class="<% if(req.options.action=='orders' || req.options.action=='order_add' || req.options.action=='order_edit') { %>active<% } %>">
+					<a href="/admin/orders">
+						<i class="fa fa-ticket"></i>
+						<span class="title">Ordine</span>
+					</a>
+				</li>
+				<li class="<% if(req.options.action=='wizard' || req.options.action=='wizard') { %>active<% } %>">
+					<a href="/admin/wizard">
+						<i class="fa fa-ticket"></i>
+						<span class="title">Adaugare sedinta ordin initiator</span>
+					</a>
+				</li>
+				<% */ %>
+				<%
+				var x = [
+					'caens',
+					'caen_add',
+					'caen_edit',
+					'cpvs',
+					'cpv_add',
+					'cpv_edit',
+					'measuring_units',
+					'measuring_unit_add',
+					'measuring_unit_edit',
+					'currencies',
+					'currency_add',
+					'currency_edit',
+					'translations',
+					'translation_add',
+					'translation_edit',
+					'document_types',
+					'document_type_add',
+					'document_type_edit',
+					'warranty_types',
+					'warranty_type_add',
+					'warranty_type_edit',
+					'terminals',
+					'terminal_add',
+					'terminal_edit',
+					'counties',
+					'county_add',
+					'county_edit'
+				];
+				%>
+				<li class="<%- (x.indexOf(req.options.action)>-1) ? 'active open' : '' %>">
+					<a href="">
+						<i class="fa fa-gear"></i>
+						<span class="title">Nomenclatoare</span>
+						<span class="arrow <%- (x.indexOf(req.options.action)>-1) ? 'open' : '' %>"></span>
+					</a>
+					<ul class="sub-menu">
+						<% if(accessService.checkState('admin','admin_currencies',req)) { %>
+						<li class="<% if(req.options.action=='currencies' || req.options.action=='currency_add' || req.options.action=='currency_edit') { %>active<% } %>">
+							<a href="/admin/currencies">
+								<span class="title">Valute</span>
+							</a>
+						</li>
+						<% } %>
+						<% if(accessService.checkState('admin','admin_measuring_units',req)) { %>
+						<li class="<% if(req.options.action=='measuring_units' || req.options.action=='measuring_unit_add' || req.options.action=='measuring_unit_edit') { %>active<% } %>">
+							<a href="/admin/measuring_units">
+								<span class="title">Unitati de Masura</span>
+							</a>
+						</li>
+						<% } %>
+						<% if(accessService.checkState('admin','admin_cpvs',req)) { %>
+						<li class="<% if(req.options.action=='cpvs' || req.options.action=='cpv_add' || req.options.action=='cpv_edit') { %>active<% } %>">
+							<a href="/admin/cpvs">
+								<span class="title">CPV</span>
+							</a>
+						</li>
+						<% } %>
+						<% if(accessService.checkState('admin','admin_caens',req)) { %>
+						<li class="<% if(req.options.action=='caens' || req.options.action=='caen_add' || req.options.action=='caen_edit') { %>active<% } %>">
+							<a href="/admin/caens">
+								<span class="title">CAEN</span>
+							</a>
+						</li>
+						<% } %>
+						<% if(accessService.checkState('admin','admin_terminals',req)) { %>
+						<li class="<% if(req.options.action=='terminals' || req.options.action=='terminal_add' || req.options.action=='terminal_edit') { %>active<% } %>">
+							<a href="/admin/terminals">
+								<span class="title">Terminale</span>
+							</a>
+						</li>
+						<% } %>
+						<% if(accessService.checkState('admin','admin_document_types',req)) { %>
+						<li class="<% if(req.options.action=='document_types' || req.options.action=='document_type_add' || req.options.action=='document_type_edit') { %>active<% } %>">
+							<a href="/admin/document_types">
+								<span class="title">Tip Document</span>
+							</a>
+						</li>
+						<% } %>
+						<% if(accessService.checkState('admin','admin_warranty_types',req)) { %>
+						<li class="<% if(req.options.action=='warranty_types' || req.options.action=='warranty_type_add' || req.options.action=='warranty_type_edit') { %>active<% } %>">
+							<a href="/admin/warranty_types">
+								<span class="title">Tip Garantie</span>
+							</a>
+						</li>
+						<% } %>
+						<% if(accessService.checkState('admin','admin_translations',req)) { %>
+						<li class="<% if(req.options.action=='translations' || req.options.action=='translation_add' || req.options.action=='translation_edit') { %>active<% } %>">
+							<a href="/admin/translations">
+								<span class="title">Traduceri</span>
+							</a>
+						</li>
+						<% } %>
+						<% if(accessService.checkState('admin','admin_counties',req)) { %>
+						<li class="<% if(req.options.action=='counties' || req.options.action=='county_add' || req.options.action=='county_edit') { %>active<% } %>">
+							<a href="/admin/counties">
+								<span class="title">Judete</span>
+							</a>
+						</li>
+						<% } %>
+					</ul>
+				</li>
+				<%
+				var y = [
+					'assets',
+					'assets_index',
+					'assets_orders',
+					'assets_transactions',
+					'assets_warranties',
+					'assets_documents',
+					'assets_quotes',
+					'assets_tradeparams'
+				];
+				%>
+        <li class="<%- (req.options.action == 'new_reports' && req.options.controller=='report') ? 'active open' : '' %>">
+          <a href="/admin/new_reports">
+            <i class="fa fa-bar-chart-o"></i>
+            <span class="title">Rapoarte</span>
+          </a>
+        </li>
+				<li class="<%- (y.indexOf(req.options.action)>-1 && req.options.controller=='report') ? 'active open' : '' %>">
+					<a href="/admin/reports">
+						<i class="fa fa-bar-chart-o"></i>
+						<span class="title">Rapoarte (OLD)</span>
+					</a>
+					<% /* %>
+						<span class="arrow <%- (y.indexOf(req.options.action)>-1 && req.options.controller=='report') ? 'open' : '' %>"></span>
+					<ul class="sub-menu">
+						<li class="<% if(req.options.action=='assets' && req.param('report')=='participants') { %>active<% } %>">
+							<a href="/admin/reports/assets?report=participants">
+								<span class="title">Raport Participanti Sedinta Activ</span>
+							</a>
+						</li>
+						<li class="<% if(req.options.action=='assets' && req.param('report')=='orders') { %>active<% } %>">
+							<a href="/admin/reports/assets?report=orders">
+								<span class="title">Raport Ordine Activ</span>
+							</a>
+						</li>
+						<li class="<% if(req.options.action=='assets' && req.param('report')=='transactions') { %>active<% } %>">
+							<a href="/admin/reports/assets?report=transactions">
+								<span class="title">Raport Tranzactii Activ</span>
+							</a>
+						</li>
+						<li class="<% if(req.options.action=='assets' && req.param('report')=='warranties') { %>active<% } %>">
+							<a href="/admin/reports/assets?report=warranties">
+								<span class="title">Raport Garantii Activ</span>
+							</a>
+						</li>
+						<li class="<% if(req.options.action=='assets' && req.param('report')=='documents') { %>active<% } %>">
+							<a href="/admin/reports/assets?report=documents">
+								<span class="title">Raport Documente Activ</span>
+							</a>
+						</li>
+						<li class="<% if(req.options.action=='assets' && req.param('report')=='quotes' ) { %>active<% } %>">
+							<a href="/admin/reports/assets?report=quotes">
+								<span class="title">Raport Cotatii Activ</span>
+							</a>
+						</li>
+						<li class="<% if(req.options.action=='assets' && req.param('report')=='tradeparams' ) { %>active<% } %>">
+							<a href="/admin/reports/assets?report=tradeparams">
+								<span class="title">Raport Parametri Sedinta Activ</span>
+							</a>
+						</li>
+					</ul>
+					<% */ %>
+				</li>
+        <li>
+          <a href="/logout">
+            <i class="fa fa-power-off"></i>
+            <span class="title">Logout</span>
+          </a>
+        </li>
+			</ul>
+			<!-- END SIDEBAR MENU -->
+		</div>
+	</div>
+	<!-- END SIDEBAR -->
+
+		<!-- BEGIN PAGE CONTAINER-->
+		<div class="page-content no-min-height">
+
+		<!-- Include the view file for the current controller/route -->
+		<%- body %>
+
+
+		</div>
+		<!-- END CONTAINER -->
+
+    <!--
+
+      Client-side Javascript
+      ========================
+
+      You can import any js files in your `assets` directory as you would
+      normally: using <script></script> tags.
+
+      Here's an example of importing a few dependencies, in order:
+    -->
+    <!-- Bring in the socket.io client -->
+    <!--<script type="text/javascript" src="/js/socket.io.js"></script>-->
+    <!-- then beef it up with some convenience logic for talking to Sails.js -->
+    <!--<script type="text/javascript" src="/js/sails.io.js"></script>-->
+    <!-- listen on socket.io for incoming messages -->
+    <!--<script type="text/javascript" src="/js/app.js"></script>-->
+
+    <!-- Your scripts here? -->
+    <!-- Your scripts here? -->
+    <!-- Your scripts here? -->
+
+<script type="text/javascript">
+var currentLang = '<%- req.session.lang.code ? req.session.lang.code : 'RO' %>';
+</script>
+<script src="<%- sails.config.static_path %>/js/dictionary.lib.js" type="text/javascript"></script>
+<script src="/dictionary.js?_v=<%= sails.config.assets_version %>" type="text/javascript"></script>
+<!--ADMIN SCRIPTS-->
+<script src="/js/dependencies/sails.io.js"></script>
+<script src="/plugins/jquery-1.8.3.min.js"></script>
+<script src="/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+<script src="/plugins/bootstrap-select2/select2.min.js"></script>
+<script src="/plugins/boostrap-form-wizard/js/jquery.bootstrap.wizard.min.js"></script>
+<script src="/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+<script src="/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
+<script src="/plugins/jquery-datatable/js/jquery.dataTables.min.js"></script>
+<script src="/plugins/jquery-datatable/extra/js/TableTools.min.js"></script>
+<script src="/plugins/datatables-responsive/js/datatables.responsive.js"></script>
+<script src="/plugins/datatables-responsive/js/lodash.min.js"></script>
+<script src="/plugins/footable/js/footable.js"></script>
+<script src="/plugins/footable/js/footable.filter.js"></script>
+<script src="/plugins/footable/js/footable.paginate.js"></script>
+<script src="/plugins/footable/js/footable.sort.js"></script>
+<script src="/plugins/jquery-autonumeric/autoNumeric.js"></script>
+<script src="/plugins/jquery.number.js"></script>
+<script src="/js/moment-with-locales.min.js"></script>
+<script src="/plugins/fullcalendar/fullcalendar.js"></script>
+<script src="/plugins/jquery-numberAnimate/jquery.animateNumbers.js"></script>
+<script src="/js/form_validations.js"></script>
+<script src="/js/datatables.js"></script>
+<script src="/js/core.js"></script>
+<script src="/js/calender.js"></script>
+<script src="/js/admin.js"></script>
+<!--ADMIN SCRIPTS END-->
+<!--[if lt IE 9]>
+<script src="/plugins/html5shiv.min.js" type="text/javascript"></script>
+<script src="/plugins/respond.min.js" type="text/javascript"></script>
+<![endif]-->
+<!--alex-->
+<% if(accessService.isCurrentRoute('admin','index',req)) { %>
+
+<% } %>
+<!-- END CORE TEMPLATE JS -->
+
+    <!--
+
+      Looking for client-side CoffeeScript or TypeScript?
+      ================================================
+
+      CoffeeScript and TypeScript precompilation are not installed by default,
+      but if you'd like to mix those features in, it is straightforward to
+      `npm install` the relevant grunt community modules and modify your Gruntfile
+      to use them.
+
+    -->
+
+
+
+    <!--
+
+      Another way: The Asset Linker
+      ========================
+
+      Sails supports a Grunt-based asset linker, to automatically inject
+      <link> and <script> tags, as well any client-side templates you're using
+      into your HTML layouts and views, respecting dependencies.
+
+      You created this Sails app with the asset linker disabled.
+      If you change your mind, check out the docs on the subject:
+      http://sailsjs.org/#!documentation/asset-management
+
+    -->
+
+    </body>
+</html>

@@ -1,0 +1,130 @@
+    <div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/assets" class="">Active</a>
+			</li>
+			<li>
+				<a href="/admin/documents/asset_documents?asset=<%- req.param('asset') %>" class="active"><%- asset.Code %> (<%- req.session.getTranslation(asset.Name) %>) - Pasul <%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'5':'6') %></a>
+			</li>                    
+		</ul>
+	</div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+			</div>
+            <div class="grid-body no-border">
+				<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">	
+					<div id="rootwizard" class="col-md-12">
+						<div class="form-wizard-steps">
+							<ul class="wizard-steps">
+								<li class="">
+									<a href="/admin/assets/edit/<%- typeof asset.ID!='undefined' ? asset.ID : '' %>">
+										<span class="step">1</span>
+										<span class="title">Activ</span>
+									</a>
+								</li>
+								<li class="" id="step-initial-order" <%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'style="display:none"':'') %>>
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/orders/initial?asset='+asset.ID+'"' : '' %>>
+										<span class="step">2</span>
+										<span class="title">Ordin initiator</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/asset_schedules/schedules?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'2':'3') %></span>
+										<span class="title">Sedinta activ</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/assets/trade_parameters?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'3':'4') %></span>
+										<span class="title">Parametri tranzactionare</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/clients/asset_clients?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'4':'5') %></span>
+										<span class="title">Clienti</span>
+									</a>
+								</li>
+								<li class="active">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/documents/asset_documents?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'5':'6') %></span>
+										<span class="title">Documente</span>
+									</a>
+								</li>
+							</ul>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<br/><br/><br/>
+					<div class="col-md-12">                       
+						<div class="grid-body no-border">
+							<a class="btn btn-info" <%- typeof asset.ID!='undefined' ? 'href="/admin/documents/add?asset='+asset.ID+'"' : '' %>>Adauga document la activ</a>
+							<div class="pull-right p-b-20 row">
+								<div class="col-md-6">
+									<label>Filtreaza:</label>
+								</div>
+								<div class="col-md-6">
+									<input id="asset-table-filter" type="text" class="form-control input-sm" />
+								</div>
+							</div>
+							<table class="table table-hover table-condensed admin-table footable" id="asset-clients-table" data-filter="#asset-table-filter">
+								<thead>
+									<tr>
+										<th style="width:20%">Document</th>
+										<th style="width:20%">Tip Document</th>
+										<th style="width:10%">Fisier</th>
+										<th style="width:10%">Document Public</th>
+										<th style="width:15%">Data Creare</th>
+										<th style="width:15%">Creat de</th>
+										<th style="width:5%">&nbsp;</th>
+										<th style="width:5%">&nbsp;</th>
+									</tr>
+								</thead>
+								<tbody>
+								<% if(req.session.assetDocuments.length>0) { 
+									_.each(req.session.assetDocuments,function(item) { %>										
+										<tr>													
+											<td class="v-align-middle"><%- item.Name %></td>
+											<td class="v-align-middle"><%- req.session.getTranslation(item.DocumentType) %></td>
+											<td class="v-align-middle"><span class="muted"><a href='<%= item.DocumentURL %>'><i class="fa fa-download"></i></a></span></td>
+											<td class="v-align-middle"><span class="muted"><%= (item.isPublic)?"Da":"Nu" %></span></td>
+											<td class="v-align-middle"><span class="muted"><%= timeService.formatDate(item.DateCreated,'HH:mm:ss DD-MM-YYYY') %></span></td>
+											<td class="v-align-middle"><span class="muted"><%= item.User %></span></td>
+											<td><a href="/admin/documents/edit/<%= item.ID %><%- typeof asset.ID!='undefined' ? '?asset='+asset.ID : '' %>" class="action-icon btn btn-small btn-success" title="Modifica"><i class="fa fa-edit"></i></a></td>
+											<td><a href="/admin/documents/delete/<%- item.ID %><%- typeof asset.ID!='undefined' ? '?asset='+asset.ID : '' %>" title="Sterge" class="action-icon delete-confirm btn btn-small btn-danger"><i class="fa fa-trash-o"></i></a></td>
+										</tr>
+									<% }); %>
+								<% } %>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="7">
+											<div class="pagination pagination-centered hide-if-no-paging"></div>
+										</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+					<div class="form-actions">
+						<div class="text-center">
+						  	<a class="btn btn-white btn-cons" href="/admin/clients/asset_clients<%- typeof asset.ID!='undefined' ? '?asset='+asset.ID : '' %>">Inapoi</a>
+							<a class="btn btn-grey btn-cons" href="/admin/assets">Renunta</a>
+						  	<button class="btn btn-primary btn-cons" type="submit" name="submit" value="save"><i class="icon-ok"></i> Salveaza</button>
+						  	<button class="btn btn-success btn-cons" type="submit" name="Validate" value="1"><i class="icon-ok"></i>Valideaza</button>
+						</div>
+				  	</div>
+				</form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>	

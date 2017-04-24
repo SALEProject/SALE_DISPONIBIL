@@ -1,0 +1,185 @@
+			<div class="content">
+				<div class="page-title"> <i class="icon-custom-left"></i>
+				<h3><%- (req.param('id')?'Modificare':'Adaugare') %> Garantie</h3>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="grid simple">
+						<div class="grid-title no-border">
+							<%- toolsService.getFlashMessage(req.flash()) %>
+						</div>
+						<div class="grid-body no-border">
+							<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">
+								<div class="row column-seperation">
+									<div class="col-md-6">
+										<h4><span class="semi-bold">Detalii Garantie</span></h4>
+										<div class="row form-row">
+											<div class="col-md-6">
+												<label for="ID_WarrantyType">Tip Garantie</label>
+												<div class="widget-col">
+													<select name="ID_PaymentType" id="ID_PaymentType" class="select2 form-control">
+														<% _.each(req.session.warrantyTypes,function(warrantyType) { %>
+															<option value="<%= warrantyType.ID %>" <%-((typeof item!='undefined' && item.ID_PaymentType==warrantyType.ID)?'selected=""':'') %> /><%= warrantyType.Name %></option>
+														<% }); %>
+													</select>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<label for="WarrantyNumber">Numar Garantie</label>
+												<div class="widget-col">
+													<input name="WarrantyNumber" id="WarrantyNumber" type="text" class="form-control"  value="<%- (typeof item!='undefined'?item.WarrantyNumber:'') %>" />
+												</div>
+											</div>
+										</div>
+
+				                    	<div class="row form-row">
+				                    		<% if (req.param('client') == null) {%>
+					                      	<!--<div class="col-md-6">
+												<label for="ID_Agency">Agentie</label>
+												<div class="widget-col">
+													<select name="ID_Agency" id="ID_Agency" class="select2 form-control">
+														<option value="0" selected="" />Alege o agentie</option>
+													  	<% _.each(req.session.agencies,function(agency) { %>
+													  		<option value="<%= agency.ID %>" <%-((typeof item!='undefined' && item.ID_Agency==agency.ID)?'selected=""':'') %> /><%= agency.AgencyName %></option>
+													  	<% }); %>
+													</select>
+												</div>
+					                      	</div>-->
+					                      	<%}%>
+					                      	<div class="col-md-6">
+												<label for="ID_Client">Client</label>
+												<div class="widget-col">
+													<% if (req.param('client')!= null) { %>
+														<input type="hidden" name="ID_Client" id="ID_Client" value="<%= req.param('client') %>" />
+														<h4><%= req.session.clients[req.param('client')].ClientName %></h4>
+													<% } else {%>
+														<select name="ID_Client" id="ID_Client" class="select2 form-control">
+														  	<% _.each(req.session.clients,function(client) { %>
+														  		<option value="<%= client.ID %>" <%- ((typeof item!='undefined' && item.ID_ClientSRC==client.ID)?'selected=""':'') %> /><%= client.ClientName %></option>
+														  	<% }); %>
+														</select>
+													<% } %>
+												</div>
+					                      	</div>
+					                      	<div class="col-md-6">
+												<label for="ID_Asset">Activ</label>
+												<div class="widget-col">
+													<select name="ID_Asset" id="ID_Asset" class="select2 form-control">
+														<option value="0" selected="" />Alege un activ</option>
+													  	<% _.each(req.session.assets,function(asset) { %>
+													  		<option value="<%= asset.ID %>" <%-((typeof item!='undefined' && item.ID_Asset==asset.ID)?'selected=""':'') %> /><%= asset.Name %></option>
+													  	<% }); %>
+													</select>
+												</div>
+					                      	</div>
+					                    </div>
+										<div class="row form-row">
+											<div class="col-md-6">
+												<label for="DateCreated">Data Creare</label>
+												<div class="widget-col">
+													<input name="DateCreated" id="DateCreated" type="text" class="form-control"  data-date-format="yyyy-mm-dd" value="<%- (typeof item!='undefined' && typeof item.DateCreated!='undefined'?item.DateCreated.substring(0,item.ValabilityEndDate.indexOf('T')):'') %>" readonly/>
+												</div>
+					                      	</div>
+					                      	<div class="col-md-6">
+												<label for="CreatedByUser">Creata de</label>
+												<div class="widget-col">
+													<input name="CreatedByUser" id="CreatedByUser" type="text" class="form-control readonly"  value="<%- (typeof item!='undefined'?item.Username:req.session.currentUser.ID) %>" readonly/>
+												</div>
+					                      	</div>
+					                    </div>
+
+										<br />
+
+					                  	<h4><span class="semi-bold">Informatii Valabilitate Garantie</span></h4>
+					                    <div class="row form-row">
+					                      	<div class="col-md-6">
+												<label class="form-label">Data Inceput Valabilitate</label>
+												<div class="controls">
+													<div class="input-group m-b-5">
+														<input type="text" class="form-control" id="prm_StartDate" name="ValabilityStartDate" data-date-format="yyyy-mm-dd" value="<%- (typeof item!='undefined'&& typeof item.ValabilityStartDate!='undefined'?item.ValabilityStartDate.substring(0,item.ValabilityStartDate.indexOf('T')):'') %>" />
+														<span class="input-group-addon primary">
+															<span class="arrow"></span>
+															<i class="fa fa-calendar"></i>
+														</span>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<label class="form-label">Data Final Valabilitate</label>
+												<div class="controls">
+													<div class="input-group m-b-5">
+														<input type="text" class="form-control" id="prm_EndDate" name="ValabilityEndDate" data-date-format="yyyy-mm-dd" value="<%- (typeof item!='undefined' && typeof item.ValabilityEndDate!='undefined'?item.ValabilityEndDate.substring(0,item.ValabilityEndDate.indexOf('T')):'') %>" />
+														<span class="input-group-addon primary">
+															<span class="arrow"></span>
+															<i class="fa fa-calendar"></i>
+														</span>
+													</div>
+												</div>
+											</div>
+					                    </div>
+
+					                    <div class="row form-row">
+					                      	<div class="col-md-6">
+												<label class="form-label">Data Executare Garantie</label>
+												<div class="controls">
+													<div class="input-group m-b-5">
+														<input type="text" class="form-control" id="ExecutionDate" name="ExecutionDate" data-date-format="yyyy-mm-dd" value="<%- (typeof item!='undefined'&& typeof item.ExecutionDate!='undefined'?item.ExecutionDate.substring(0,item.ExecutionDate.indexOf('T')):'') %>" />
+														<span class="input-group-addon primary">
+															<span class="arrow"></span>
+															<i class="fa fa-calendar"></i>
+														</span>
+													</div>
+												</div>
+											</div>
+
+					                    </div>
+
+					                </div>
+
+					                <div class="col-md-6">
+					                	<h4><span class="semi-bold">Valoare / Valuta</span></h4>
+					                    <div class="row form-row">
+					                      	<div class="col-md-6">
+												<label for="ID_Currency">Valuta</label>
+												<div class="widget-col">
+													<select name="ID_Currency" id="ID_Currency" class="select2 form-control">
+													  	<% _.each(sails.storage.currencies,function(currency) { %>
+													  		<option value="<%= currency.ID %>" <%- ((typeof item!='undefined' && item.ID_Currency==currency.ID)?'selected=""':'') %> /><%= currency.Name %></option>
+													  	<% }); %>
+													</select>
+												</div>
+					                      	</div>
+					                      	<div class="col-md-6">
+												<label for="ValueInCurrency">Valoare Garantie in Valuta</label>
+												<div class="widget-col">
+													<input name="ValueInCurrency" id="ValueInCurrency" type="text"  class="form-control required" value="<%- (typeof item!='undefined'?item.ValueInCurrency:'') %>" />
+												</div>
+					                      	</div>
+					                    </div>
+					                    <div class="row form-row">
+					                      	<div class="col-md-6">
+												<label for="ExchangeRate">Rata de schimb</label>
+												<div class="widget-col">
+													<input name="ExchangeRate" id="ExchangeRate" type="text"  class="form-control required" value="<%- (typeof item!='undefined'?item.ExchangeRate:'') %>" />
+												</div>
+					                      	</div>
+					                      	<div class="col-md-6">
+												<label for="ValueInRON">Valoare Garantie in RON</label>
+												<div class="widget-col">
+													<input name="ValueInRON" id="ValueInRON" type="text"  class="form-control" value="<%- (typeof item!='undefined'?item.ValueInRON:'') %>" readonly/>
+												</div>
+					                      	</div>
+					                    </div>
+					                </div>
+								</div>
+								<div class="form-actions">
+									<div class="pull-left">
+										<button class="btn btn-primary btn-cons" type="submit"><i class="icon-ok"></i> Salveaza</button>
+										<a class="btn btn-white btn-cons" href="/admin/warranties">Renunta</a>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>

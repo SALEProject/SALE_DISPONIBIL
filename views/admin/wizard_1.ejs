@@ -1,0 +1,198 @@
+<script>
+var assetTypes = <%- JSON.stringify(req.session.asset_types) %>;
+</script>
+    <div class="content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+			</div>
+            <div class="grid-body no-border">
+			<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">
+				<input type="hidden" id="ID_Asset" value="<%- typeof item.ID!='undefined' ? item.ID : '' %>" />
+					<div id="rootwizard" class="col-md-12">
+						<div class="form-wizard-steps">
+							<ul class="wizard-steps">
+								<li class="active">
+									<a href="/admin/wizard<%- typeof item.ID!='undefined' ? '?asset='+item.ID : '' %>">
+										<span class="step">1</span>
+										<span class="title">Activ</span>
+									</a>
+								</li>
+								<li class="" id="step-initial-order" <%- ((typeof item.ID_InitialOrder!='undefined' && item.ID_InitialOrder==0)?'style="display:none"':'') %>>
+									<a <%- typeof item.ID!='undefined' && item.ID_InitialOrder!=0 ? 'href="/admin/wizard_2?asset='+item.ID+'"' : '' %>>
+										<span class="step">2</span>
+										<span class="title">Ordin initiator</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof item.ID!='undefined' ? 'href="/admin/wizard_3?asset='+item.ID+'"' : '' %>>
+										<span class="step">3</span>
+										<span class="title">Sedinta activ</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof item.ID!='undefined' ? 'href="/admin/wizard_4?asset='+item.ID+'"' : '' %>>
+										<span class="step">4</span>
+										<span class="title">Clienti</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof item.ID!='undefined' ? 'href="/admin/wizard_5?asset='+item.ID+'"' : '' %>>
+										<span class="step">5</span>
+										<span class="title">Documente</span>
+									</a>
+								</li>
+							</ul>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<br/><br/><br/>
+				<input type="hidden" name="step" value="1" />
+              <div class="row column-seperation">
+                <div class="col-md-6">
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-6">
+						<label for="ID_Ring">Ring</label>
+						<div class="widget-col">
+							<select name="ID_Ring" id="ID_Ring" class="form-control required">
+							  <% _.each(sails.storage.rings,function(ring) { %>
+							  <option value="<%= ring.ID %>" <%- ((typeof item.ID_Ring!='undefined' && item.ID_Ring==ring.ID)?'selected=""':'') %> /><%= ring.Name %></option>
+							  <% }); %>
+							</select>
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<label for="ID_AssetType">Activ suport</label>
+						<div class="controls">
+							<select name="ID_AssetType" id="ID_AssetType" class="form-control required" data-inherit="1" data-new="<%- typeof item.ID !='undefined' ? '0' : '1' %>">
+							  <% _.each(req.session.asset_types,function(asset_type) { if(typeof item.ID !='undefined' && item.ID_Ring==asset_type.ID_Ring) { %>
+							  <option id="asset-type-<%- asset_type.ID %>" value="<%= asset_type.ID %>" data-ring="<%- asset_type.ID_Ring %>" <%- ((typeof item.ID_AssetType!='undefined' && item.ID_AssetType==asset_type.ID)?'selected=""':'') %> data-object="<%= JSON.stringify(asset_type) %>" /><%= asset_type.Name %></option>
+							  <% } }); %>
+							</select>
+						</div>
+                      </div>
+					</div>
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-9">
+						<label for="Name">Nume</label>
+						<div class="widget-col">
+							<input name="Name" id="Name" type="text" class="form-control required" value="<%- (typeof item.Name!='undefined'?item.Name:'') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-3">
+						<label for="Code">Cod</label>
+						<div class="widget-col">
+							<input name="Code" id="Code" type="text" class="form-control required" value="<%- (typeof item.Code!='undefined'?item.Code:'') %>" />
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-12">
+						<label for="Description">Descriere</label>
+						<div class="widget-col">
+							<textarea name="Description" id="Description" class="form-control"><%- (typeof item.Description!='undefined'?item.Description:'') %></textarea>
+						</div>
+					  </div>
+					</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-6">
+						<label for="AuctionType">Tip licitatie</label>
+						<div class="widget-col">
+							<select name="AuctionType" id="AuctionType" class="form-control required">
+							  <option value="0" <%- ((typeof item.ID_InitialOrder!='undefined' && item.ID_InitialOrder)?'selected=""':'') %> />Simplu competitiva</option>
+							  <option value="1" <%- ((typeof item.ID_InitialOrder!='undefined' && item.ID_InitialOrder==0)?'selected=""':'') %> />Dublu competitiva</option>
+							</select>
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-4">
+						<label for="ID_MeasuringUnit">Unitate de masura</label>
+						<div class="widget-col">
+							<select name="ID_MeasuringUnit" id="ID_MeasuringUnit" class="form-control required">
+							  <% _.each(sails.storage.measuringUnits,function(mu) { %>
+							  <option value="<%= mu.ID %>" <%- ((typeof item.ID_MeasuringUnit!='undefined' && item.ID_MeasuringUnit==mu.ID)?'selected=""':'') %> /><%= mu.Name %></option>
+							  <% }); %>
+							</select>
+						</div>
+                      </div>
+                      <div class="col-md-4 col-md-offset-2">
+						<label for="ID_Currency">Moneda</label>
+						<div class="widget-col">
+							<select name="ID_Currency" id="ID_Currency" class="form-control required">
+							  <% _.each(sails.storage.currencies,function(currency) { %>
+							  <option value="<%= currency.ID %>" <%- ((typeof item.ID_Currency!='undefined' && item.ID_Currency==currency.ID)?'selected=""':'') %> /><%= currency.Name %></option>
+							  <% }); %>
+							</select>
+						</div>
+                      </div>
+					  <% /* %>
+                      <div class="col-md-4">
+						<label>&nbsp;</label>
+						<div class="widget-col">
+							<div class="checkbox check-default" style="margin-top:10px">
+								<input id="isActive" name="isActive" type="checkbox" value="1" <% if(typeof item.isActive!='undefined' && item.isActive) { %>checked=""<% } %> />
+								<label for="isActive">Activ</label>
+							</div>
+						</div>
+                      </div>
+					  <% */ %>
+                    </div>
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-4">
+						<label for="ID_PaymentCurrency">Moneda plata</label>
+						<div class="widget-col">
+							<select name="ID_PaymentCurrency" id="ID_PaymentCurrency" class="form-control required">
+							  <% _.each(sails.storage.currencies,function(currency) { %>
+							  <option value="<%= currency.ID %>" <%- ((typeof item.ID_PaymentCurrency!='undefined' && item.ID_PaymentCurrency==currency.ID)?'selected=""':'') %> /><%= currency.Name %></option>
+							  <% }); %>
+							</select>
+						</div>
+                      </div>
+                      <div class="col-md-4 col-md-offset-2">
+						<label for="Visibility">Status</label>
+						<div class="widget-col">
+							<select name="Visibility" id="Visibility" class="form-control required">
+							  <option value="public" <%- ((typeof item.Visibility!='undefined' && item.Visibility=='public')?'selected=""':'') %> />Public</option>
+							  <option value="initated" <%- ((typeof item.Visibility!='undefined' && item.Visibility=='initiated')?'selected=""':'') %> />Initiat</option>
+							  <option value="terminated" <%- ((typeof item.Visibility!='undefined' && item.Visibility=='terminated')?'selected=""':'') %> />Terminat</option>
+							</select>
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row m-b-10" id="spot-contract" <%- ((typeof item.ID_InitialOrder!='undefined' && item.ID_InitialOrder==0) ? '' : 'style="display:none"') %>>
+                      <div class="col-md-4">
+						<div class="widget-col">
+							<div class="checkbox check-default" style="margin-top:10px">
+								<input id="isSpotContract" name="isSpotContract" type="checkbox" value="1" <% if(typeof item.isSpotContact!='undefined' && item.isSpotContract) { %>checked=""<% } %> />
+								<label for="isSpotContract">Contract Spot</label>
+							</div>
+						</div>
+                      </div>
+                      <div class="col-md-2">
+						<label for="SpotQuotation">Cotatie spot</label>
+                      </div>
+                      <div class="col-md-4">
+						<div class="widget-col">
+							<input name="SpotQuotation" id="SpotQuotation" type="text" class="form-control" value="<%- (typeof item.SpotQuotation!='undefined'?item.SpotQuotation:'') %>" />
+						</div>
+                      </div>
+                    </div>
+				</div>
+              </div>
+				<div class="form-actions">
+					<div class="text-center">
+					  <a class="btn btn-white btn-cons" href="/admin/assets">Renunta</a>
+					  <button class="btn btn-primary btn-cons" type="submit" name="submit" value="schedule"><i class="icon-ok"></i>Salveaza</button>
+					</div>
+				  </div>
+			</form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

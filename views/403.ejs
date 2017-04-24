@@ -1,0 +1,14 @@
+<div class="row">
+	<div class="col-md-6 col-md-offset-3 p-t-20">
+		<div class="tile white text-center">
+			<h1><%- req.session.getTranslation('access_forbidden') %></h1>
+			<h3>
+				<% if (typeof error!== 'undefined') { %>
+					<%= error %>
+				<% } else { %>
+					<%- req.session.getTranslation('access_forbidden_text') %>
+				<% } %>
+			</h3>
+		</div>
+	</div>
+</div>

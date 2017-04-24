@@ -1,0 +1,51 @@
+			<div class="content">
+				<div class="page-title"> <i class="icon-custom-left"></i>
+				<h3><%- (req.param('id')?'Modificare':'Adaugare') %> Traducere</h3>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="grid simple">
+						<div class="grid-title no-border">
+							<%- toolsService.getFlashMessage(req.flash()) %>
+						</div>
+						<div class="grid-body no-border">
+							<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">   
+								<div class="row column-seperation">
+									<div class="col-md-6">
+										<div class="row form-row">
+											<div class="col-md-6">
+												<label for="Label">Label</label>
+												<div class="widget-col">
+													<input name="Label" id="Label" type="text" class="form-control"  value="<%- (typeof item.Label!='undefined'?item.Label:'') %>" />
+												</div>
+											</div>
+										</div>
+										<div class="row form-row">
+											<div class="col-md-12">
+												<label for="Value_RO">Value RO</label>
+												<div class="widget-col">
+													<input name="Value_RO" id="Value_RO" type="text" class="form-control"  value="<%= (typeof item.Value_RO!='undefined'?item.Value_RO:'') %>" />
+												</div>
+											</div>
+										</div>
+										<div class="row form-row">
+											<div class="col-md-12">
+												<label for="Value_EN">Value EN</label>
+												<div class="widget-col">
+													<input name="Value_EN" id="Value_EN" type="text" class="form-control"  value="<%= (typeof item.Value_EN!='undefined'?item.Value_EN:'') %>" />
+												</div>
+											</div>
+										</div>
+					                </div>
+								</div>
+								<div class="form-actions">
+									<div class="pull-left">
+										<button class="btn btn-primary btn-cons" type="submit"><i class="icon-ok"></i> Salveaza</button>
+										<a class="btn btn-white btn-cons" href="/admin/translations">Renunta</a>
+									</div>
+								</div>
+							</form>
+						</div>						
+					</div>
+				</div>
+			</div>

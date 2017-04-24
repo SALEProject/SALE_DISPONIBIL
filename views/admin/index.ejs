@@ -1,0 +1,165 @@
+    <div class="content">
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+					   <!-- BEGIN DASHBOARD TILES -->
+					  <div class="row">
+						<div class="col-md-3 col-vlg-3 col-sm-6">
+							<div class="tiles green added-margin  m-b-20">
+				              <div class="tiles-body">
+							  <div class="controller"> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+				                <div class="tiles-title text-black">VALOARE TRANZACTII </div>
+							         <div class="widget-stats">
+				                      <div class="wrapper transparent">
+										<span class="item-title">Luna Curenta</span> <span class="item-count animate-number semi-bold" data-value="<%= statistics.TransactionsValueCurrentMonth %>" data-animation-duration="1000">0</span>
+									  </div>
+				                    </div>
+				                    <div class="widget-stats">
+				                      <div class="wrapper transparent">
+										<span class="item-title">Luna Precedenta</span> <span class="item-count animate-number semi-bold" data-value="<%= statistics.TransactionsValueLastMonth %>" data-animation-duration="1000">0</span>
+									  </div>
+				                    </div>
+				                    <div class="widget-stats ">
+				                      <div class="wrapper last">
+										<span class="item-title">Valoare All Time</span> <span class="item-count animate-number semi-bold" data-value="<%= statistics.TransactionsValueAllTime %>" data-animation-duration="1000">0</span>
+									 </div>
+				                    </div>
+				                    <div class="progress transparent progress-small no-radius m-t-20" style="width:90%">
+				                      <div class="progress-bar progress-bar-white animate-progress-bar" data-percentage="100%" ></div>
+				                    </div>
+				                    <div class="description"> <span class="text-white mini-description "><%= ((statistics.TransactionsValueCurrentMonth - statistics.TransactionsValueLastMonth) / statistics.TransactionsValueLastMonth * 100).toFixed(2) %>% <span class="blend">fata de luna precedenta</span></span></div>
+							  </div>
+							</div>
+
+
+						</div>
+						<div class="col-md-3 col-vlg-3 col-sm-6">
+							<div class="tiles blue added-margin  m-b-20">
+				              <div class="tiles-body">
+							  <div class="controller"> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+				                <div class="tiles-title text-black">NUMAR TRANZACTII </div>
+							         <div class="widget-stats">
+				                      <div class="wrapper transparent">
+										<span class="item-title">Luna Curenta</span> <span class="item-count animate-number semi-bold" data-value="<%= statistics.TransactionsNrCurrentMonth %>" data-animation-duration="1000">0</span>
+									  </div>
+				                    </div>
+				                    <div class="widget-stats">
+				                      <div class="wrapper transparent">
+										<span class="item-title">Luna Precedenta</span> <span class="item-count animate-number semi-bold" data-value="<%= statistics.TransactionsNrLastMonth %>" data-animation-duration="1000">0</span>
+									  </div>
+				                    </div>
+				                    <div class="widget-stats ">
+				                      <div class="wrapper last">
+										<span class="item-title">Valoare All Time</span> <span class="item-count animate-number semi-bold" data-value="<%= statistics.TransactionsNrAllTime %>" data-animation-duration="1000">0</span>
+									 </div>
+				                    </div>
+				                    <div class="progress transparent progress-small no-radius m-t-20" style="width:90%">
+				                      <div class="progress-bar progress-bar-white animate-progress-bar" data-percentage="100%" ></div>
+				                    </div>
+				                    <div class="description"> <span class="text-white mini-description "><%= ((statistics.TransactionsNrCurrentMonth - statistics.TransactionsNrLastMonth) / statistics.TransactionsNrLastMonth * 100).toFixed(2) %>% <span class="blend">fata de luna precedenta</span></span></div>
+							  </div>
+							</div>
+						</div>
+						<div class="col-md-3 col-vlg-3 col-sm-6">
+							<div class="tiles purple added-margin  m-b-20">
+				              <div class="tiles-body">
+							  <div class="controller"> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+				                <div class="tiles-title text-black">SEDINTE TRANZACTIONARE </div>
+							         <div class="widget-stats">
+				                      <div class="wrapper transparent">
+										<span class="item-title">Luna Curenta</span> <span class="item-count animate-number semi-bold" data-value="<%= statistics.AssetSessionsCurrentMonth %>" data-animation-duration="1000">0</span>
+									  </div>
+				                    </div>
+				                    <div class="widget-stats">
+				                      <div class="wrapper transparent">
+										<span class="item-title">Luna Precedenta</span> <span class="item-count animate-number semi-bold" data-value="<%= statistics.AssetSessionsLastMonth %>" data-animation-duration="1000">0</span>
+									  </div>
+				                    </div>
+				                    <div class="widget-stats ">
+				                      <div class="wrapper last">
+										<span class="item-title">Valoare All Time</span> <span class="item-count animate-number semi-bold" data-value="<%= statistics.AssetSessionsAllTime %>" data-animation-duration="1000">0</span>
+									 </div>
+				                    </div>
+				                    <div class="progress transparent progress-small no-radius m-t-20" style="width:90%">
+				                      <div class="progress-bar progress-bar-white animate-progress-bar" data-percentage="100%" ></div>
+				                    </div>
+				                    <div class="description"> <span class="text-white mini-description "><%= ((statistics.AssetSessionsCurrentMonth - statistics.AssetSessionsLastMonth) / statistics.AssetSessionsLastMonth * 100).toFixed(2) %>% <span class="blend">fata de luna precedenta</span></span></div>
+							  </div>
+							</div>
+						</div>
+						<div class="col-md-3 col-vlg-3 visible-xlg visible-sm col-sm-6">
+							<div class="tiles red added-margin  m-b-20">
+				              <div class="tiles-body">
+							  <div class="controller"> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+				                <div class="tiles-title text-black">ORDINE </div>
+							         <div class="widget-stats">
+				                      <div class="wrapper transparent">
+										<span class="item-title">Luna Curenta</span> <span class="item-count animate-number semi-bold" data-value="<%= statistics.OrdersCurrentMonth %>" data-animation-duration="1000">0</span>
+									  </div>
+				                    </div>
+				                    <div class="widget-stats">
+				                      <div class="wrapper transparent">
+										<span class="item-title">Luna Precedenta</span> <span class="item-count animate-number semi-bold" data-value="<%= statistics.OrdersLastMonth %>" data-animation-duration="1000">0</span>
+									  </div>
+				                    </div>
+				                    <div class="widget-stats ">
+				                      <div class="wrapper last">
+										<span class="item-title">Valoare All Time</span> <span class="item-count animate-number semi-bold" data-value="<%= statistics.OrdersAllTime %>" data-animation-duration="1000">0</span>
+									 </div>
+				                    </div>
+				                    <div class="progress transparent progress-small no-radius m-t-20" style="width:90%">
+				                      <div class="progress-bar progress-bar-white animate-progress-bar" data-percentage="100%" ></div>
+				                    </div>
+				                    <div class="description"> <span class="text-white mini-description "><%= ((statistics.OrdersCurrentMonth - statistics.OrdersLastMonth) / statistics.OrdersLastMonth * 100).toFixed(2) %>% <span class="blend">fata de luna precedenta</span></span></div>
+							  </div>
+							</div>
+						</div>
+					 </div>
+					  <!-- END DASHBOARD TILES -->
+					      <div class="clearfix"></div>
+						    <div class="content">
+						      <div class="row" style="/*max-height:400px;*/">
+						        <div class="tiles row tiles-container red no-padding">
+						          <div class="col-md-2 tiles red no-padding">
+						            <div class="tiles-body">
+						              <div class="calender-options-wrapper">
+						                <h3 class="text-white semi-bold" id="calender-current-day"></h3>
+						                <h2 class="text-white" id="calender-current-date"></h2>
+						                <div id='external-events' class="hide-inphone events-wrapper">
+
+						                </div>
+						              </div>
+						            </div>
+						          </div>
+						          <div class="col-md-10 tiles white no-padding">
+						            <div class="tiles-body">
+						              <div class="full-calender-header">
+						                <div class="pull-left">
+						                  <div class="btn-group ">
+						                    <button class="btn btn-success" id="calender-prev"><i class="fa fa-angle-left"></i></button>
+						                    <button class="btn btn-success" id="calender-next"><i class="fa fa-angle-right"></i></button>
+						                  </div>
+						                </div>
+						                <div class="pull-right">
+						                  <div data-toggle="buttons-radio" class="btn-group">
+						                    <button class="btn btn-primary active" type="button" id="change-view-month">month</button>
+						                    <button class="btn btn-primary " type="button" id="change-view-week">week</button>
+						                    <button class="btn btn-primary" type="button" id="change-view-day">day</button>
+						                  </div>
+						                </div>
+						                <div class="clearfix"></div>
+						              </div>
+						              <div id='calendar'></div>
+						            </div>
+						          </div>
+						        </div>
+						      </div>
+						      <br>
+						    </div>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+    </div>

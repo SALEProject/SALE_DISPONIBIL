@@ -1,0 +1,79 @@
+<div class="tile white m-b-10 padding-20">
+	<div class="tile-title">
+		<%- toolsService.getFlashMessage(req.flash()) %>
+	</div>
+	<div class="tile-body p-t-20">
+		<div class="account-form">
+			<div class="pull-right">
+				<a class="btn btn-default btn-cons" href="/account/edit_profile"><%- req.session.getTranslation('Change_it') %></a>
+			</div>
+			<div class="row">
+				<div class="col-md-1" style="padding-left:20px !important">
+					<i class="fa fa-user fa-7x"></i>
+				</div>
+				<div class="col-md-4" style="padding-left:40px !important">
+					<h4 class="m-t-0"><strong><%- req.session.currentUser.FirstName %></strong></h4>
+					<h4 class="m-t-0"><strong><%- req.session.currentUser.LastName %></strong></h4>
+				</div>
+			</div>
+			<div class="row m-t-20">
+				<div class="col-md-12">
+					<label><%- req.session.getTranslation('Authentication') %></label>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('Username') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- req.session.currentUser.LoginName %></strong>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('Password') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong>********</strong> <a href="/account/change_password"><%- req.session.getTranslation('Change_password') %></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row m-t-20">
+				<div class="col-md-12">
+					<label><%- req.session.getTranslation('Contact_information') %></label>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('Email') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- req.session.currentUser.Email %></strong>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('Phone') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- req.session.currentUser.Phone %></strong>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('Fax') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- req.session.currentUser.Fax %></strong>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('Mobile') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- req.session.currentUser.Mobile %></strong>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

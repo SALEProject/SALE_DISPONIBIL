@@ -1,0 +1,280 @@
+    <div class="content">
+      <div class="page-title"> <i class="icon-custom-left"></i>
+        <h3><%- (req.param('id')?'Modificare':'Adaugare') %> sedinta activ</h3>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+			</div>
+            <div class="grid-body no-border">
+			<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">	
+              <div class="row column-seperation">
+                <div class="col-md-12">
+                    <div class="row form-row">
+                      <div class="col-md-6">
+						<div class="form-group">
+							<label class="form-label">Activ</label>
+							<div class="controls">
+								<% if (typeof asset != 'undefined' && asset!=null) { %>
+									<input type="hidden" name="ID_Asset" id="ID_Asset" value="<%= asset.ID %>" />
+									<h4><%= asset.Name %></h4>
+								<% } else { %>
+								<select name="ID_Asset" id="ID_Asset" class="select2 form-control">
+								  <% _.each(req.session.assets,function(asset) { %>
+								  <option value="<%= asset.ID %>" <%- ((typeof item!='undefined' && item.ID_Asset==asset.ID)?'selected=""':'') %> /><%= asset.Name %></option>
+								  <% }); %>
+								</select>
+								<% } %>
+							</div>
+						</div>
+                      </div>
+                      <div class="col-md-6 p-t-10">
+						<div class="form-row">
+							<div class="checkbox check-default">
+								<input id="isActive" name="isActive" type="checkbox" value="1" <% if(typeof item!='undefined' && item.isActive) { %>checked=""<% } %> />
+								<label for="isActive">Activ</label>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="checkbox check-default">
+								<input id="isElectronicSession" name="isElectronicSession" type="checkbox" value="1" <% if(typeof item!='undefined' && item.isElectronicSession) { %>checked=""<% } %> />
+								<label for="isElectronicSession">Sedinta electronica</label>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="checkbox check-default">
+								<input id="launchAutomatically" name="launchAutomatically" type="checkbox" value="1" <% if(typeof item!='undefined' && item.launchAutomatically) { %>checked=""<% } %> />
+								<label for="launchAutomatically">Lansare automata</label>
+							</div>
+						</div>
+                      </div>
+                    </div>
+					<br />
+                </div>
+              </div>
+              <div class="row column-seperation">
+                <div class="col-md-6">
+					<h4>Orar</h4>            
+                    <div class="row form-row">
+						<div class="col-md-6">
+							<label class="form-label">Data inceput</label>
+							<div class="controls">
+								<div class="input-group m-b-5">
+									<input type="text" class="form-control required" id="StartDate" name="StartDate" data-date-format="yyyy-mm-dd" value="<%- (typeof item!='undefined'&& typeof item.StartDate!='undefined'?item.StartDate.substring(0,item.StartDate.indexOf('T')):'') %>" />
+									<span class="input-group-addon primary">		
+										<span class="arrow"></span>
+										<i class="fa fa-calendar"></i>		
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Data sfarsit</label>
+							<div class="controls">
+								<div class="input-group m-b-5">
+									<input type="text" class="form-control required" id="EndDate" name="EndDate" data-date-format="yyyy-mm-dd" value="<%- (typeof item!='undefined' && typeof item.EndDate!='undefined'?item.EndDate.substring(0,item.EndDate.indexOf('T')):'') %>" />
+									<span class="input-group-addon primary">		
+										<span class="arrow"></span>
+										<i class="fa fa-calendar"></i>		
+									</span>
+								</div>
+							</div>
+						</div>
+                    </div>
+                    <div class="row form-row">
+						<div class="col-md-6">
+							<label class="form-label">T0 (Deschidere sedinta)</label>
+							<div class="controls">
+								<div class="form-group col-md-6">
+								<input type="text" class="form-control required bold" name="PreOpeningTime" id="PreOpeningTime" value="<%- (typeof item!='undefined'?item.PreOpeningTime:'') %>" placeholder="00:00" data-placement="top" />
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">T1 (Tranzactii libere)</label>
+							<div class="controls">
+								<div class="col-md-6">
+									<input type="text" class="form-control required bold" name="OpeningTime" id="OpeningTime" value="<%- (typeof item!='undefined'?item.OpeningTime:'') %>" placeholder="00:00" data-placement="top" />
+								</div>
+							</div>
+						</div>
+                    </div>
+                    <div class="row form-row">
+						<div class="col-md-6">
+							<label class="form-label">T2 (Pre-inchidere)</label>
+							<div class="controls">
+								<div class="col-md-6">
+									<input type="text" class="form-control required bold" name="PreClosingTime" id="PreClosingTime" value="<%- (typeof item!='undefined'?item.PreClosingTime:'') %>" placeholder="00:00" data-placement="bottom" />
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">T3 (Inchidere sedinta)</label>
+							<div class="controls">
+								<div class="col-md-6">
+									<input type="text" class="form-control required bold" name="ClosingTime" id="ClosingTime" value="<%- (typeof item!='undefined'?item.ClosingTime:'') %>" placeholder="00:00" data-placement="bottom" />
+								</div>
+							</div>
+						</div>
+                    </div>
+                    <div class="row form-row">
+						<div class="col-md-6">
+							<label class="form-label">Delta T (min)</label>
+							<div class="controls">
+								<div class="col-md-6">
+									<input type="text" class="form-control required bold" name="DeltaT" id="DeltaT" value="<%- (typeof item!='undefined'?item.DeltaT:'') %>" />
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Delta T1 (min)</label>
+							<div class="controls">
+								<div class="col-md-6">
+									<input type="text" class="form-control required bold" name="DeltaT1" id="DeltaT1" value="<%- (typeof item!='undefined'?item.DeltaT1:'') %>" />
+								</div>
+							</div>
+						</div>
+                    </div>
+					<h4>Programare pe zile</h4>            
+                    <div class="row form-row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<div class="checkbox check-default">
+									<input id="dayMonday" name="DaysOfWeek_dayMonday" type="checkbox" value="1" <% if(typeof item!='undefined' && item.dayMonday) { %>checked=""<% } %> />
+									<label for="dayMonday">Luni</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<div class="checkbox check-default">
+									<input id="dayTuesday" name="DaysOfWeek_dayTuesday" type="checkbox" value="1" <% if(typeof item!='undefined' && item.dayTuesday) { %>checked=""<% } %> />
+									<label for="dayTuesday">Marti</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<div class="checkbox check-default">
+									<input id="dayWednesday" name="DaysOfWeek_dayWednesday" type="checkbox" value="1" <% if(typeof item!='undefined' && item.dayWednesday) { %>checked=""<% } %> />
+									<label for="dayWednesday">Miercuri</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<div class="checkbox check-default">
+									<input id="dayThursday" name="DaysOfWeek_dayThursday" type="checkbox" value="1" <% if(typeof item!='undefined' && item.dayThursday) { %>checked=""<% } %> />
+									<label for="dayThursday">Joi</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<div class="checkbox check-default">
+									<input id="dayFriday" name="DaysOfWeek_dayFriday" type="checkbox" value="1" <% if(typeof item!='undefined' && item.dayFriday) { %>checked=""<% } %> />
+									<label for="dayFriday">Vineri</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<div class="checkbox check-default">
+									<input id="daySaturday" name="DaysOfWeek_daySaturday" type="checkbox" value="1" <% if(typeof item!='undefined' && item.daySaturday) { %>checked=""<% } %> />
+									<label for="daySaturday">Sambata</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<div class="checkbox check-default">
+									<input id="daySunday" name="DaysOfWeek_daySunday" type="checkbox" value="1" <% if(typeof item!='undefined' && item.daySunday) { %>checked=""<% } %> />
+									<label for="daySunday">Duminica</label>
+								</div>
+							</div>
+						</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+					<h4>Validare ordine</h4>
+					<div class="row form-row">
+						<div class="col-md-6">
+							<label class="form-label">Incrementare cantitate</label>
+							<div class="controls">
+								<div class="col-md-8">
+									<input type="text" class="form-control numeric" name="QuantityStepping" id="QuantityStepping" value="<%- (typeof item!='undefined'?item.QuantityStepping:'') %>" data-a-sep="." data-a-dec="," data-m-dec="5" />
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Cantitate minima</label>
+							<div class="controls">
+								<div class="col-md-8">
+									<input type="text" class="form-control numeric" name="MinQuantity" id="MinQuantity" value="<%- (typeof item!='undefined'?item.MinQuantity:'') %>" data-a-sep="." data-a-dec="," data-m-dec="5" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row form-row">
+						<div class="col-md-6">
+							<label class="form-label">Incrementare pret</label>
+							<div class="controls">
+								<div class="col-md-8">
+									<input type="text" class="form-control numeric" name="PriceStepping" id="PriceStepping" value="<%- (typeof item!='undefined'?item.PriceStepping:'') %>" data-a-sep="." data-a-dec="," data-m-dec="5" />
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Variatia maxima a pretului</label>
+							<div class="controls">
+								<div class="col-md-6">
+									<input type="number" class="form-control" min="0" max="100" step="any" name="MaxPriceVariation" id="MaxPriceVariation" value="<%- (typeof item!='undefined'?item.MaxPriceVariation:'') %>" />
+								</div>
+								<div class="col-md-6 no-padding">
+									<span class="muted">%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row form-row">
+						<div class="col-md-6">
+							<label class="form-label">Pret minim</label>
+							<div class="controls">
+								<div class="col-md-8">
+									<input type="text" class="form-control numeric" name="MinPrice" id="MinPrice" value="<%- (typeof item!='undefined'?item.MinPrice:'') %>" data-a-sep="." data-a-dec="," data-m-dec="5" />
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Pret maxim</label>
+							<div class="controls">
+								<div class="col-md-8">
+									<input type="text" class="form-control numeric" name="MaxPrice" id="MaxPrice" value="<%- (typeof item!='undefined'?item.MaxPrice:'') %>" data-a-sep="." data-a-dec="," data-m-dec="5" />
+								</div>
+							</div>
+						</div>
+					</div>
+                </div>
+              </div>
+				<div class="form-actions">
+					<div class="pull-left">
+					  <a class="btn btn-white btn-cons" href="/admin/assets/edit/<%- typeof item.ID_Asset!='undefined' ? item.ID_Asset : '' %>">Inapoi</a>
+					  <button class="btn btn-primary btn-cons" type="submit"><i class="icon-ok"></i> Salveaza</button>
+					  <button class="btn btn-success btn-cons" type="submit" name="Validate" value="1"><i class="icon-ok"></i>Valideaza</button>
+					</div>
+				  </div>
+			</form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,289 @@
+<div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/assets" class="">Active</a>
+			</li>
+			<li>
+				<span class="active"><%- asset.Code %> (<%- req.session.getTranslation(asset.Name) %>) - Raport Detalii Activ</span>
+			</li>                    
+		</ul>
+	</div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+			</div>
+			<div class="grid-body no-border">
+            <div class="row column-seperation">
+                <div class="col-md-6">
+						
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="ProcedureType">Tip Procedura</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="ProcedureType" class='semi-bold'><%- (typeof item!='undefined'?((item.ID_InitialOrder == 0)?'Dublu Competitiva':'Simplu Competitiva'):'') %></label>
+		                  </div>
+		                </div>                
+
+		                <br/><br/>
+
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="ExpirationDate">Valabilitate</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="ExpirationDate" class='semi-bold'><%- (typeof item!='undefined'?item.ExpirationDate:'') %></label>
+		                  </div>
+		                </div>
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="Currency">Moneda de negociere</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="Currency" class='semi-bold'><%- (typeof item!='undefined'?item.Currency:'') %></label>
+		                  </div>
+		                </div>
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="PaymentCurrency">Tip Procedura</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="PaymentCurrency" class='semi-bold'><%- (typeof item!='undefined'?item.PaymentCurrency:'') %></label>
+		                  </div>
+		                </div>            
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="MeasuringUnit">Unitate de Masura</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="MeasuringUnit" class='semi-bold'><%- (typeof item!='undefined'?item.MeasuringUnit:'') %></label>
+		                  </div>
+		                </div>
+
+		                <br/><br/>
+
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="isSpotContract">Contract Spot</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="isSpotContract" class='semi-bold'><%- (typeof item!='undefined'?(item.isSpotContract?'Da':'Nu'):'') %></label>
+		                  </div>
+		                </div>
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="SpotQuotation">Cotatie Spot</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="SpotQuotation" class='semi-bold'><%- (typeof item!='undefined'?((item.SpotQuotation == 0)? '':item.SpotQuotation):'') %></label>
+		                  </div>
+		                </div>
+
+		                <br/><br/>
+
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="Quantity">Cantitate</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="Quantity" class='semi-bold'><%- (typeof item!='undefined'?item.Quantity:'') %></label>
+		                  </div>
+		                </div>
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="QuantityStepping">Pas Cantitate</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="QuantityStepping" class='semi-bold'><%- (typeof item!='undefined'?item.QuantityStepping:'') %></label>
+		                  </div>
+		                </div>
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="MinQuantity">Cantitate Minima Tranzactionata</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="MinQuantity" class='semi-bold'><%- (typeof item!='undefined'?item.MinQuantity:'') %></label>
+		                  </div>
+		                </div>
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="PartialFlag">Tranzactionare Totala/Partiala</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="PartialFlag" class='semi-bold'><%- (typeof item!='undefined'?(item.PartialFlag?'Partiala':'Totala'):'') %></label>
+		                  </div>
+		                </div>
+		            </div>		            
+                	<div class="col-md-6">		                
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="Price">Pret</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="Price" class='semi-bold'><%- (typeof item!='undefined'?item.Price:'') %></label>
+		                  </div>
+		                </div>
+						<div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="PriceStepping">Pas Pret</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="PriceStepping" class='semi-bold'><%- (typeof item!='undefined'?item.PriceStepping:'') %></label>
+		                  </div>
+		                </div>
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="MinPrice">Pret Minim</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="MinPrice" class='semi-bold'><%- (typeof item!='undefined'?item.MinPrice:'') %></label>
+		                  </div>
+		                </div>
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="MaxPrice">Pret Maxim</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="MaxPrice" class='semi-bold'><%- (typeof item!='undefined'?item.MaxPrice:'') %></label>
+		                  </div>
+		                </div>
+
+
+		                <br/><br/>
+
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="SellWarrantyPercent">Procent garantie la vanzare (%)</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="SellWarrantyPercent" class='semi-bold'><%- (typeof item!='undefined'?item.SellWarrantyPercent:'') %></label>
+		                  </div>
+		                </div>
+						<div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="SellWarrantyMU">Valoare garantie pe UM la vanzare (RON)</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="SellWarrantyMU" class='semi-bold'><%- (typeof item!='undefined'?item.SellWarrantyMU:'') %></label>
+		                  </div>
+		                </div>
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="SellWarrantyFixed">Parte fixa garantie la vanzare (RON)</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="SellWarrantyFixed" class='semi-bold'><%- (typeof item!='undefined'?item.SellWarrantyFixed:'') %></label>
+		                  </div>
+		                </div>
+		                
+
+		                <br/><br/>
+
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="BuyWarrantyPercent">Procent garantie la cumparare (%)</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="BuyWarrantyPercent" class='semi-bold'><%- (typeof item!='undefined'?item.BuyWarrantyPercent:'') %></label>
+		                  </div>
+		                </div>
+						<div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="BuyWarrantyMU">Valoare garantie pe UM la cumparare (RON)</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="BuyWarrantyMU" class='semi-bold'><%- (typeof item!='undefined'?item.BuyWarrantyMU:'') %></label>
+		                  </div>
+		                </div>
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="BuyWarrantyFixed">Parte fixa garantie la cumparare (RON)</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="BuyWarrantyFixed" class='semi-bold'><%- (typeof item!='undefined'?item.BuyWarrantyFixed:'') %></label>
+		                  </div>
+		                </div>
+
+		                <br/><br/>
+
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="DeltaT">DeltaT</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="DeltaT" class='semi-bold'><%- (typeof item!='undefined'?item.DeltaT:'') %></label>
+		                  </div>
+		                </div>
+						<div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="DeltaT1">DeltaT1</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="DeltaT1" class='semi-bold'><%- (typeof item!='undefined'?item.DeltaT1:'') %></label>
+		                  </div>
+		                </div>
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="isElectronicSession">Sedinta Electronica:</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="isElectronicSession" class='semi-bold'><%- (typeof item!='undefined'?(item.isElectronicSession?'Da':'Nu'):'') %></label>
+		                  </div>
+		                </div>
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="launchAutomatically">Lansare automata a sedintei:</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="launchAutomatically" class='semi-bold'><%- (typeof item!='undefined'?(item.launchAutomatically?'Da':'Nu'):'') %></label>
+		                  </div>
+		                </div>
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="PreOpeningTime">T0</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="PreOpeningTime" class='semi-bold'><%- (typeof item!='undefined'?item.PreOpeningTime:'') %></label>
+		                  </div>
+		                </div>
+						<div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="OpeningTime">T1</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="OpeningTime" class='semi-bold'><%- (typeof item!='undefined'?item.OpeningTime:'') %></label>
+		                  </div>
+		                </div>
+		                <div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="PreClosingTime">T2</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="PreClosingTime" class='semi-bold'><%- (typeof item!='undefined'?item.PreClosingTime:'') %></label>
+		                  </div>
+		                </div>
+						<div class="row form-row">
+		                  <div class="col-md-3">
+							<h5 for="ClosingTime">T3</h5>
+		                  </div>
+		                  <div class="col-md-3">
+							<label for="ClosingTime" class='semi-bold'><%- (typeof item!='undefined'?item.ClosingTime:'') %></label>
+		                  </div>
+		                </div>
+		            </div>
+			</div>
+			<div class="form-actions">
+					<div class="text-center">
+						<a class="btn btn-white btn-cons" href="javascript:history.back()">Inapoi</a>
+					</div>
+				</div>
+		</div>
+	</div>
+</div>
+

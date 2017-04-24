@@ -1,0 +1,34 @@
+<div class="tile white m-b-10 padding-20">
+	<div class="tile-title">
+		<h3 class="m-t-0 m-b-10"><%= title %></h4>
+		<%- toolsService.getFlashMessage(req.flash()) %>
+	</div>
+	<div class="tile-body p-t-20">
+		<div class="account-form">
+			<table class="table table-hover table-condensed admin-table" id="example-table">
+				<thead>
+					<tr>
+						<th style="width:20%">Username</th>
+						<th style="width:10%">Prenume</th>
+						<th style="width:10%">Nume</th>
+						<th style="width:20%">Email</th>						
+					</tr>
+				</thead>
+				<tbody>
+					<% if(users.length>0) { 
+						_.each(users,function(item) { 
+							%>
+								<tr>
+									<td class="v-align-middle bold"><%= item.LoginName %></td>
+									<td class="v-align-middle"><span class="muted"><%= item.FirstName %></span></td>
+									<td class="v-align-middle"><span class="muted"><%= item.LastName %></span></td>
+									<td><span class="muted"><%= item.Email %></span></td>
+								</tr>
+						<% 
+						}); 
+					} %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

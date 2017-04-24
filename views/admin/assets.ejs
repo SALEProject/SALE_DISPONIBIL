@@ -1,0 +1,66 @@
+    <div class="content">
+      <div class="page-title">
+		<i class="icon-custom-left"></i>
+        <h3>Active</h3>
+      </div>
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="grid simple">
+			<div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+				<div class="">
+					<div class="pull-left col-md-3">
+				<a href="/admin/wizard" class="btn btn-info"><i class="fa fa-plus-circle"></i>&nbsp;Adauga activ</a>
+					</div>
+					<div class="pull-left col-md-1 p-t-10">
+						<label>Ring</label>
+					</div>
+					<div class="pull-left col-md-3">
+						<div class="form-group">
+							<div class="controls">
+								<select class="list-filter form-control" data-url="/admin/assets?ring=">
+								  <option value=""></option>
+								  <% _.each(sails.storage.rings,function(ring) { %>
+								  <option value="<%= ring.ID %>" <%- ((typeof req.param('ring')!='undefined' && req.param('ring')==ring.ID)?'selected=""':'') %>><%= ring.Name %></option>
+								  <% }); %>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="grid-body no-border">
+				<table class="table table-hover table-condensed admin-table" id="example-table">
+					<thead>
+						<tr>
+							<th class="v-align-middle" style="width:25%">Nume</th>
+							<th class="v-align-middle" style="width:10%">Cod</th>
+							<th class="v-align-middle" style="width:10%">Ring</th>
+							<th class="v-align-middle" style="width:5%">Activ</th>
+							<th class="v-align-middle" style="width:10%">Unitate de masura</th>
+							<th class="v-align-middle" style="width:5%">&nbsp;</th>
+							<th class="v-align-middle" style="width:5%">&nbsp;</th>
+							<th class="v-align-middle" style="width:5%">&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% if(items.length>0) { _.each(items,function(item) { %>
+						<tr>
+							<td class="v-align-middle"><%= item.Name %></td>
+							<td class="v-align-middle"><%= item.Code %></td>
+							<td class="v-align-middle"><%= (toolsService.searchIdInArray(item.ID_Ring,sails.storage.rings)>-1 ? sails.storage.rings[toolsService.searchIdInArray(item.ID_Ring,sails.storage.rings)]['Name'] : '-') %></td>
+							<td class="v-align-middle"><%- (item.isActive?'Da':'Nu') %></td>
+							<td class="v-align-middle"><%= item.MeasuringUnit %></td>
+							<td><a href="/admin/orders?asset=<%= item.ID %>" class="action-icon btn btn-small btn-primary" title="Vezi ordine pe activ"><i class="fa fa-tasks"></i></a></td>
+							<td><a href="/admin/wizard?asset=<%= item.ID %>" class="action-icon btn btn-small btn-success" title="Editeaza"><i class="fa fa-edit"></i></a></td>
+							<td><a href="/admin/assets/delete/<%- item.ID %>" title="Sterge" class="action-icon delete-confirm btn btn-small btn-danger"><i class="fa fa-trash-o"></i></a></td>
+						</tr>
+						<% }); } %>
+					</tbody>
+				</table>
+			</div>
+          </div>
+        </div>
+      </div>
+    </div>

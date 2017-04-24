@@ -1,0 +1,53 @@
+<div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/assets" class="">Active</a>
+			</li>
+			<li>
+				<span class="active"><%- asset.Code %> (<%- req.session.getTranslation(asset.Name) %>) - Raport cotatii</span>
+			</li>                    
+		</ul>
+	</div>
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="grid simple">
+				<div class="grid-title no-border">
+					<%- toolsService.getFlashMessage(req.flash()) %>
+				</div>
+				<div class="grid-body no-border">
+					<table class="table table-hover table-condensed admin-table" id="example-table">
+						<thead>
+							<tr>
+								<th style="width:10%">Activ</th>
+								<th style="width:10%">Data cotatiei</th>
+								<th style="width:10%">Cotatie</th>
+								<th style="width:10%">Cantitate</th>
+								<th style="width:10%">Moneda</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% if(items.length>0) { _.each(items,function(item) { %>
+							<tr>
+								<td class="v-align-middle"><span class="muted"><%= item.Asset %></span></td>
+								<td class="v-align-middle"><span class="muted"><%= item.Date %></span></td>
+								<td class="v-align-middle"><span class="muted"><%= item.Quotation %></span></td>
+								<td class="v-align-middle bold"><%= item.Quantity %></td>
+								<td class="v-align-middle"><span class="muted"><%= item.Currency %></span></td>
+							</tr>
+							<% }); } %>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-actions">
+		<div class="text-center">
+			<a class="btn btn-white btn-cons" href="javascript:history.back()">Inapoi</a>
+		</div>
+	</div>
+</div>

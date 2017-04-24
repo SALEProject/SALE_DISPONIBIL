@@ -1,0 +1,70 @@
+    <div class="content">
+      <div class="page-title"> <i class="icon-custom-left"></i>
+      <h3><%- (req.param('id')?'Modificare':'Adaugare') %> Tip Garantie</h3>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="grid simple">
+          <div class="grid-title no-border">
+            <%- toolsService.getFlashMessage(req.flash()) %>
+          </div>
+          <div class="grid-body no-border">
+            <form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off"> 
+              <div class="row column-seperation">
+                <div class="col-md-12">
+                  <h4>Informatii generale</h4>            
+                  <div class="row form-row">
+                    <div class="col-md-5">
+                      <label for="Name_RO">Nume RO</label>
+                      <div class="widget-col">
+                        <input name="Name_RO" id="Name_RO" type="text" class="form-control required max-length" value="<%- (typeof item.Name!='undefined' ? toolsService.getLangTranslation(item.Name,'RO') : typeof item.Name_RO !='undefined' ? item.Name_RO : '') %>" />
+                      </div>
+                    </div>
+                    <div class="col-md-5">
+                      <label for="Name_EN">Nume EN</label>
+                      <div class="widget-col">
+                        <input name="Name_EN" id="Name_EN" type="text" class="form-control required max-length" value="<%- (typeof item.Name!='undefined' ? toolsService.getLangTranslation(item.Name,'EN') : typeof item.Name_EN !='undefined' ? item.Name_EN :'') %>" />
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <label for="Code">Cod</label>
+                      <div class="widget-col">
+                        <input name="Code" id="Code" type="text" class="form-control required max-length" value="<%- (typeof item!='undefined'?item.Code:'') %>" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row form-row">
+                    <div class="col-md-12 m-t-10">
+                      <div class="checkbox check-default">
+                        <input id="isAvailable4Period" name="isAvailable4Period" type="checkbox" value="1" <% if(typeof item!='undefined' && typeof item.isAvailable4Period != 'undefined' && item.isAvailable4Period) { %>checked=""<% } %> />
+                        <label for="isAvailable4Period">Valabil pe perioada</label>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="checkbox check-default">
+                        <input id="isAvailable4Asset" name="isAvailable4Asset" type="checkbox" value="1" <% if(typeof item!='undefined' && typeof item.isAvailable4Asset != 'undefined' && item.isAvailable4Asset) { %>checked=""<% } %> />
+                        <label for="isAvailable4Asset">Valabil pt activ</label>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="checkbox check-default">
+                        <input id="isValid" name="isValid" type="checkbox" value="1" <% if(typeof item!='undefined' && typeof item.isValid != 'undefined' && item.isValid) { %>checked=""<% } %> />
+                        <label for="isValid">Este Valid</label>
+                      </div>
+                    </div>                    
+                  </div>
+                  <br />
+                </div>
+              </div>
+              <div class="form-actions">
+                <div class="pull-left">
+                  <button class="btn btn-primary btn-cons" type="submit"><i class="icon-ok"></i> Salveaza</button>
+                  <a class="btn btn-white btn-cons" href="/admin/warranty_types">Renunta</a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

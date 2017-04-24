@@ -1,0 +1,11 @@
+var translations = [
+<% for(var key in items) { %>
+{key:'<%= key %>', value:'<%= items[key].replace(/\r?\n/g, '<br />') %>'},
+<% } %>
+{}
+];
+translations.pop();
+if(typeof Dictionary != 'undefined') {
+var MyDictionary = new Dictionary();
+	MyDictionary.setData(translations);
+}

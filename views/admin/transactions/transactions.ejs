@@ -1,0 +1,90 @@
+ <div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/transactions" class="active">Tranzactii</a>
+			</li>
+		</ul>
+	</div>
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="grid simple">
+				<div class="grid-title no-border">
+					<%- toolsService.getFlashMessage(req.flash()) %>
+					<a href="/admin/transactions/add" class="btn btn-info"><i class="fa fa-plus-circle"></i>&nbsp;Adauga tranzactie</a>
+				</div>
+				<div class="grid-body no-border">
+					<table class="table table-hover table-condensed admin-table" id="example-table">
+						<thead>
+							<tr>
+								<th style="width:10%">ID</th>
+								<th style="width:10%">Cantitate</th>
+								<th style="width:10%">Pret</th>
+								<th style="width:10%">Data tranzactiei</th>
+								<th style="width:10%">Unitate de masura</th>
+								<th style="width:10%">Cod Client Cumparator</th>
+								<th style="width:10%">Denumire Client Cumparator</th>
+								<th style="width:10%">Cod Client Vanzator</th>
+								<th style="width:10%">Denumire Client Vanzator</th>
+								<th style="width:10%">Confirmare cumparator?</th>
+								<th style="width:10%">Confirmare vanzator?</th>
+								<th style="width:5%">&nbsp;</th>
+								<th style="width:5%">&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% if(items.length>0) { _.each(items,function(item) { %>
+							<tr>
+								<td class="v-align-middle"><%= item.ID %></td>
+								<td class="v-align-middle bold"><%= item.Quantity %></td>
+								<td class="v-align-middle"><span class="muted"><%= item.Price %></span></td>
+								<td class="v-align-middle"><span class="muted"><%= timeService.formatDate(item.TransactionDate,'DD MMM HH:mm') %></span></td>
+								<td class="v-align-middle"><span class="muted"><%= item.MeasuringUnit %></span></td>
+								<td class="v-align-middle"><span class="muted"><%= item.BuyClient %></span></td>
+								<td class="v-align-middle"><span class="muted"><%= item.BuyClientName %></span></td>
+								<td class="v-align-middle"><span class="muted"><%= item.SellClient %></span></td>
+								<td class="v-align-middle"><span class="muted"><%= item.SellClientName %></span></td>
+								<td class="v-align-middle">
+									<span class="muted">
+										<% if(item.BuyerConfirmation) { %>
+											<button href="/admin/transactions/confirmTransaction?ID_Transaction=<%= item.ID %>&ID_Buyer=<%= item.ID_BuyClient %>" 
+												data-id_transaction="<%= item.ID %>"
+												data-id_buyer="<%= item.ID_BuyClient %>"  
+												class="action-icon btn btn-small btn-primary confirmTransaction" title="Confirma tranzactia pentru cumparator"><i class="fa fa-arrow-up"></i></button>
+										<% } else { %>
+											<button href="#" 
+												data-id_transaction="<%= item.ID %>"
+												data-id_buyer="<%= item.ID_BuyClient %>"  
+												class="action-icon btn btn-small btn-success" title="Tranzactie confirmata pentru cumparator"><i class="fa fa-arrow-up"></i></button>
+										<% } %>
+									</span>
+								</td>
+								<td class="v-align-middle">
+									<span class="muted">
+										<% if(item.SellerConfirmation) { %>
+											<button href="/admin/transactions/confirmTransaction?ID_Transaction=<%= item.ID %>&ID_Seller=<%= item.ID_SellClient %>" 
+												data-id_transaction="<%= item.ID %>"
+												data-id_seller="<%= item.ID_SellClient %>"  
+												class="action-icon btn btn-small btn-primary confirmTransaction" title="Confirma tranzactia pentru cumparator"><i class="fa fa-arrow-up"></i></button>
+										<% } else { %>
+											<button href="#" 
+												data-id_transaction="<%= item.ID %>"
+												data-id_seller="<%= item.ID_SellClient %>"  
+												class="action-icon btn btn-small btn-success" title="Tranzactie confirmata pentru vanzator"><i class="fa fa-arrow-up"></i></button>
+										<% } %>
+									</span>
+								</td>
+								<td><a href="/admin/transactions/edit/<%= item.ID %>" class="action-icon btn btn-small btn-success" title="Modifica"><i class="fa fa-edit"></i></a></td>
+								<td><a href="/admin/transactions/delete/<%- item.ID %>" title="Sterge" class="action-icon delete-confirm btn btn-small btn-danger"><i class="fa fa-trash-o"></i></a></td>
+							</tr>
+							<% }); } %>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

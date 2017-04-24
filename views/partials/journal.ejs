@@ -1,0 +1,78 @@
+		<div class="tile m-b-10 toggleable-widget" id="journal-container">
+			<div class="tile-title">
+				<div class="controller">
+					<a href="" class="collapse pull-right m-l-15">&nbsp;</a>
+				</div>
+				<h3 class="m-t-0"><%- req.session.getTranslation('Activity_log') %></h3>
+			</div>
+			<div class="tile-body">
+				<form class="form-no-horizontal-spacing" id="activity-form" method="" autocomplete="off">
+					<input type="hidden" id="filter-ID_User" value="" />
+					<input type="hidden" id="filter-ID_Agency" value="" />
+					<input type="hidden" id="filter-prm_startDate" value="" />
+					<div class="row form-row no-margin">
+						<div class="form-group col-md-3 no-margin">
+							<label class="form-label"><%- req.session.getTranslation('User') %></label>
+							<div class="input-group">
+                <input type="text" class="form-control js-users-autocomplete" />
+                <input type="hidden" id="journal-ID_User" value="" />
+								<!--<select name="user" id="journal-ID_User" class="select2 form-control">-->
+								  <!--<option value=""><%- req.session.getTranslation('All_users') %></option>-->
+								  <!--<% _.each(req.session.users,function(user) { %>-->
+								  <!--<option value="<%= user.ID %>"><%= user.LoginName+' ('+user.FirstName+' '+user.LastName+')' %></option>-->
+								  <!--<% }); %>-->
+								<!--</select>-->
+							</div>
+						</div>
+						<div class="form-group col-md-3 no-margin">
+							<label class="form-label"><%- req.session.getTranslation('Agency') %></label>
+							<div class="input-group">
+                <input type="text" class="form-control js-agencies-autocomplete" />
+                <input type="hidden" id="journal-ID_Agency" value="" />
+								<!--<select name="agency" id="journal-ID_Agency" class="select2 form-control" data-placeholder="">-->
+								  <!--<option value=""><%- req.session.getTranslation('All_agencies') %></option>-->
+								  <!--<% _.each(req.session.agencies,function(agency) { %>-->
+								  <!--<option value="<%= agency.ID %>"><%= agency.AgencyName %></option>-->
+								  <!--<% }); %>-->
+								<!--</select>-->
+							</div>
+						</div>
+						<div class="form-group col-md-3 no-margin">
+							<label class="form-label"><%- req.session.getTranslation('Start_date') %></label>
+							<div class="input-group">
+								<input type="text" class="form-control required datepicker" id="journal-startDate" name="startdate" data-date-format="yyyy-mm-dd" value="<%= timeService.formatDate(new Date(),'YYYY-MM-DD') %>" />
+								<span class="input-group-addon primary">
+									<span class="arrow"></span>
+									<i class="fa fa-align-justify"></i>
+								</span>
+							</div>
+						</div>
+						<div class="form-group col-md-2 no-margin">
+							<label class="form-label">&nbsp;</label>
+							<div class="input-group">
+						  <button class="btn btn-primary btn-cons" type="submit" id="filter-journal"><%- req.session.getTranslation('Filter') %></button>
+							</div>
+						</div>
+					</div>
+				</form>
+				<hr class="" />
+				<table class="table table-hover table-condensed" id="example-table">
+					<thead>
+						<tr>
+							<th aria-controls="example-table" aria-sort="descending"><%- req.session.getTranslation('Date') %></th>
+							<th><%- req.session.getTranslation('Operation') %></th>
+							<th><%- req.session.getTranslation('User') %></th>
+							<th><%- req.session.getTranslation('Agency') %></th>
+							<th><%- req.session.getTranslation('Order') %></th>
+							<th><%- req.session.getTranslation('Client') %></th>
+							<th><%- req.session.getTranslation('Asset') %></th>
+							<th><%- req.session.getTranslation('Quantity') %></th>
+							<th><%- req.session.getTranslation('Price') %></th>
+							<th><%- req.session.getTranslation('Message') %></th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>

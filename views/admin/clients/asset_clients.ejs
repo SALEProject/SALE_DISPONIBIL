@@ -1,0 +1,266 @@
+    <div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/assets" class="">Active</a>
+			</li>
+			<li>
+				<a href="/admin/clients/asset_clients?asset=<%- req.param('asset') %>" class="active"><%- asset.Code %> (<%- req.session.getTranslation(asset.Name) %>) - Pasul <%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'4':'5') %></a>
+			</li>
+		</ul>
+	</div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+			</div>
+            <div class="grid-body no-border">
+			<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">
+					<div id="rootwizard" class="col-md-12">
+						<div class="form-wizard-steps">
+							<ul class="wizard-steps">
+								<li class="">
+									<a href="/admin/assets/edit/<%- typeof asset.ID!='undefined' ? asset.ID : '' %>">
+										<span class="step">1</span>
+										<span class="title">Activ</span>
+									</a>
+								</li>
+								<li class="" id="step-initial-order" <%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'style="display:none"':'') %>>
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/orders/initial?asset='+asset.ID+'"' : '' %>>
+										<span class="step">2</span>
+										<span class="title">Ordin initiator</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/asset_schedules/schedules?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'2':'3') %></span>
+										<span class="title">Sedinta activ</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/assets/trade_parameters?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'3':'4') %></span>
+										<span class="title">Parametri tranzactionare</span>
+									</a>
+								</li>
+								<li class="active">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/clients/asset_clients?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'4':'5') %></span>
+										<span class="title">Clienti</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/documents/asset_documents?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'5':'6') %></span>
+										<span class="title">Documente</span>
+									</a>
+								</li>
+							</ul>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<br/><br/><br/>
+								<div class="col-md-12">
+									<div class="grid-body no-border">
+										<button class="btn btn-info" data-toggle="modal" data-target="#clients-modal">Adauga clienti la acest activ</button>
+										<div class="pull-right p-b-20 row">
+											<div class="col-md-6">
+												<label>Filtreaza:</label>
+											</div>
+											<div class="col-md-6">
+												<input id="asset-table-filter" type="text" class="form-control input-sm" />
+											</div>
+										</div>
+										<table class="table table-hover table-condensed admin-table footable" id="asset-clients-table" data-page-size="30" data-page-navigation=".pagination" data-filter="#asset-table-filter">
+											<thead>
+												<tr>
+													<th class="v-align-middle" style="width:5%">Cumparare</th>
+													<th class="v-align-middle" style="width:5%">Vanzare</th>
+													<th style="width:5%">Cod</th>
+													<th style="width:22%">Nume</th>
+													<th style="width:15%">Cod fiscal</th>
+													<th style="width:15%">Numar inregistrare</th>
+													<th style="width:21%">Nume companie</th>
+												</tr>
+											</thead>
+											<tbody>
+											<% if(req.session.ringClients.length>0) {
+												_.each(req.session.ringClients,function(client) { %>
+													<tr <% if(toolsService.searchItemInArray(client.ID,req.session.assetClients,'ID_Client')>-1){ %>class=""<% }else{%>class="row_selected"<%} %>>
+														<td class="v-align-middle" data-value="<%- (toolsService.searchItemInArray(client.ID_Client,req.session.assetClients,'ID_Client')>-1 && req.session.assetClients[toolsService.searchItemInArray(client.ID_Client,req.session.assetClients,'ID_Client')].canBuy) ? 1 : 0 %>">
+                              <span style="display: none;">
+                                <% if(toolsService.searchItemInArray(client.ID_Client,req.session.assetClients,'ID_Client')>-1 && req.session.assetClients[toolsService.searchItemInArray(client.ID_Client,req.session.assetClients,'ID_Client')].canBuy) { %>
+                                1
+                                <% } else { %>
+                                0
+                                <% } %>
+                              </span>
+															<div class="checkbox check-default">
+																<input id="canBuy_<%- client.ID %>" class="client2assetCanBuy sticky" name="" type="checkbox" value="1" data-id="<%= client.ID %>" data-asset-id="<%- req.param('asset') %>" <% if(toolsService.searchItemInArray(client.ID_Client,req.session.assetClients,'ID_Client')>-1 && req.session.assetClients[toolsService.searchItemInArray(client.ID_Client,req.session.assetClients,'ID_Client')].canBuy) { %>checked=""<% } %> <%- typeof asset.ID!='undefined' && typeof initialOrder.ID!='undefined' && initialOrder.Direction=='B' ? 'disabled=""' : '' %> />
+																<label for="canBuy_<%- client.ID %>"><%  %></label>
+															</div>
+														</td>
+														<td class="v-align-middle" data-value="<% (toolsService.searchItemInArray(client.ID_Client,req.session.assetClients,'ID_Client')>-1 && req.session.assetClients[toolsService.searchItemInArray(client.ID_Client,req.session.assetClients,'ID_Client')].canSell) ? 1 : 0 %>">
+                              <span style="display: none;">
+                                <% if(toolsService.searchItemInArray(client.ID_Client,req.session.assetClients,'ID_Client')>-1 && req.session.assetClients[toolsService.searchItemInArray(client.ID_Client,req.session.assetClients,'ID_Client')].canSell) { %>
+                                1
+                                <% } else { %>
+                                0
+                                <% } %>
+                              </span>
+															<div class="checkbox check-default">
+																<input id="canSell_<%- client.ID %>" class="client2assetCanSell sticky" name="" type="checkbox" value="1" data-id="<%= client.ID %>" data-asset-id="<%- req.param('asset') %>" <% if(toolsService.searchItemInArray(client.ID_Client,req.session.assetClients,'ID_Client')>-1 && req.session.assetClients[toolsService.searchItemInArray(client.ID_Client,req.session.assetClients,'ID_Client')].canSell) { %>checked=""<% } %> <%- typeof asset.ID!='undefined' && typeof initialOrder.ID!='undefined' && initialOrder.Direction=='S' ? 'disabled=""' : '' %> />
+																<label for="canSell_<%- client.ID %>"><%  %></label>
+															</div>
+														</td>
+														<td class="v-align-middle"><%= client.Code %></td>
+														<td class="v-align-middle bold"><%= client.Name %></td>
+														<td class="v-align-middle"><span class="muted"><%= client.FiscalCode %></span></td>
+														<td class="v-align-middle"><span class="muted"><%= client.RegisterCode %></span></td>
+														<td class="v-align-middle"><span class="muted"><%= client.CompanyName %></span></td>
+													</tr>
+												<% }); %>
+											<% } %>
+											<% if(req.session.assetClients.length>0) {
+												_.each(req.session.assetClients,function(client) { %>
+													<% if(toolsService.searchIdInArray(client.ID_Client,req.session.ringClients)==-1) { %>
+													<tr>
+														<td class="v-align-middle" data-value="<%- client.canBuy ? 1 : 0 %>">
+                              <span style="display: none;">
+                                <% if(client.canBuy) { %>
+                                1
+                                <% } else { %>
+                                0
+                                <% } %>
+                              </span>
+															<div class="checkbox check-default">
+																<input id="canBuy_<%- client.ID_Client %>" class="client2assetCanBuy" name="" type="checkbox" value="1" data-id="<%= client.ID_Client %>" data-asset-id="<%- req.param('asset') %>" <% if(client.canBuy) { %>checked=""<% } %> <%- typeof asset.ID!='undefined' && typeof initialOrder.ID!='undefined' && (initialOrder.Direction=='B' || initialOrder.ID_Client==client.ID_Client) ? 'disabled=""' : '' %> />
+																<label for="canBuy_<%- client.ID_Client %>"><%  %></label>
+															</div>
+														</td>
+														<td class="v-align-middle" data-value="<%- client.canBuy ? 1 : 0 %>">
+                              <span style="display: none;">
+                                <% if(client.canSell) { %>
+                                1
+                                <% } else { %>
+                                0
+                                <% } %>
+                              </span>
+															<div class="checkbox check-default">
+																<input id="canSell_<%- client.ID_Client %>" class="client2assetCanSell" name="" type="checkbox" value="1" data-id="<%= client.ID_Client %>" data-asset-id="<%- req.param('asset') %>" <% if(client.canSell) { %>checked=""<% } %> <%- typeof asset.ID!='undefined' && typeof initialOrder.ID!='undefined' && (initialOrder.Direction=='S' || initialOrder.ID_Client==client.ID_Client) ? 'disabled=""' : '' %> />
+																<label for="canSell_<%- client.ID_Client %>"><%  %></label>
+															</div>
+														</td>
+														<td class="v-align-middle"><%= client.Code %></td>
+														<td class="v-align-middle bold"><%= client.Name %></td>
+														<td class="v-align-middle"><span class="muted"><%= client.FiscalCode %></span></td>
+														<td class="v-align-middle"><span class="muted"><%= client.RegisterCode %></span></td>
+														<td class="v-align-middle"><span class="muted"><%= client.CompanyName %></span></td>
+													</tr>
+													<% } %>
+												<% }); %>
+											<% } %>
+											</tbody>
+											<tfoot class="hide-if-no-paging">
+												<tr>
+													<td colspan="7">
+														<div class="pagination pagination-centered"></div>
+													</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+
+				<div class="form-actions">
+					<div class="text-center">
+					  <a class="btn btn-white btn-cons" href="/admin/assets/trade_parameters<%- typeof asset.ID!='undefined' ? '?asset='+asset.ID : '' %>">Inapoi</a>
+					  <a class="btn btn-grey btn-cons" href="/admin/assets">Renunta</a>
+					  <button class="btn btn-primary btn-cons" type="submit" name="submit" value="save"><i class="icon-ok"></i> Salveaza</button>
+					  <button class="btn btn-success btn-cons" type="submit" name="Validate" value="1"><i class="icon-ok"></i>Valideaza</button>
+					</div>
+				  </div>
+			</form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+				<div class="modal wide fade" id="clients-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                          <h4 id="myModalLabel" class="semi-bold">Clienti</h4>
+                        </div>
+                        <div class="modal-body">
+										<div class="pull-right p-b-20 row">
+											<div class="col-md-6">
+												<label>Filtreaza:</label>
+											</div>
+											<div class="col-md-6">
+												<input id="client-table-filter" type="text" class="form-control input-sm" />
+											</div>
+										</div>
+							<table class="table table-hover table-condensed admin-table footable" data-page-size="30" id="clients-table" data-filter="#client-table-filter">
+								<thead>
+									<tr>
+										<th class="v-align-middle" style="width:5%">Cumparare</th>
+										<th class="v-align-middle" style="width:5%">Vanzare</th>
+										<th style="width:10%">Cod</th>
+										<th style="width:22%">Nume</th>
+										<th style="width:15%">Cod fiscal</th>
+										<th style="width:15%">Numar inregistrare</th>
+										<th style="width:21%">Nume companie</th>
+									</tr>
+								</thead>
+								<tbody>
+								<% if(Object.keys(req.session.clients).length>0) {
+									_.each(req.session.clients,function(client) { %>
+										<% if(toolsService.searchIdInArray(client.ID,req.session.ringClients)==-1 && toolsService.searchIdInArray(client.ID,req.session.assetClients)==-1) { %>
+										<tr>
+											<td class="v-align-middle">
+												<div class="checkbox check-default">
+													<input id="canBuy_<%- client.ID %>" class="client2assetCanBuy" name="" type="checkbox" value="1" data-id="<%= client.ID %>" data-asset-id="<%- req.param('asset') %>" <%- typeof asset.ID!='undefined' && typeof initialOrder.ID!='undefined' && (initialOrder.Direction=='B' || initialOrder.ID_Client==client.ID) ? 'disabled=""' : '' %> />
+													<label for="canBuy_<%- client.ID %>"><%  %></label>
+												</div>
+											</td>
+											<td class="v-align-middle">
+												<div class="checkbox check-default">
+													<input id="canSell_<%- client.ID %>" class="client2assetCanSell" name="" type="checkbox" value="1" data-id="<%= client.ID %>" data-asset-id="<%- req.param('asset') %>" <%- typeof asset.ID!='undefined' && typeof initialOrder.ID!='undefined' && (initialOrder.Direction=='S' || initialOrder.ID_Client==client.ID)  ? 'disabled=""' : '' %> />
+													<label for="canSell_<%- client.ID %>"><%  %></label>
+												</div>
+											</td>
+											<td class="v-align-middle"><%= client.Code %></td>
+											<td class="v-align-middle bold"><%= client.ClientName %></td>
+											<td class="v-align-middle"><span class="muted"><%= client.FiscalCode %></span></td>
+											<td class="v-align-middle"><span class="muted"><%= client.RegisterCode %></span></td>
+											<td class="v-align-middle"><span class="muted"><%= client.CompanyName %></span></td>
+										</tr>
+										<% } %>
+									<% }); %>
+									<% } %>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="7">
+											<div class="pagination pagination-centered hide-if-no-paging"></div>
+										</td>
+									</tr>
+								</tfoot>
+							</table>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                      <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                  </div>
+                  <!-- /.modal -->

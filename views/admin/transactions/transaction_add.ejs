@@ -1,0 +1,406 @@
+	<div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/transactions" class="">Tranzactii</a>
+			</li>
+			<li>
+				<a href="/admin/transactions/<%- (req.param('id')?'edit/'+req.param('id') : 'add') %>" class="active"><%- (req.param('id')?'Modificare':'Adaugare') %> tranzactie</a>
+			</li>
+		</ul>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="grid simple">
+				<div class="grid-title no-border">
+					<%- toolsService.getFlashMessage(req.flash()) %>
+				</div>
+				<div class="grid-body no-border">
+					<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">   
+						<input type='hidden' name="ID_Ring" id="ID_Ring"/>
+						<div class="row column-seperation">
+							<div class="col-md-6">
+								<h4>Detalii sedinta</h4>
+								<div class="row form-row">
+									<div class="col-md-6">
+										<label for="ID_Asset">Activ Tranzactionat</label>
+										<div class="widget-col">
+											<select name="ID_Asset" id="ID_Asset" class="select2 form-control transactions_asset">
+												<% _.each(req.session.assets,function(asset) { %>              
+													<option value="<%= asset.ID %>" <%-((typeof item!='undefined' && item.ID_Asset==asset.ID)?'selected=""':'') %> idring="<%= asset.ID_Ring %>" ><%= req.session.getTranslation(asset.Name) %></option>
+												<% }); %>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<label for="Data">Data</label>
+										<div class="widget-col">
+											<input name="Data" id="Data" type="text" class="form-control " value="<%- (typeof item!='undefined'?item.TransactionDate:'') %>" readonly />
+										</div>
+									</div>
+								</div>
+								<div class="row form-row">
+									<div class="col-md-6">
+										<label for="Status">Stare sedinta</label>
+										<div class="widget-col">
+											<select name="Status" id="Status" class="form-control required" disabled>
+											  <option value="public" <%- ((typeof item.Visibility!='undefined' && item.Visibility=='public')?'selected=""':'') %> />Public</option>
+											  <option value="initiated" <%- ((typeof item.Visibility!='undefined' && item.Visibility=='initiated') || typeof item.Visibility=='undefined' ?'selected=""':'') %> />Initiat</option>
+											  <option value="terminated" <%- ((typeof item.Visibility!='undefined' && item.Visibility=='terminated')?'selected=""':'') %> selected="selected"/>Terminat</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<label for="ClosingDate">Data inchidere</label>
+										<div class="widget-col">
+											<input name="ClosingDate" id="ClosingDate" type="text" class="form-control date" value="<%- (typeof item!='undefined'?item.ClosingDate:'') %>" readonly />
+										</div>
+									</div>
+								</div>
+								<br />
+							</div>
+							<div class="col-md-6">
+								<h4>Informatii generale</h4>
+									<div class="row form-row">
+									<div class="col-md-6">
+										<label for="PreOpeningTime">T0 - Predeschidere</label>
+										<div class="widget-col">
+											<input name="PreOpeningTime" id="PreOpeningTime" type="text" class="form-control " value="<%- (typeof item!='undefined'?item.PreOpeningTime:'') %>" readonly />
+										</div>
+									</div>
+									<div class="col-md-6">
+										<label for="OpeningTime">T1 - Deschidere</label>
+										<div class="widget-col">
+											<input name="OpeningTime" id="OpeningTime" type="text" class="form-control " value="<%- (typeof item!='undefined'?item.OpeningTime:'') %>" readonly />
+										</div>
+									</div>
+								</div>
+								<div class="row form-row">
+									<div class="col-md-6">
+										<label for="PreClosingTime">T2 - Preinchidere</label>
+										<div class="widget-col">
+											<input name="PreClosingTime" id="PreClosingTime" type="text" class="form-control " value="<%- (typeof item!='undefined'?item.PreClosingTime:'') %>" readonly />
+										</div>
+									</div>
+									<div class="col-md-6">
+										<label for="ClosingTime">T3 - Inchidere</label>
+										<div class="widget-col">
+											<input name="ClosingTime" id="ClosingTime" type="text" class="form-control " value="<%- (typeof item!='undefined'?item.ClosingTime:'') %>" readonly />
+										</div>
+									</div>
+								</div>
+								<br />
+							</div>
+						</div>
+						<div class="row column-seperation">
+							<div class="col-md-6">
+								<h4>Ordin cumparator</h4>
+								<div class="row form-row">
+									<div class="col-md-6">
+										<label for="ID_BuyClient">Cod Cumparator</label>
+										<div class="widget-col">
+											<select name="ID_BuyClient" id="ID_BuyClient" class="form-control transactions_asset">
+												
+											</select>
+											<input type="hidden" name="ID_AgencyBuy" id="ID_AgencyBuy"/>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<label for="BuyOrderType">Sens</label>
+										<div class="widget-col">
+											<input name="BuyOrderType" id="BuyOrderType" type="text" class="form-control " value="Cumparare" readonly/>
+										</div>
+									</div>
+								</div>
+								<div class="row form-row">
+									<div class="col-md-4">
+										<label for="">Ordin nou?</label>
+										<div class="controls">
+											<div class="radio">
+												<input id="OrderBuyNew" type="radio" name="NewOrderBuy" value="1" checked>
+												<label for="OrderBuyNew"><%- req.session.getTranslation('Ordin nou') %></label>
+												<input id="OrderBuyExisting" type="radio" name="NewOrderBuy" value="0" >
+												<label for="OrderBuyExisting"><%- req.session.getTranslation('Ordin existent') %></label>
+											</div>
+										</div>
+										<!--<div class="checkbox check-default">
+						                    <input id="NewOrderBuy" type="checkbox" name="NewOrderBuy">
+						                    <label for="NewOrderBuy">Keep Me Signed in</label>
+					                    </div>-->
+									</div>
+									<div class="col-md-3">
+										<label for="OrderBuyQuantity">Ordin/Cantitate</label>
+										<div class="widget-col">
+											<input name="OrderBuyQuantity" id="OrderBuyQuantity" type="text" class="input-sm form-control  bold numeric" min="0" step="any" name="Quantity" id="OrderBuyQuantity" data-a-sep="." data-a-dec="," data-m-dec="3" data-l-zero="deny" value="<%- (typeof item!='undefined'?item.OrderBuyQuantity:'') %>" />
+
+											<select name="IDOrderBuy" id="IDOrderBuy" class="col-md-10" style="display:none" >
+											</select>
+											<input type="hidden" name="IDOrderBuyQuantity" id="IDOrderBuyQuantity" />
+										</div>
+									</div>
+									<div class="col-md-3">
+										<label for="Price">Pret</label>
+										<div class="widget-col">
+											<input type="text" class="input-sm form-control required bold numeric" min="0" step="any" name="OrderBuyPrice" id="OrderBuyPrice" data-a-sep="." data-a-dec="," data-m-dec="2" data-l-zero="deny" value="<%- (typeof item!='undefined'?item.OrderBuyPrice:'') %>" />
+										</div>
+									</div>
+									<div class="col-md-2">
+										<label for="BuyPosition">Pozitia</label>
+										<div class="widget-col">
+											<input name="BuyPosition" id="BuyPosition" type="text" class="form-control " value="<%- (typeof item!='undefined'?item.BuyPosition:'') %>" />
+										</div>
+									</div>
+								</div>
+								<div class="row form-row">
+									<div class="col-md-6">
+										<label for="OrderBuyIsPartial">Atribut Total/Partial?</label>
+										<div class="col-md-4 isPartial-holder">
+											<div class="controls">
+												<div class="radio">
+													<input id="OrderBuyIsPartialFalse" type="radio" name="OrderBuyIsPartial" value="0" checked="checked" />
+													<label for="OrderBuyIsPartialFalse"><%- req.session.getTranslation('Total') %></label>
+													<input id="OrderBuyIsPartialTrue" type="radio" name="OrderBuyIsPartial" value="1" />
+													<label for="OrderBuyIsPartialTrue"><%- req.session.getTranslation('Partial') %></label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<label for="OrderBuyCreationDate">Data crearii</label>
+										<div class="clearfix">
+											<div class="col-md-6">
+												<div class="input-group">
+													<input type="text" class="input-sm form-control required date" id="OrderBuyCreationDate" name="OrderBuyCreationDate" data-date-format="dd M yyyy" />
+													<span class="input-group-addon primary">		
+														<span class="arrow"></span>
+														<i class="fa fa-calendar"></i>		
+													</span>
+												</div>
+												<span class="muted"><%- req.session.getTranslation('date_with_format') %></span>
+											</div>
+											<div class="col-md-6">
+												<div class="input-group">
+													<input type="text" class="input-sm form-control required timepicker-24" id="OrderBuyCreationTime" name="OrderBuyCreationTime" />
+													<span class="input-group-addon">		
+														<span class="arrow"></span>
+														<i class="fa fa-clock-o"></i>		
+													</span>
+												</div>
+												<span class="muted"><%- req.session.getTranslation('hour_with_format') %></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<br />
+							</div>
+							<div class="col-md-6">
+								<h4>Ordin cumparator</h4>
+								<div class="row form-row">
+									<div class="col-md-6">
+										<label for="ID_SellClient">Cod Vanzator</label>
+										<div class="widget-col">
+											<select name="ID_SellClient" id="ID_SellClient" class="form-control transactions_asset">
+												
+											</select>
+											<input type="hidden" name="ID_AgencySell" id="ID_AgencySell" />
+										</div>
+									</div>
+									<div class="col-md-6">
+										<label for="OrderType">Sens</label>
+										<div class="widget-col">
+											<input name="OrderType" id="OrderType" type="text" class="form-control " value="Vanzare" readonly/>
+										</div>
+									</div>
+								</div>
+
+								<div class="row form-row">
+									<div class="col-md-4">
+										<label for="OrderSell">Ordin nou?</label>
+										<div class="controls">
+											<div class="radio">
+												<input id="OrderSellNew" type="radio" name="NewOrderSell" value="1" checked>
+												<label for="OrderSellNew"><%- req.session.getTranslation('Ordin nou') %></label>
+												<input id="OrderSellExisting" type="radio" name="NewOrderSell" value="0" >
+												<label for="OrderSellExisting"><%- req.session.getTranslation('Ordin existent') %></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<label for="OrderSellQuantity">Ordin/Cantitate</label>
+										<div class="widget-col">
+											<input name="OrderSellQuantity" id="OrderSellQuantity" type="text" class="input-sm form-control  bold numeric" min="0" step="any" name="Quantity" id="order-Quantity" data-a-sep="." data-a-dec="," data-m-dec="3" data-l-zero="deny" value="<%- (typeof item!='undefined'?item.OrderSellQuantity:'') %>" />
+											<select name="IDOrderSell" id="IDOrderSell" class="col-md-3" style="display:none">
+											</select>
+											<input type="hidden" name="IDOrderSellQuantity" id="IDOrderSellQuantity" />
+										</div>
+									</div>
+									<div class="col-md-3">
+										<label for="Price">Pret</label>
+										<div class="widget-col">
+											<input type="text" class="input-sm form-control required bold numeric" min="0" step="any" name="OrderSellPrice" id="OrderSellPrice" data-a-sep="." data-a-dec="," data-m-dec="2" data-l-zero="deny" value="<%- (typeof item!='undefined'?item.OrderSellPrice:'') %>" />
+										</div>
+									</div>
+									<div class="col-md-2">
+										<label for="SellPosition">Pozitia</label>
+										<div class="widget-col">
+											<input name="SellPosition" id="SellPosition" type="text" class="form-control " value="<%- (typeof item!='undefined'?item.SellPosition:'') %>" />
+										</div>
+									</div>
+								</div>
+								<div class="row form-row">
+									<div class="col-md-6">
+										<label for="BuyAttribute">Atribut Total/Partial?</label>
+										<div class="col-md-4 isPartial-holder">
+											<div class="controls">
+												<div class="radio">
+													<input id="OrderSellIsPartialTrue" type="radio" name="OrderSellIsPartial" value="0" checked="checked" />
+													<label for="OrderSellIsPartialTrue"><%- req.session.getTranslation('Total') %></label>
+													<input id="OrderSellIsPartialFalse" type="radio" name="OrderSellIsPartial" value="1" />
+													<label for="OrderSellIsPartialFalse"><%- req.session.getTranslation('Partial') %></label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<label for="OrderSellCreationDate">Data crearii</label>
+										<div class="clearfix">
+											<div class="col-md-6">
+												<div class="input-group">
+													<input type="text" class="input-sm form-control required date" id="OrderSellCreationDate" name="OrderSellCreationDate" data-date-format="dd M yyyy" />
+													<span class="input-group-addon primary">		
+														<span class="arrow"></span>
+														<i class="fa fa-calendar"></i>		
+													</span>
+												</div>
+												<span class="muted"><%- req.session.getTranslation('date_with_format') %></span>
+											</div>
+											<div class="col-md-6">
+												<div class="input-group">
+													<input type="text" class="input-sm form-control required timepicker-24" id="OrderSellCreationTime" name="OrderSellCreationTime" />
+													<span class="input-group-addon">		
+														<span class="arrow"></span>
+														<i class="fa fa-clock-o"></i>		
+													</span>
+												</div>
+												<span class="muted"><%- req.session.getTranslation('hour_with_format') %></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<br />
+							</div>
+						</div>
+						<br/>
+						<div class="row form-row">
+							<h4>Tranzactie</h4>
+							<div class="col-md-2">
+								<label for="ID">ID Tranzactie</label>
+								<div class="widget-col">
+									ID-ul tranzactiei : 
+								</div>
+							</div>
+							<div class="col-md-4">
+								<label for="TransactionDate">Data Tranzactiei</label>
+								<div class="clearfix">
+									<div class="col-md-6">
+										<div class="input-group">
+											<input type="text" class="input-sm form-control required date" id="TransactionDate" name="TransactionDate" data-date-format="dd M yyyy" value="<%- (typeof item!='undefined'?item.TransactionDate:'') %>" />
+											<span class="input-group-addon primary">		
+												<span class="arrow"></span>
+												<i class="fa fa-calendar"></i>		
+											</span>
+										</div>
+										<span class="muted"><%- req.session.getTranslation('date_with_format') %></span>
+									</div>
+									<div class="col-md-6">
+										<div class="input-group">
+											<input type="text" class="input-sm form-control required timepicker-24" id="TransactionTime" name="TransactionTime" value="<%- (typeof item!='undefined'?item.TransactionTime:'') %>" />
+											<span class="input-group-addon">		
+												<span class="arrow"></span>
+												<i class="fa fa-clock-o"></i>		
+											</span>
+										</div>
+										<span class="muted"><%- req.session.getTranslation('hour_with_format') %></span>
+									</div>
+								</div>
+							</div>
+						
+							<div class="col-md-2">
+								<label for="TransactionQuantity">Cantitate Tranzactie</label>
+								<div class="widget-col">
+									<input name="TransactionQuantity" id="TransactionQuantity" type="text" class="input-sm form-control required bold numeric" min="0" step="any" name="Quantity" id="order-BuyQuantity" data-a-sep="." data-a-dec="," data-m-dec="3" data-l-zero="deny" value="<%- (typeof item!='undefined'?item.Quantity:'') %>" />
+								</div>
+							</div>
+							<div class="col-md-2">
+								<label for="TransactionPrice">Pret tranzactie</label>
+								<div class="widget-col">
+									<input type="text" class="input-sm form-control required bold numeric" min="0" step="any" name="TransactionPrice" id="order-TransactionPrice" data-a-sep="." data-a-dec="," data-m-dec="2" data-l-zero="deny" value="<%- (typeof item!='undefined'?item.Price:'') %>" />
+								</div>
+							</div>
+
+						</div>
+						<!-- <div class="row column-seperation">
+							<div class="col-md-6">
+								<h4>Deblocare Garantie Cumparator</h4>
+								<div class="row form-row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>&nbsp;</label>
+											<div class="checkbox check-default">
+												<input id="BuyerConfirmation" name="BuyerConfirmation" type="checkbox" value="1" checked="">
+												<label for="BuyerConfirmation">Confirmare cumparator?</label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>&nbsp;</label>
+											<div class="checkbox check-default">
+												<input id="BuyerWarrantyUnblock" name="BuyerWarrantyUnblock" type="checkbox" value="1" checked="">
+												<label for="BuyerWarrantyUnblock">Deblocare garantie cumparator?</label>
+											</div>
+										</div>
+									</div>
+								</div>
+								<br />
+							</div>
+							<div class="col-md-6">
+								<h4>Deblocare Garantie Vanzator</h4>
+								<div class="row form-row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>&nbsp;</label>
+											<div class="checkbox check-default">
+												<input id="SellerConfirmation" name="SellerConfirmation" type="checkbox" value="1" checked="">
+												<label for="SellerConfirmation">Confirmare vanzator?</label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>&nbsp;</label>
+											<div class="checkbox check-default">
+												<input id="SellerWarrantyUnblock" name="SellerWarrantyUnblock" type="checkbox" value="1" checked="">
+												<label for="SellerWarrantyUnblock">Deblocare garantie vanzator?	</label>
+											</div>
+										</div>
+									</div>
+								</div>
+								<br />
+							</div>
+						</div> -->
+						<div class="form-actions">
+							<div align="center">
+								<button class="btn btn-primary btn-cons" type="submit"><i class="icon-ok"></i> Salveaza</button>
+								<a class="btn btn-white btn-cons" href="/admin/transactions">Renunta</a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+

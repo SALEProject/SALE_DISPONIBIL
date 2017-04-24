@@ -1,0 +1,38 @@
+<div class="tile white m-b-10 padding-20">
+	<div class="tile-title">
+		<h3 class="m-t-0 m-b-10"><%= title %></h4>
+		<%- toolsService.getFlashMessage(req.flash()) %>
+	</div>
+	<div class="tile-body p-t-20">
+		<div class="account-form">
+			<table class="table table-hover table-condensed admin-table" id="example-table">
+				<thead>
+					<tr>
+						<th style="width:20%">Nr.</th>
+						<th style="width:20%">Tip Operatie</th>
+						<th style="width:20%">Nume Client</th>
+						<th style="width:20%">Numar Garantie</th>
+						<th style="width:20%">Tip Garantie</th>
+						<th style="width:20%">Data Depunere</th>
+						<th style="width:20%">Data de Valabilitate</th>
+						<th style="width:20%">Valoare Garantie (RON)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% var i = 0; if(items.length>0) { _.each(items,function(item) { i++; %>
+					<tr <%= (item.TransactionType == 'CRED_WAR')?'':'class=row_selected' %>>
+						<td class="v-align-middle"><%= i %></td>
+						<td class="v-align-middle"><%= (item.TransactionType == 'CRED_WAR')?'Depozitare':'Blocare' %></td>
+						<td class="v-align-middle"><span class="muted"><%= item.ClientName %></span></td>
+						<td class="v-align-middle"><span class="muted"><%= item.Number %></span></td>
+						<td class="v-align-middle"><span class="muted"><%= (item.WarrantyType == ''? '-':item.WarrantyType) %></span></td>
+						<td class="v-align-middle"><span class="muted"><%= item.DepositDate %></span></td>
+						<td class="v-align-middle"><span class="muted"><%= item.ValabilityStartDate %></span></td>
+						<td class="v-align-middle"><span class="muted"><%= item.Amount %></span></td>
+					</tr>
+					<% }); } %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

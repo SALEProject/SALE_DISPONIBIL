@@ -1,0 +1,44 @@
+    <div class="content">
+      <div class="page-title"> <i class="icon-custom-left"></i>
+      <h3><%- (req.param('id')?'Modificare':'Adaugare') %> Judet</h3>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="grid simple">
+          <div class="grid-title no-border">
+            <%- toolsService.getFlashMessage(req.flash()) %>
+          </div>
+          <div class="grid-body no-border">
+            <form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off"> 
+              <div class="row column-seperation">
+                <div class="col-md-12">
+                  <h4>Informatii generale</h4>
+                  <div class="row form-row">
+                    <div class="col-md-5">
+                      <label for="Name">Nume</label>
+                      <div class="widget-col">
+                        <input name="Name" id="Name" type="text" class="form-control required max-length" value="<%- (typeof item!='undefined'?item.Name:'') %>" />
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <label for="Code">Cod</label>
+                      <div class="widget-col">
+                        <input name="Code" id="Code" type="text" class="form-control required max-length" value="<%- (typeof item!='undefined'?item.Code:'') %>" />
+                      </div>
+                    </div>
+                  </div>
+                  <br />
+                </div>
+              </div>
+              <div class="form-actions">
+                <div class="pull-left">
+                  <button class="btn btn-primary btn-cons" type="submit"><i class="icon-ok"></i> Salveaza</button>
+                  <a class="btn btn-white btn-cons" href="/admin/counties">Renunta</a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

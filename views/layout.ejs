@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+	<meta charset="utf-8" />
+    <title><%- title %></title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+
+	<!-- BEGIN CORE CSS FRAMEWORK -->
+  <link href="<%- sails.config.static_path %>/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.css" rel="stylesheet" type="text/css"/>
+	<!--<link href="<%- sails.config.static_path %>/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" media="screen"/>-->
+	<link href="<%- sails.config.static_path %>/plugins/boostrapv3/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+	<link href="<%- sails.config.static_path %>/plugins/boostrapv3/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+	<link href="<%- sails.config.static_path %>/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" type="text/css" />
+	<link href="<%- sails.config.static_path %>/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" rel="stylesheet" type="text/css" />
+	<link href="<%- sails.config.static_path %>/plugins/bootstrap-select2/select2.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
+	<link href="<%- sails.config.static_path %>/css/animate.min.css" rel="stylesheet" type="text/css"/>
+	<link href="<%- sails.config.static_path %>/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css"/>
+	<link href="<%- sails.config.static_path %>/plugins/jquery-datatable/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>
+	<link href="<%- sails.config.static_path %>/plugins/jquery-datatable/extra/css/dataTables.colVis.css" rel="stylesheet" type="text/css"/>
+	<link href="<%- sails.config.static_path %>/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="<%- sails.config.static_path %>/plugins/footable/css/footable.core.css" rel="stylesheet" type="text/css" media="screen"/>
+	<!-- END CORE CSS FRAMEWORK -->
+	<!-- BEGIN CSS TEMPLATE -->
+	<link href="<%- sails.config.static_path %>/css/style.css?_v=<%= sails.config.assets_version %>" rel="stylesheet" type="text/css"/>
+	<link href="<%- sails.config.static_path %>/css/responsive.css" rel="stylesheet" type="text/css"/>
+	<link href="<%- sails.config.static_path %>/css/custom-icon-set.css" rel="stylesheet" type="text/css"/>
+	<!-- END CSS TEMPLATE -->
+
+	<!--[if lte IE 8]>
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400" />
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:700" />
+		<link href="<%- sails.config.static_path %>/css/ie8.css?_v=<%= sails.config.assets_version %>" rel="stylesheet" type="text/css"/>
+	<![endif]-->
+
+	<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+	<!-- BEGIN BODY -->
+	<body class="error-body no-top wide">
+		<%- partial('partials/header') %>
+
+		<!-- BEGIN CONTAINER -->
+		<div class="container wide">
+			<div class="page-container row-fluid">
+				<div class="page-content">
+					<div class="content">
+						<%- body %>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- END CONTAINER -->
+
+<script src="<%- sails.config.static_path %>/js/moment-with-locales.min.js" type="text/javascript"></script>
+<script>
+var b_id =<%= req.session.currentUser.ID_Broker %>;
+var a_id =<%= req.session.currentUser.ID_Agency %>;
+var c_id =<%= req.session.currentUser.ID_Client %>;
+var currentLang = '<%- req.session.lang.code ? req.session.lang.code : 'RO' %>';
+var showLogs = <%- sails.config.environment=='development' ? 'true' : 'false' %>;
+var tableElement;
+var startDateOffset = new moment().add('days',<%= sails.storage.market.StartDeliveryDateOffset %>);
+var startDate = new Date(startDateOffset.format());
+var endDateOffset = new moment().add('days',<%= sails.storage.market.EndDeliveryDateOffset %>);
+var endDate = new Date(endDateOffset.format());
+var whitelist = [<%- req.session.whitelist %>];
+var io = { socket: null };
+</script>
+  <script src="<%- sails.config.static_path %>/js/dictionary.lib.js?_v=<%= sails.config.assets_version %>" type="text/javascript"></script>
+  <script src="/dictionary.js?_v=<%= sails.config.assets_version %>" type="text/javascript"></script>
+
+  <script type"text/javascript" src="/js/dependencies/sails.io.js" autoConnect="false"></script>
+	<script type="text/javascript">
+	var newSailsSocket = io.sails.connect();
+	</script>  
+  <script src="/plugins/jquery-1.8.3.min.js"></script>
+  <script src="/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js"></script>
+  <script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/plugins/pace/pace.min.js"></script>
+  <script src="/plugins/jquery-unveil/jquery.unveil.min.js"></script>
+  <script src="/plugins/jquery-block-ui/jqueryblockui.js"></script>
+  <script src="/plugins/jquery-lazyload/jquery.lazyload.min.js"></script>
+  <script src="/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+  <script src="/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="/plugins/bootstrap-select2/select2.min.js"></script>
+  <script src="/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+  <script src="/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+  <script src="/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script src="/plugins/jquery-tablesorter/jquery.tablesorter.min.js"></script>
+  <script src="/plugins/jquery-tinysort/jquery.tinysort.min.js"></script>
+  <script src="/plugins/jquery-autonumeric/autoNumeric.js"></script>
+  <script src="/plugins/jquery.number.min.js"></script>
+  <script src="/plugins/jquery-datatable/js/jquery.dataTables.min.js"></script>
+  <script src="/plugins/jquery-datatable/extra/js/TableTools.min.js"></script>
+  <script src="/plugins/jquery-datatable/extra/js/dataTables.colVis.js"></script>
+  <script src="/plugins/datatables-responsive/js/datatables.responsive.js"></script>
+  <script src="/plugins/datatables-responsive/js/lodash.min.js"></script>
+  <script src="/plugins/footable/js/footable.js"></script>
+  <script src="/plugins/footable/js/footable.filter.js"></script>
+  <script src="/plugins/footable/js/footable.paginate.js"></script>
+  <script src="/plugins/footable/js/footable.sort.js"></script>
+  <script src="/js/datatables.js"></script>
+  <script src="/js/core.js"></script>
+  <script src="/js/app.js"></script>
+
+  <script src="/js/parts/translations.js"></script>
+  <script src="/js/parts/assetTypes.js"></script>
+  <script src="/js/parts/measuringUnits.js"></script>
+  <script src="/js/parts/currencies.js"></script>
+  <script src="/js/parts/marketAssets.js"></script>
+  <script src="/js/parts/rings.js"></script>
+  <script src="/js/parts/assets.js"></script>
+  <script src="/js/parts/orders.js"></script>
+  <script src="/js/parts/assetSession.js"></script>
+  <script src="/js/parts/chat.js"></script>
+  <script src="/js/parts/transactions.js"></script>
+  <script src="/js/parts/time.js"></script>
+  <script src="/js/parts/alerts.js"></script>
+  <script src="/js/parts/notifications.js"></script>
+  <script src="/js/parts/users.js"></script>
+  <script src="/js/parts/journal.js"></script>
+  <script src="/js/parts/initialOrders.js"></script>
+  <script src="/js/parts/widgetToggle.js"></script>
+
+    </body>
+</html>

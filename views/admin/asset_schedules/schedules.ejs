@@ -1,0 +1,378 @@
+    <div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/assets" class="">Active</a>
+			</li>
+			<li>
+				<a href="/admin/asset_schedules/schedules?asset=<%- req.param('asset') %>" class="active"><%- asset.Code %> (<%- req.session.getTranslation(asset.Name) %>) - Pasul <%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'2':'3') %></a>
+			</li>                    
+		</ul>
+	</div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+			</div>
+            <div class="grid-body no-border">
+			<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">	
+					<div id="rootwizard" class="col-md-12">
+						<div class="form-wizard-steps">
+							<ul class="wizard-steps">
+								<li class="">
+									<a href="/admin/assets/edit/<%- typeof asset.ID!='undefined' ? asset.ID : '' %>">
+										<span class="step">1</span>
+										<span class="title">Activ</span>
+									</a>
+								</li>
+								<li class="" id="step-initial-order" <%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'style="display:none"':'') %>>
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/orders/initial?asset='+asset.ID+'"' : '' %>>
+										<span class="step">2</span>
+										<span class="title">Ordin initiator</span>
+									</a>
+								</li>
+								<li class="active">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/asset_schedules/schedules?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'2':'3') %></span>
+										<span class="title">Sedinta activ</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/assets/trade_parameters?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'3':'4') %></span>
+										<span class="title">Parametri tranzactionare</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/clients/asset_clients?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'4':'5') %></span>
+										<span class="title">Clienti</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/documents/asset_documents?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'5':'6') %></span>
+										<span class="title">Documente</span>
+									</a>
+								</li>
+							</ul>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<br/><br/><br/>
+				<input type="hidden" id="ID_AssetSchedule" name="ID_AssetSchedule" value="<%- (typeof item.ID!='undefined' && item.ID) ? item.ID :  ((typeof item.ID_AssetSchedule!='undefined' && item.ID_AssetSchedule) ? item.ID_AssetSchedule : '') %>" />
+			<% if (asset!=null) { %>
+				<input type="hidden" name="ID_Asset" id="ID_Asset" value="<%= asset.ID %>" />
+			<% } else { %>
+              <div class="row column-seperation">
+                <div class="col-md-12">
+                    <div class="row form-row">
+                      <div class="col-md-6">
+						<div class="form-group">
+							<label class="form-label">Activ</label>
+							<div class="controls">
+								<select name="ID_Asset" id="ID_Asset" class="select2 form-control">
+								  <% _.each(req.session.assets,function(asset) { %>
+								  <option value="<%= asset.ID %>" <%- ((typeof item.ID_Asset!='undefined' && item.ID_Asset==asset.ID)?'selected=""':'') %> /><%= req.session.getTranslation(asset.Name) %></option>
+								  <% }); %>
+								</select>
+							</div>
+						</div>
+                      </div>
+                      <div class="col-md-6 p-t-10">
+					  <% /* %>
+						<div class="form-row">
+							<div class="checkbox check-default">
+								<input id="isActive" name="isActive" type="checkbox" value="1" <% if(typeof item.isActive!='undefined' && item.isActive) { %>checked=""<% } %> />
+								<label for="isActive">Activ</label>
+							</div>
+						</div>
+						<% */ %>
+                      </div>
+                    </div>
+					<br />
+                </div>
+              </div>
+			 <% } %>
+              <div class="row column-seperation">
+                <div class="col-md-6">
+					<h4>Orar</h4>            
+                    <div class="row form-row">
+						<div class="col-md-6">
+							<% var now = new Date(); %>
+							<label class="form-label">Data inceput</label>
+							<div class="controls">
+								<div class="input-group m-b-5">
+									<input type="text" class="form-control required" id="StartDate" name="StartDate" data-date-format="dd M yyyy" value="<%- (typeof item.StartDate!='undefined' && item.StartDate ? timeService.formatDate(item.StartDate,'DD MMM YYYY') : timeService.formatDate(now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate(),'DD MMM YYYY')) %>" />
+									<span class="input-group-addon primary">		
+										<span class="arrow"></span>
+										<i class="fa fa-calendar"></i>		
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Data sfarsit</label>
+							<div class="controls">
+								<div class="input-group m-b-5">
+									<input type="text" class="form-control required" id="EndDate" name="EndDate" data-date-format="dd M yyyy" value="<%- (typeof item.EndDate!='undefined' && item.EndDate ? timeService.formatDate(item.EndDate,'DD MMM YYYY') : timeService.formatDate(now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate(),'DD MMM YYYY')) %>" />
+									<span class="input-group-addon primary">		
+										<span class="arrow"></span>
+										<i class="fa fa-calendar"></i>		
+									</span>
+								</div>
+							</div>
+						</div>
+                    </div>
+					<div id="time-schedules">
+						<div class="row form-row">
+							<div class="col-md-6">
+								<label class="form-label">Faza 1</label>
+								<div class="controls">
+									<div class="col-md-6">
+										<div class="input-append bootstrap-timepicker">
+											<input type="text" class="form-control timepicker" name="PreOpeningTime" id="PreOpeningTime" value="<%- (typeof item.PreOpeningTime!='undefined' ? timeService.getTimeFormatted(item.PreOpeningTime) : '') %>" placeholder="00:00" data-placement="top" />
+											<span class="add-on"><i class="fa fa-clock-o"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<label class="form-label">Faza 2</label>
+								<div class="controls">
+									<div class="col-md-6">
+										<div class="input-append bootstrap-timepicker">
+											<input type="text" class="form-control timepicker" name="OpeningTime" id="OpeningTime" value="<%- (typeof item.OpeningTime!='undefined' ? timeService.getTimeFormatted(item.OpeningTime) : '') %>" placeholder="00:00" data-placement="top" />
+											<span class="add-on"><i class="fa fa-clock-o"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row form-row">
+							<div class="col-md-6">
+								<label class="form-label">Faza 3</label>
+								<div class="controls">
+									<div class="col-md-6">
+										<div class="input-append bootstrap-timepicker">
+											<input type="text" class="form-control timepicker" name="PreClosingTime" id="PreClosingTime" value="<%- (typeof item.PreClosingTime!='undefined' ? timeService.getTimeFormatted(item.PreClosingTime) : '') %>" placeholder="00:00" data-placement="bottom" />
+											<span class="add-on"><i class="fa fa-clock-o"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<label class="form-label">Sfarsit</label>
+								<div class="controls">
+									<div class="col-md-6">
+										<div class="input-append bootstrap-timepicker">
+											<input type="text" class="form-control timepicker" name="ClosingTime" id="ClosingTime" value="<%- (typeof item.ClosingTime!='undefined' ? timeService.getTimeFormatted(item.ClosingTime) : '') %>" placeholder="00:00" data-placement="bottom" />
+											<span class="add-on"><i class="fa fa-clock-o"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+                    <div class="row form-row">
+						<div class="col-md-6">
+						<% if(asset.AuctionType == 'simple') { %>
+							<label class="form-label">Delta T (min)</label>
+							<div class="controls">
+								<div class="col-md-6">
+									<input type="text" class="form-control required" name="DeltaT" id="DeltaT" value="<%- (typeof item.DeltaT!='undefined' ? item.DeltaT : '') %>" />
+								</div>
+							</div>
+						<% } %>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Delta T1 (min)</label>
+							<div class="controls">
+								<div class="col-md-6">
+									<input type="text" class="form-control required" name="DeltaT1" id="DeltaT1" value="<%- (typeof item.DeltaT1!='undefined' ? item.DeltaT1 : '') %>" />
+								</div>
+							</div>
+						</div>
+                    </div>
+					<h4>Programare pe zile</h4>            
+					<div class="row form-row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<div class="checkbox check-default">
+									<input id="dayMonday" name="DaysOfWeek_dayMonday" type="checkbox" value="1" <% if((typeof item.dayMonday!='undefined' && item.dayMonday) || (typeof item.DaysOfWeek_dayMonday!='undefined' && item.DaysOfWeek_dayMonday) || (typeof item.dayMonday=='undefined' && typeof item.DaysOfWeek_dayMonday=='undefined' && now.getDay()==1)) { %>checked=""<% } %> />
+									<label for="dayMonday">Luni</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<div class="checkbox check-default">
+									<input id="dayTuesday" name="DaysOfWeek_dayTuesday" type="checkbox" value="1" <% if((typeof item.dayTuesday!='undefined' && item.dayTuesday) || (typeof item.DaysOfWeek_dayTuesday!='undefined' && item.DaysOfWeek_dayTuesday) || (typeof item.dayTuesday=='undefined' && typeof item.DaysOfWeek_dayTuesday=='undefined' && now.getDay()==2)) { %>checked=""<% } %> />
+									<label for="dayTuesday">Marti</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<div class="checkbox check-default">
+									<input id="dayWednesday" name="DaysOfWeek_dayWednesday" type="checkbox" value="1" <% if((typeof item.dayWednesday!='undefined' && item.dayWednesday) || (typeof item.DaysOfWeek_dayWednesday!='undefined' && item.DaysOfWeek_dayWednesday) || (typeof item.dayWednesday=='undefined' && typeof item.DaysOfWeek_dayWednesday=='undefined' && now.getDay()==3)) { %>checked=""<% } %> />
+									<label for="dayWednesday">Miercuri</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<div class="checkbox check-default">
+									<input id="dayThursday" name="DaysOfWeek_dayThursday" type="checkbox" value="1" <% if((typeof item.dayThursday!='undefined' && item.dayThursday) || (typeof item.DaysOfWeek_dayThursday!='undefined' && item.DaysOfWeek_dayThursday) || (typeof item.dayThursday=='undefined' && typeof item.DaysOfWeek_dayThursday=='undefined' && now.getDay()==4)) { %>checked=""<% } %> />
+									<label for="dayThursday">Joi</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<div class="checkbox check-default">
+									<input id="dayFriday" name="DaysOfWeek_dayFriday" type="checkbox" value="1" <% if((typeof item.dayFriday!='undefined' && item.dayFriday) || (typeof item.DaysOfWeek_dayFriday!='undefined' && item.DaysOfWeek_dayFriday) || (typeof item.dayFriday=='undefined' && typeof item.DaysOfWeek_dayFriday=='undefined' && now.getDay()==5)) { %>checked=""<% } %> />
+									<label for="dayFriday">Vineri</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<div class="checkbox check-default">
+									<input id="daySaturday" name="DaysOfWeek_daySaturday" type="checkbox" value="1" <% if((typeof item.daySaturday!='undefined' && item.daySaturday) || (typeof item.DaysOfWeek_daySaturday!='undefined' && item.DaysOfWeek_daySaturday) || (typeof item.daySaturday=='undefined' && typeof item.DaysOfWeek_daySaturday=='undefined' && now.getDay()==6)) { %>checked=""<% } %> />
+									<label for="daySaturday">Sambata</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>&nbsp;</label>
+								<div class="checkbox check-default">
+									<input id="daySunday" name="DaysOfWeek_daySunday" type="checkbox" value="1" <% if((typeof item.daySunday!='undefined' && item.daySunday) || (typeof item.DaysOfWeek_daySunday!='undefined' && item.DaysOfWeek_daySunday) || (typeof item.daySunday=='undefined' && typeof item.DaysOfWeek_daySunday=='undefined' && now.getDay()==0)) { %>checked=""<% } %> />
+									<label for="daySunday">Duminica</label>
+								</div>
+							</div>
+						</div>
+					</div>
+                </div>
+                <div class="col-md-6">
+					<div class="form-row p-t-20">
+						<div class="col-md-6">
+							<div class="checkbox check-default">
+								<input id="isElectronicSession" name="isElectronicSession" type="checkbox" value="1" <% if(typeof item.isElectronicSession=='undefined' || (typeof item.isElectronicSession!='undefined' && item.isElectronicSession)) { %>checked=""<% } %> />
+								<label for="isElectronicSession">Sedinta electronica</label>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="checkbox check-default">
+								<input id="launchAutomatically" name="launchAutomatically" type="checkbox" value="1" <% if(typeof item.launchAutomatically=='undefined' || (typeof item.launchAutomatically!='undefined' && item.launchAutomatically)) { %>checked=""<% } %> />
+								<label for="launchAutomatically">Lansare automata</label>
+							</div>
+						</div>
+					</div>
+					<h4>Validare ordine</h4>
+					<h5>Cantitate</h5>
+					<div class="row form-row">
+						<div class="col-md-6">
+							<label class="form-label">Incrementare cantitate</label>
+							<div class="controls">
+								<div class="col-md-8">
+									<input type="text" class="form-control numeric" name="QuantityStepping" id="QuantityStepping" value="<%- (typeof item.QuantityStepping!='undefined' ? item.QuantityStepping : '') %>" data-a-sep="." data-a-dec="," data-m-dec="5" />
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Cantitate minima</label>
+							<div class="controls">
+								<div class="col-md-8">
+									<input type="text" class="form-control numeric" name="MinQuantity" id="MinQuantity" value="<%- (typeof item.MinQuantity!='undefined' ? item.MinQuantity : '') %>" data-a-sep="." data-a-dec="," data-m-dec="5" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<br/>
+					<h5>Pret</h5>
+					<div class="row form-row">
+						<div class="col-md-6">
+							<label class="form-label">Incrementare pret</label>
+							<div class="controls">
+								<div class="col-md-8">
+									<input type="text" class="form-control numeric" name="PriceStepping" id="PriceStepping" value="<%- (typeof item.PriceStepping!='undefined' ? item.PriceStepping : '') %>" data-a-sep="." data-a-dec="," data-m-dec="5" />
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row form-row">
+						<div class="col-md-12">
+							<div class="controls">
+								<div class="radio">
+									<input type="radio" name="priceValidation" id="price-limit" value="min-max" <%- (typeof item.MinPrice!='undefined' && item.MinPrice) || (typeof item.MaxPrice!='undefined' && item.MaxPrice) || typeof item.MinPrice == 'undefined' ? 'checked=""' : '' %> />
+									<label for="price-limit">Pret minim-maxim</label>
+									<input type="radio" name="priceValidation" id="price-variation" value="variation" <%- (typeof item.MaxPriceVariation!='undefined' && item.MaxPriceVariation) ? 'checked=""' : '' %> />
+									<label for="price-variation">Variatie maxima a pretului</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row form-row" id="price-variation-box" <%- (typeof item.MaxPriceVariation!='undefined' && item.MaxPriceVariation) ? '' : 'style="display:none"' %>>
+						<div class="col-md-6">
+							<label class="form-label">Variatia maxima a pretului</label>
+							<div class="controls">
+								<div class="col-md-6">
+									<input type="number" class="form-control" min="0" max="100" step="any" name="MaxPriceVariation" id="MaxPriceVariation" value="<%- (typeof item.MaxPriceVariation!='undefined' ? item.MaxPriceVariation : '') %>" />
+								</div>
+								<div class="col-md-6 no-padding">
+									<span class="muted">%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row form-row" id="price-limits-box" <%- (typeof item.MinPrice!='undefined' && item.MinPrice) || (typeof item.MaxPrice!='undefined' && item.MaxPrice) || typeof item.MinPrice == 'undefined' ? '' : 'style="display:none"' %>>
+						<div class="col-md-6">
+							<label class="form-label">Pret minim</label>
+							<div class="controls">
+								<div class="col-md-8">
+									<input type="text" class="form-control numeric" name="MinPrice" id="MinPrice" value="<%- (typeof item.MinPrice!='undefined' ? item.MinPrice : '') %>" data-v-min="-9999999" data-a-sep="." data-a-dec="," data-m-dec="5" />
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Pret maxim</label>
+							<div class="controls">
+								<div class="col-md-8">
+									<input type="text" class="form-control numeric" name="MaxPrice" id="MaxPrice" value="<%- (typeof item.MaxPrice!='undefined' ? item.MaxPrice : '') %>" data-v-min="-9999999" data-a-sep="." data-a-dec="," data-m-dec="5" />
+								</div>
+							</div>
+						</div>
+					</div>
+                </div>
+              </div>              	
+				<div class="form-actions">
+					<div class="text-center">
+					<% if(typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0) { %>
+						<a class="btn btn-white btn-cons" href="/admin/assets/edit/<%- asset.ID %>">Inapoi</a>
+					<% } else { %>
+						<a class="btn btn-white btn-cons" href="/admin/orders/initial?asset=<%- asset && typeof asset.ID!='undefined' ? asset.ID : '' %>">Inapoi</a>
+					<% } %>
+					  <a class="btn btn-grey btn-cons" href="/admin/assets">Renunta</a>
+					  <button class="btn btn-primary btn-cons" type="submit" name="submit" value="save"><i class="icon-ok"></i> Salveaza</button>
+					  <button class="btn btn-success btn-cons" type="submit" name="Validate" value="1"><i class="icon-ok"></i>Valideaza</button>
+					</div>
+				</div>
+			</form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

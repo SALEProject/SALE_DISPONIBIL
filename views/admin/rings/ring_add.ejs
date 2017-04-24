@@ -1,0 +1,720 @@
+	<div class="content">
+	  	<div class="page-title">
+			<ul class="breadcrumb">
+				<li>
+					<a href="/admin"><i class="fa fa-home"></i></a>
+				</li>
+				<li>
+					<a href="/admin/rings" class="">Ringuri</a>
+				</li>
+				<li>
+					<a href="/admin/rings/add" class="active"><%- (req.param('id')?'Modificare':'Adaugare') %> ring</a>
+				</li>
+			</ul>
+	  	</div>
+	  	<div class="row">
+			<div class="col-md-12">
+			  	<div class="grid simple">
+					<div class="grid-title no-border">
+						<%- toolsService.getFlashMessage(req.flash()) %>
+					</div>
+					<div class="grid-body no-border">
+						<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">
+						  	<div class="row column-seperation">
+								<div class="col-md-6">
+									<h4>Detalii ring</h4>
+									<div class="row form-row">
+									  	<div class="col-md-12">
+											<label for="Name">Nume RO</label>
+											<div class="widget-col">
+												<input name="Name_RO" id="Name_RO" type="text" class="form-control required max-length" value="<%- (typeof item.Name!='undefined' ? toolsService.getLangTranslation(item.Name,'RO') : typeof item.Name_RO !='undefined' ? item.Name_RO : '') %>" />
+											</div>
+									  	</div>
+									</div>
+									<div class="row form-row">
+									  	<div class="col-md-12">
+											<label for="Name">Nume EN</label>
+											<div class="widget-col">
+												<input name="Name_EN" id="Name_EN" type="text" class="form-control required max-length" value="<%- (typeof item.Name!='undefined' ? toolsService.getLangTranslation(item.Name,'EN') : typeof item.Name_EN != 'undefined' ? item.Name_EN : '') %>" />
+											</div>
+									  	</div>
+									</div>
+									<div class="row form-row">
+									  	<div class="col-md-3">
+											<label for="Code">Cod</label>
+											<div class="widget-col">
+												<input name="Code" id="Code" type="text" class="form-control required max-length" value="<%- (typeof item.Code!='undefined'?item.Code:'') %>" />
+											</div>
+									  	</div>
+									  	<div class="col-md-3">
+											<label for="">&nbsp;</label>
+											<div class="widget-col">
+												<div class="checkbox check-default">
+													<input id="isActive" name="isActive" type="checkbox" value="1" <% if(typeof item.isActive!='undefined' && item.isActive) { %>checked=""<% } %> />
+													<label for="isActive">Activ pe site</label>
+												</div>
+											</div>
+									  	</div>
+									</div>
+									<div class="row form-row m-b-10">
+									  <div class="col-md-12">
+										<label for="Description_RO">Descriere RO</label>
+										<div class="widget-col">
+											<textarea name="Description_RO" id="Description_RO" class="form-control"><%- (typeof item.Description!='undefined' ? toolsService.getLangTranslation(item.Description,'RO')  : typeof item.Description_RO != 'undefined' ? item.Description_RO : '') %></textarea>
+										</div>
+									  </div>
+									</div>
+									<div class="row form-row m-b-10">
+									  <div class="col-md-12">
+										<label for="Description_EN">Descriere EN</label>
+										<div class="widget-col">
+											<textarea name="Description_EN" id="Description_EN" class="form-control"><%- (typeof item.Description!='undefined' ? toolsService.getLangTranslation(item.Description,'EN')  : typeof item.Description_EN != 'undefined' ? item.Description_EN : '') %></textarea>
+										</div>
+									  </div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<h4>Validare ordine</h4>
+									<div class="row form-row">
+										<div class="col-md-6">
+											<label class="form-label">Incrementare cantitate</label>
+											<div class="controls">
+												<div class="col-md-8">
+													<input type="text" class="form-control numeric" name="QuantityStepping" id="QuantityStepping" value="<%- (typeof item!='undefined'?item.QuantityStepping:'') %>" data-a-sep="." data-a-dec="," data-m-dec="5" />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<label class="form-label">Cantitate minima</label>
+											<div class="controls">
+												<div class="col-md-8">
+													<input type="text" class="form-control numeric" name="MinQuantity" id="MinQuantity" value="<%- (typeof item!='undefined'?item.MinQuantity:'') %>" data-a-sep="." data-a-dec="," data-m-dec="5" />
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row form-row">
+										<div class="col-md-6">
+											<label class="form-label">Incrementare pret</label>
+											<div class="controls">
+												<div class="col-md-8">
+													<input type="text" class="form-control numeric" name="PriceStepping" id="PriceStepping" value="<%- (typeof item!='undefined'?item.PriceStepping:'') %>" data-a-sep="." data-a-dec="," data-m-dec="5" />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<label class="form-label">Variatia maxima a pretului</label>
+											<div class="controls">
+												<div class="form-group col-md-6">
+													<input type="number" class="form-control" min="0" max="100" step="any" name="MaxPriceVariation" id="MaxPriceVariation" value="<%- (typeof item!='undefined'?item.MaxPriceVariation:'') %>" />
+												</div>
+												<div class="col-md-6 no-padding">
+													<span class="muted">%</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<% /* %>
+									<div class="row form-row">
+										<div class="col-md-6">
+											<label class="form-label">Pret minim</label>
+											<div class="controls">
+												<div class="col-md-8">
+													<input type="text" class="form-control numeric" name="MinPrice" id="MinPrice" value="<%- (typeof item!='undefined'?item.MinPrice:'') %>" data-a-sep="." data-a-dec="," data-m-dec="5" />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<label class="form-label">Pret maxim</label>
+											<div class="controls">
+												<div class="col-md-8">
+													<input type="text" class="form-control numeric" name="MaxPrice" id="MaxPrice" value="<%- (typeof item!='undefined'?item.MaxPrice:'') %>" data-a-sep="." data-a-dec="," data-m-dec="5" />
+												</div>
+											</div>
+										</div>
+									</div>
+									<% */ %>
+									<br />
+									<div class="checkbox check-default">
+										<input id="hasSchedule" name="hasSchedule" type="checkbox" value="1" <%- (typeof item.hasSchedule!='undefined' && item.hasSchedule) ? 'checked=""' : '' %> />
+										<label for="hasSchedule"><h4 style="margin-top:0">Activeaza orar</h4></label>
+									</div>
+									<div id="ring-schedule" style="<%- (typeof item!='undefined' && item.hasSchedule) ? 'display:block' : 'display:none' %>">
+										<div id="time-schedules">
+											<div class="row form-row">
+												<div class="col-md-6">
+													<label class="form-label">Data inceput</label>
+													<div class="controls">
+														<div class="input-group m-b-5">
+															<input type="text" class="form-control" id="StartDate" name="StartDate" data-date-format="dd M yyyy" value="<%- (typeof item.StartDate!='undefined' && item.StartDate ? timeService.formatDate(item.StartDate,'DD MMM YYYY') : '') %>" />
+															<span class="input-group-addon primary">
+																<span class="arrow"></span>
+																<i class="fa fa-calendar"></i>
+															</span>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">Data sfarsit</label>
+													<div class="controls">
+														<div class="input-group m-b-5">
+															<input type="text" class="form-control" id="EndDate" name="EndDate" data-date-format="dd M yyyy" value="<%- (typeof item.EndDate!='undefined' && item.EndDate ? timeService.formatDate(item.EndDate,'DD MMM YYYY') : '') %>" />
+															<span class="input-group-addon primary">
+																<span class="arrow"></span>
+																<i class="fa fa-calendar"></i>
+															</span>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row form-row">
+												<div class="col-md-6">
+													<label class="form-label">Faza 1</label>
+													<div class="controls">
+														<div class="col-md-6">
+															<div class="input-append bootstrap-timepicker">
+																<input type="time" class="form-control timepicker" name="PreOpeningTime" id="PreOpeningTime" value="<%- (typeof item.PreOpeningTime!='undefined' && item.PreOpeningTime ? timeService.getTimeFormatted(item.PreOpeningTime) : '') %>" placeholder="HH:mm" />
+																<span class="add-on"><i class="fa fa-clock-o"></i></span>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">Faza 2</label>
+													<div class="controls">
+														<div class="col-md-6">
+															<div class="input-append bootstrap-timepicker">
+																<input type="time" class="form-control timepicker" name="OpeningTime" id="OpeningTime" value="<%- (typeof item.OpeningTime!='undefined' && item.OpeningTime ? timeService.getTimeFormatted(item.OpeningTime) : '') %>" placeholder="HH:mm" />
+																<span class="add-on"><i class="fa fa-clock-o"></i></span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row form-row">
+												<div class="col-md-6">
+													<label class="form-label">Faza 3</label>
+													<div class="controls">
+														<div class="col-md-6">
+															<div class="input-append bootstrap-timepicker">
+																<input type="time" class="form-control timepicker" name="PreClosingTime" id="PreClosingTime" value="<%- (typeof item.PreClosingTime!='undefined' && item.PreClosingTime ? timeService.getTimeFormatted(item.PreClosingTime) : '') %>" placeholder="HH:mm" />
+																<span class="add-on"><i class="fa fa-clock-o"></i></span>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<label class="form-label">Sfarsit</label>
+													<div class="controls">
+														<div class="col-md-6">
+															<div class="input-append bootstrap-timepicker">
+																<input type="time" class="form-control timepicker" name="ClosingTime" id="ClosingTime" value="<%- (typeof item.ClosingTime!='undefined' && item.ClosingTime ? timeService.getTimeFormatted(item.ClosingTime) : '') %>" placeholder="HH:mm" />
+																<span class="add-on"><i class="fa fa-clock-o"></i></span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<h4>Programare pe zile</h4>
+										<div class="row form-row">
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>&nbsp;</label>
+													<div class="checkbox check-default">
+														<input id="dayMonday" name="DaysOfWeek_dayMonday" type="checkbox" value="1" <% if((typeof item.dayMonday!='undefined' && item.dayMonday) || (typeof item.DaysOfWeek_dayMonday!='undefined' && item.DaysOfWeek_dayMonday)) { %>checked=""<% } %> />
+														<label for="dayMonday">Luni</label>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>&nbsp;</label>
+													<div class="checkbox check-default">
+														<input id="dayTuesday" name="DaysOfWeek_dayTuesday" type="checkbox" value="1" <% if((typeof item.dayTuesday!='undefined' && item.dayTuesday) || (typeof item.DaysOfWeek_dayTuesday!='undefined' && item.DaysOfWeek_dayTuesday)) { %>checked=""<% } %> />
+														<label for="dayTuesday">Marti</label>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>&nbsp;</label>
+													<div class="checkbox check-default">
+														<input id="dayWednesday" name="DaysOfWeek_dayWednesday" type="checkbox" value="1" <% if((typeof item.dayWednesday!='undefined' && item.dayWednesday) || (typeof item.DaysOfWeek_dayWednesday!='undefined' && item.DaysOfWeek_dayWednesday)) { %>checked=""<% } %> />
+														<label for="dayWednesday">Miercuri</label>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>&nbsp;</label>
+													<div class="checkbox check-default">
+														<input id="dayThursday" name="DaysOfWeek_dayThursday" type="checkbox" value="1" <% if((typeof item.dayThursday!='undefined' && item.dayThursday) || (typeof item.DaysOfWeek_dayThursday!='undefined' && item.DaysOfWeek_dayThursday)) { %>checked=""<% } %> />
+														<label for="dayThursday">Joi</label>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>&nbsp;</label>
+													<div class="checkbox check-default">
+														<input id="dayFriday" name="DaysOfWeek_dayFriday" type="checkbox" value="1" <% if((typeof item.dayFriday!='undefined' && item.dayFriday) || (typeof item.DaysOfWeek_dayFriday!='undefined' && item.DaysOfWeek_dayFriday)) { %>checked=""<% } %> />
+														<label for="dayFriday">Vineri</label>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>&nbsp;</label>
+													<div class="checkbox check-default">
+														<input id="daySaturday" name="DaysOfWeek_daySaturday" type="checkbox" value="1" <% if((typeof item.daySaturday!='undefined' && item.daySaturday) || (typeof item.DaysOfWeek_daySaturday!='undefined' && item.DaysOfWeek_daySaturday)) { %>checked=""<% } %> />
+														<label for="daySaturday">Sambata</label>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>&nbsp;</label>
+													<div class="checkbox check-default">
+														<input id="daySunday" name="DaysOfWeek_daySunday" type="checkbox" value="1" <% if((typeof item.daySunday!='undefined' && item.daySunday) || (typeof item.DaysOfWeek_daySunday!='undefined' && item.DaysOfWeek_daySunday)) { %>checked=""<% } %> />
+														<label for="daySunday">Duminica</label>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<br/>
+								</div>
+						  	</div>
+							<div class="form-actions">
+								<div class="pull-left">
+								  <button class="btn btn-primary btn-cons" type="submit"><i class="icon-ok"></i> Salveaza</button>
+								  <a class="btn btn-white btn-cons" href="/admin/rings">Renunta</a>
+								</div>
+							</div>
+						</form>
+					</div>
+					<% if(typeof item.ID!='undefined') { %>
+						<ul class="nav nav-tabs m-t-20 tabs-nav">
+							<li class="active"><a href="#tab-clients">Clienti</a></li>
+							<li><a href="#tab-users">Administratori</a></li>
+							<li><a href="#tab-assetTypes">Active Suport</a></li>
+							<li><a href="#tab-assets">Active</a></li>
+							<li><a href="#tab-warranties">Tipuri Garantii</a></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="tab-clients">
+								<div class="col-md-12">
+									<div class="grid-body no-border">
+										<button class="btn btn-info" data-toggle="modal" data-target="#clients-modal">Adauga clienti la acest ring</button>
+										<div class="pull-right p-b-20 row">
+											<div class="col-md-6">
+												<label>Filtreaza:</label>
+											</div>
+											<div class="col-md-6">
+												<input id="ring_client-table-filter" type="text" class="form-control input-sm" />
+											</div>
+										</div>
+										<table class="table table-hover table-condensed admin-table footable" id="ring-clients-table" data-filter="#ring_client-table-filter">
+											<thead>
+												<tr>
+													<th class="v-align-middle" style="width:5%">Cumparare</th>
+													<th class="v-align-middle" style="width:5%">Vanzare</th>
+													<th style="width:5%">Cod</th>
+													<th style="width:22%">Nume</th>
+													<th style="width:15%">Cod fiscal</th>
+													<th style="width:15%">Numar inregistrare</th>
+													<th style="width:21%">Nume companie</th>
+												</tr>
+											</thead>
+											<tbody>
+											<% if(typeof req.session.ringClients!='undefined' && req.session.ringClients.length>0) {
+												_.each(req.session.ringClients,function(client) { %>
+													<tr>
+														<td class="v-align-middle">
+															<div class="checkbox check-default">
+																<input id="canBuy_<%- client.ID %>" class="client2ringCanBuy" name="" type="checkbox" value="1" data-id="<%= client.ID %>" data-ring-id="<%- req.param('id') %>" <% if(client.canBuy) { %>checked=""<% } %> />
+																<label for="canBuy_<%- client.ID %>"><%  %></label>
+															</div>
+														</td>
+														<td class="v-align-middle">
+															<div class="checkbox check-default">
+																<input id="canSell_<%- client.ID %>" class="client2ringCanSell" name="" type="checkbox" value="1" data-id="<%= client.ID %>" data-ring-id="<%- req.param('id') %>" <% if(client.canSell) { %>checked=""<% } %> />
+																<label for="canSell_<%- client.ID %>"><%  %></label>
+															</div>
+														</td>
+														<td class="v-align-middle"><%= client.Code %></td>
+														<td class="v-align-middle bold"><%= client.Name %></td>
+														<td class="v-align-middle"><span class="muted"><%= client.FiscalCode %></span></td>
+														<td class="v-align-middle"><span class="muted"><%= client.RegisterCode %></span></td>
+														<td class="v-align-middle"><span class="muted"><%= client.CompanyName %></span></td>
+													</tr>
+												<% }); %>
+											<% } %>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="7">
+														<div class="pagination pagination-centered hide-if-no-paging"></div>
+													</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-users">
+								<div class="col-md-12">
+									<div class="grid-body no-border">
+									<% if(typeof req.session.users!='undefined' && req.session.users.length>0) {
+										_.each(req.session.users,function(user) { %>
+										<% if(accessService.isRingAdministrator(user)) { %>
+											<div class="col-md-4">
+												<div class="checkbox check-default">
+													<input id="ring_user_<%- user.ID %>" class="user2ring" name="" type="checkbox" value="1" data-id="<%= user.ID %>" data-ring-id="<%- req.param('id') %>" <% if(typeof req.session.ringUsers != 'undefined' && toolsService.searchItemInArray(user.ID,req.session.ringUsers,'ID_User')>-1) { %>checked=""<% } %> />
+													<label for="ring_user_<%- user.ID %>"><%- user.FirstName+' '+user.LastName %></label>
+												</div>
+											</div>
+										<% } %>
+										<% }); %>
+									<% } %>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-assetTypes">
+								<div class="col-md-12">
+									<div class="grid-body no-border">
+										<a class="btn btn-info" href="/admin/asset_types/add?ring=<%- req.param('id') %>">Adauga activ suport la acest ring</a>
+										<div class="pull-right p-b-20 row">
+											<div class="col-md-6">
+												<label>Filtreaza:</label>
+											</div>
+											<div class="col-md-6">
+												<input id="asset_type-table-filter" type="text" class="form-control input-sm" />
+											</div>
+										</div>
+										<table class="table table-hover table-condensed admin-table footable" id="ring-assetTypes-table" data-filter="#asset_type-table-filter">
+											<thead>
+												<tr>
+													<th style="width:5%">Cod</th>
+													<th style="width:20%">Nume</th>
+													<th style="width:15%">Unitate de masura</th>
+													<th style="width:15%">Valuta</th>
+													<th style="width:5%" data-sort-ignore="true">&nbsp;</th>
+													<th style="width:5%" data-sort-ignore="true">&nbsp;</th>
+													<th style="width:5%" data-sort-ignore="true">&nbsp;</th>
+												</tr>
+											</thead>
+											<tbody>
+											<% if(typeof sails.storage.assetTypes!='undefined' && sails.storage.assetTypes.length>0) {
+												_.each(sails.storage.assetTypes,function(assetType) {
+													if(assetType.ID_Ring==req.param('id')){ %>
+														<tr>
+															<td class="v-align-middle"><%= assetType.Code %></td>
+															<td class="v-align-middle bold"><%= req.session.getTranslation(assetType.Name) %></td>
+															<td class="v-align-middle"><span class="muted"><%- req.session.getTranslation(toolsService.getArrayItem(sails.storage.measuringUnits,assetType.ID_MeasuringUnit,'Name')) %></span></td>
+															<td class="v-align-middle"><span class="muted"><%- req.session.getTranslation(toolsService.getArrayItem(sails.storage.currencies,assetType.ID_Currency,'Name')) %></span></td>
+															<td><a href="/admin/assets?asset_type=<%= assetType.ID %>" class="action-icon btn btn-small btn-primary" title="Adauga activ"><i class="fa fa-tasks"></i></a></td>
+															<td><a href="/admin/asset_types/edit/<%= assetType.ID %>?ring=<%- req.param('id') %>" class="action-icon btn btn-small btn-success" title="Editeaza"><i class="fa fa-edit"></i></a></td>
+															<td><a href="/admin/asset_types/delete/<%- assetType.ID %>?ring=<%- req.param('id') %>" title="Sterge" class="action-icon delete-confirm btn btn-small btn-danger"><i class="fa fa-trash-o"></i></a></td>
+														</tr>
+													<% } %>
+												<% }); %>
+											<% } %>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="7">
+														<div class="pagination pagination-centered hide-if-no-paging"></div>
+													</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-assets">
+								<div class="col-md-12">
+									<div class="grid-body no-border">
+										<a class="btn btn-info" href="/admin/assets/add?ring=<%- req.param('id') %>">Adauga activ la acest ring</a>
+										<div class="pull-right p-b-20 row">
+											<div class="col-md-6">
+												<label>Filtreaza:</label>
+											</div>
+											<div class="col-md-6">
+												<input id="asset-table-filter" type="text" class="form-control input-sm" />
+											</div>
+										</div>
+										<table class="table table-hover table-condensed admin-table footable" id="ring-assets-table" data-filter="#asset-table-filter">
+											<thead>
+												<tr>
+													<th class="v-align-middle" style="width:25%">Nume</th>
+													<th class="v-align-middle" style="width:10%">Cod</th>
+													<th class="v-align-middle" style="width:5%">Activ</th>
+													<th class="v-align-middle" style="width:5%">Sedinta electronica</th>
+													<th class="v-align-middle" style="width:5%">Directie</th>
+													<th class="v-align-middle" style="width:5%">Client</th>
+													<th class="v-align-middle" style="width:5%">Valabilitate</th>
+													<th class="v-align-middle" style="width:5%">&nbsp;</th>
+													<th class="v-align-middle" style="width:5%">&nbsp;</th>
+													<th class="v-align-middle" style="width:5%">&nbsp;</th>
+													<th class="v-align-middle" style="width:5%">&nbsp;</th>
+												</tr>
+											</thead>
+											<tbody>
+												<% if(req.session.ringAssets.length>0) { _.each(req.session.ringAssets,function(asset) { %>
+													<% if(asset.ID_Ring==item.ID) { %>
+												<tr>
+													<td class="v-align-middle"><%= req.session.getTranslation(asset.Name) %></td>
+													<td class="v-align-middle"><%= asset.Code %></td>
+													<td class="v-align-middle"><%- (asset.isActive?'Da':'Nu') %></td>
+													<td class="v-align-middle"><%- asset.isElectronicSession ? 'Da' : 'Nu' %></td>
+													<td class="v-align-middle"><%- asset.ID_InitialOrder ? (asset.Direction=='B' ? 'Cump.' : 'Vanz.') : 'Dublu comp.' %></td>
+													<td class="v-align-middle"><%- asset.ID_InitialOrder && typeof req.session.clients[asset.ID_Client] != 'undefined' ? req.session.clients[asset.ID_Client].ClientName + ' (' + req.session.clients[asset.ID_Client].Code + ')': '' %></td>
+													<td class="v-align-middle"><%- asset.ExpirationDate ? timeService.formatDate(asset.ExpirationDate,'DD MMM YYYY') : '' %></td>
+													<!--added by Alex on 20150510 -->
+													<td class="v-align-middle ">
+														<div class="btn-group">
+															<a class="btn btn-small dropdown-toggle btn-primary" data-toggle="dropdown" href="#">Raport <span class="caret"></span> </a>
+															<ul class="dropdown-menu">
+																<li><a href="/admin/reports/assets/participants/<%= asset.ID %>">Participanti la sedinta</a></li>
+																<li><a href="/admin/reports/assets/orders/<%= asset.ID %>">Ordine</a></li>
+																<li><a href="/admin/reports/assets/transactions/<%= asset.ID %>">Tranzactii</a></li>
+																<li><a href="/admin/reports/assets/warranties/<%= asset.ID %>">Garantii</a></li>
+																<li><a href="/admin/reports/assets/documents/<%= asset.ID %>">Documente</a></li>
+																<li><a href="/admin/reports/assets/quotes/<%= asset.ID %>">Cotatii</a></li>
+																<li><a href="/admin/reports/assets/tradeparams/<%= asset.ID %>">Parametrii tranzactionare</a></li>
+															</ul>
+														</div>
+													</td>
+													<!----------------------------->
+													<td><a href="/admin/assets/duplicate/<%= asset.ID %>" class="action-icon btn btn-small btn-demo-space" title="Duplica ordin"><i class="fa fa-external-link"></i></a></td>
+													<td><a href="/admin/assets/edit/<%= asset.ID %>" class="action-icon btn btn-small btn-success" title="Editeaza"><i class="fa fa-edit"></i></a></td>
+													<td><a href="/admin/assets/delete/<%- asset.ID %>" title="Sterge" class="action-icon delete-confirm btn btn-small btn-danger"><i class="fa fa-trash-o"></i></a></td>
+												</tr>
+													<% } %>
+												<% }); } %>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="7">
+														<div class="pagination pagination-centered hide-if-no-paging"></div>
+													</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-warranties">
+								<div class="col-md-12">
+									<div class="grid-body no-border">
+										<button class="btn btn-info" data-toggle="modal" data-target="#warrantytypes-modal">Adauga tipuri de garantii la acest ring</button>
+										<div class="pull-right p-b-20 row">
+											<div class="col-md-6">
+												<label>Filtreaza:</label>
+											</div>
+											<div class="col-md-6">
+												<input id="ring_client-table-filter" type="text" class="form-control input-sm" />
+											</div>
+										</div>
+										<table class="table table-hover table-condensed admin-table footable warrantyTypesPriority" id="ring-warrantytypes-table" data-filter="#ring_client-table-filter">
+											<thead>
+												<tr>
+													<th class="v-align-middle" style="width:5%">Selectat</th>
+													<th style="width:5%">Cod</th>
+													<th style="width:22%">Nume</th>
+													<th style="width:15%">Disponibila pentru Perioada</th>
+													<th style="width:15%">Disponibila pentru Activ</th>
+													<th style="width:15%">Prioritate</th>
+												</tr>
+											</thead>
+											<tbody>
+											<% if(typeof req.session.ringWarrantyTypes!='undefined' && req.session.ringWarrantyTypes.length>0) {
+												_.each(req.session.ringWarrantyTypes,function(warrantyType) { %>
+													<tr id="<%= warrantyType.Priority %>">
+														<td class="v-align-middle">
+															<div class="checkbox check-default">
+																<input id="set_<%- warrantyType.ID_WarrantyType %>" class="setWarrantyType2Ring" name="" type="checkbox" value="1" data-id="<%= warrantyType.ID_WarrantyType %>" data-ring-id="<%- req.param('id') %>" checked="" />
+																<label for="set_<%- warrantyType.ID_WarrantyType %>"><%  %></label>
+															</div>
+														</td>
+														<td class="v-align-middle"><%= warrantyType.Code %></td>
+														<td class="v-align-middle bold"><%= toolsService.getLangTranslation(warrantyType.Name,'RO') %></td>
+														<td class="v-align-middle"><span class="muted"><%= warrantyType.isAvailable4Period %></span></td>
+														<td class="v-align-middle"><span class="muted"><%= warrantyType.isAvailable4Asset %></span></td>
+														<td class="v-align-middle"><button href="/admin/rings/setWarrantyType2RingPriority?ID_Ring=<%= item.ID %>&ID_WarrantyType=<%= warrantyType.ID_WarrantyType %>&Direction=up&CurrentPriority=<%= warrantyType.Priority %>"
+														data-id_warrantytype="<%= warrantyType.ID_WarrantyType %>"
+														data-id_ring="<%= item.ID %>"
+														data-direction="up"
+														data-currentpriority="<%= warrantyType.Priority %>"
+														class="action-icon btn btn-small btn-primary setWarrantyType2RingPriority" title="Vezi active pe ring"><i class="fa fa-arrow-up"></i></button>
+
+														<button href="/admin/rings/setWarrantyType2RingPriority?ID_Ring=<%= item.ID %>&ID_WarrantyType=<%= warrantyType.ID_WarrantyType %>&Direction=down&CurrentPriority=<%= warrantyType.Priority %>"
+
+														data-id_warrantytype="<%= warrantyType.ID_WarrantyType %>"
+														data-id_ring="<%= item.ID %>"
+														data-direction="down"
+														data-currentpriority="<%= warrantyType.Priority %>"
+														 class="action-icon btn btn-small btn-primary setWarrantyType2RingPriority" title="Jos"><i class="fa fa-arrow-down"></i></button>
+														</td>
+													</tr>
+												<% }); %>
+											<% } %>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="7">
+														<div class="pagination pagination-centered hide-if-no-paging"></div>
+													</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					<% } %>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal wide fade" id="clients-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          	<div class="modal-content">
+                <div class="modal-header">
+                  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                  	<h4 id="myModalLabel" class="semi-bold">Clienti</h4>
+                </div>
+                <div class="modal-body">
+					<div class="pull-right p-b-20 row">
+						<div class="col-md-6">
+							<label>Filtreaza:</label>
+						</div>
+						<div class="col-md-6">
+							<input id="table-filter" type="text" class="form-control input-sm" />
+						</div>
+					</div>
+					<table class="table table-hover table-condensed admin-table footable" id="clients-table" data-filter="#table-filter">
+						<thead>
+							<tr>
+								<th class="v-align-middle" style="width:5%">Cumparare</th>
+								<th class="v-align-middle" style="width:5%">Vanzare</th>
+								<th style="width:10%">Cod</th>
+								<th style="width:22%">Nume</th>
+								<th style="width:15%">Cod fiscal</th>
+								<th style="width:15%">Numar inregistrare</th>
+								<th style="width:21%">Nume companie</th>
+							</tr>
+						</thead>
+						<tbody>
+						<% if(typeof req.session.clients!='undefined' && Object.keys(req.session.clients).length>0) {
+							_.each(req.session.clients,function(client) { %>
+								<% if(typeof req.session.ringClients=='undefined' || toolsService.searchIdInArray(client.ID,req.session.ringClients)==-1) { %>
+									<tr>
+										<td class="v-align-middle">
+											<div class="checkbox check-default">
+												<input id="canBuy_<%- client.ID %>" class="client2ringCanBuy" name="" type="checkbox" value="1" data-id="<%= client.ID %>" data-ring-id="<%- req.param('id') %>" />
+												<label for="canBuy_<%- client.ID %>"><%  %></label>
+											</div>
+										</td>
+										<td class="v-align-middle">
+											<div class="checkbox check-default">
+												<input id="canSell_<%- client.ID %>" class="client2ringCanSell" name="" type="checkbox" value="1" data-id="<%= client.ID %>" data-ring-id="<%- req.param('id') %>" />
+												<label for="canSell_<%- client.ID %>"><%  %></label>
+											</div>
+										</td>
+										<td class="v-align-middle"><%= client.Code %></td>
+										<td class="v-align-middle bold"><%= client.ClientName %></td>
+										<td class="v-align-middle"><span class="muted"><%= client.FiscalCode %></span></td>
+										<td class="v-align-middle"><span class="muted"><%= client.RegisterCode %></span></td>
+										<td class="v-align-middle"><span class="muted"><%= client.CompanyName %></span></td>
+									</tr>
+								<% } %>
+							<% }); %>
+						<% } %>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="7">
+									<div class="pagination pagination-centered hide-if-no-paging"></div>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+          	</div>
+          	<!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div class="modal wide fade" id="warrantytypes-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          	<div class="modal-content">
+                <div class="modal-header">
+                  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                  	<h4 id="myModalLabel" class="semi-bold">Tipuri Garantii</h4>
+                </div>
+                <div class="modal-body">
+					<div class="pull-right p-b-20 row">
+						<div class="col-md-6">
+							<label>Filtreaza:</label>
+						</div>
+						<div class="col-md-6">
+							<input id="table-filter" type="text" class="form-control input-sm" />
+						</div>
+					</div>
+					<table class="table table-hover table-condensed admin-table footable" id="warrantytypes-table" data-filter="#table-filter">
+						<thead>
+							<tr>
+								<th style="width:25%"></th>
+								<th style="width:25%">Cod</th>
+								<th style="width:25%">Nume</th>
+								<th style="width:25%">Disponibila pentru Perioada</th>
+								<th style="width:25%">Disponibila pentru Activ</th>
+							</tr>
+						</thead>
+						<tbody>
+						<% if(typeof req.session.warrantyTypes!='undefined' && req.session.warrantyTypes.length>0) {
+							_.each(req.session.warrantyTypes,function(warrantyType) { %>
+								<% if(typeof req.session.ringWarrantyTypes=='undefined' || toolsService.searchIdInArray(warrantyType.ID,req.session.ringWarrantyTypes)==-1) {
+									%>
+									<tr>
+										<td class="v-align-middle">
+											<div class="checkbox check-default">
+												<input id="set_<%- warrantyType.ID %>" class="setWarrantyType2Ring" name="" type="checkbox" value="1" data-id="<%= warrantyType.ID %>" data-ring-id="<%- req.param('id') %>"  />
+												<label for="set_<%- warrantyType.ID %>"><%  %></label>
+											</div>
+										</td>
+										<td class="v-align-middle"><%= warrantyType.Code %></td>
+										<td class="v-align-middle bold"><%= toolsService.getLangTranslation(warrantyType.Name,'RO') %></td>
+										<td class="v-align-middle"><span class="muted"><%= warrantyType.isAvailable4Period %></span></td>
+										<td class="v-align-middle"><span class="muted"><%= warrantyType.isAvailable4Asset %></span></td>
+									</tr>
+								<% } %>
+							<% }); %>
+						<% } %>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="7">
+									<div class="pagination pagination-centered hide-if-no-paging"></div>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+          	</div>
+          	<!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->

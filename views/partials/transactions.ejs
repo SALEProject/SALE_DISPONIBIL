@@ -1,0 +1,24 @@
+<div class="tile m-b-10 toggleable-widget" id="transactions-container">
+	<div class="tile-title">
+		<div class="controller">
+			<a href="" class="collapse pull-right m-l-15">&nbsp;</a>
+		</div>
+		<h3 class="m-t-0 p-r-20"><%- req.session.getTranslation('My_transactions_for_today') %></h3>
+	</div>
+	<div class="tile-body">
+		<table class="table no-more-tables no-margin tablesorter" id="transaction-list" data-prototype="<%= '<tr id="transaction-__ID__"><td class="v-align-middle trans-hour">__TIME__</td><td class="v-align-middle"><span class="__DIRECTION_LABEL__ semi-bold">__DIRECTION_STRING__</span></td><td class="v-align-middle">__ASSET__</td><td class="v-align-middle">__QUANTITY_NO__</td><td class="v-align-middle">__PRICE_NO__</td></tr>' %>">
+			<thead>
+				<tr>
+					<th style="width:5%" class="trans-hour"><%- req.session.getTranslation('Hour') %></th>
+					<th style="width:5%" class="{sorter:\'text\'}"><%- req.session.getTranslation('Type') %></th>
+					<th style="width:20%" class="{sorter: false} no-sort"><%- req.session.getTranslation('Asset') %></th>
+					<th style="width:20%"><%- req.session.getTranslation('Quant.') %></th>
+					<th style="width:20%" class=""><%- req.session.getTranslation('Price') %></th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<div class="text-center padding-20 loader" style="display:none"><img src="/img/loader-white.gif"></div>
+	</div>
+</div>

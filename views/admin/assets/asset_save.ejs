@@ -1,0 +1,302 @@
+<script>
+var assetTypes = <%- JSON.stringify(at) %>;
+</script>
+    <div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/assets" class="">Active</a>
+			</li>
+			<li>
+				<a href="/admin/assets/<%- (req.param('id') ? 'edit/'+req.param('id') : 'add') %>" class="active"><%- (req.param('id') ? item.Code + ' (' + req.session.getTranslation(item.Name) + ')' : 'Adaugare activ') %> - Pasul 1</a>
+			</li>
+		</ul>
+	</div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+			</div>
+            <div class="grid-body no-border">
+			<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">
+				<input type="hidden" id="ID_Asset" value="<%- typeof item.ID!='undefined' ? item.ID : '' %>" />
+					<div id="rootwizard" class="col-md-12">
+						<div class="form-wizard-steps">
+							<ul class="wizard-steps">
+								<li class="active">
+									<a href="/admin/assets/<%- typeof item.ID!='undefined' ? 'edit/'+item.ID : 'add' %>">
+										<span class="step">1</span>
+										<span class="title">Activ</span>
+									</a>
+								</li>
+								<li class="" id="step-initial-order" <%- ((typeof item.AuctionType != 'undefined' && item.AuctionType == 'double')?'style="display:none"':'') %>>
+									<a href="/admin/orders/initial?asset=<%- item.ID %>">
+										<span class="step">2</span>
+										<span class="title">Ordin initiator</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof item.ID!='undefined' ? 'href="/admin/asset_schedules/schedules?asset='+item.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof item.AuctionType != 'undefined' && item.AuctionType == 'double')?'2':'3') %></span>
+										<span class="title">Sedinta activ</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof item.ID!='undefined' ? 'href="/admin/assets/trade_parameters?asset='+item.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof item.AuctionType != 'undefined' && item.AuctionType == 'double')?'3':'4') %></span>
+										<span class="title">Parametri tranzactionare</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof item.ID!='undefined' ? 'href="/admin/clients/asset_clients?asset='+item.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof item.AuctionType != 'undefined' && item.AuctionType == 'double')?'4':'5') %></span>
+										<span class="title">Clienti</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof item.ID!='undefined' ? 'href="/admin/documents/asset_documents?asset='+item.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof item.AuctionType != 'undefined' && item.AuctionType == 'double')?'5':'6') %></span>
+										<span class="title">Documente</span>
+									</a>
+								</li>
+							</ul>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<br/><br/><br/>
+				<input type="hidden" name="step" value="1" />
+              <div class="row column-seperation">
+                <div class="col-md-6">
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-6">
+						<label for="ID_Ring">Ring</label>
+						<div class="widget-col">
+							<select name="ID_Ring" id="ID_Ring" class="form-control required select2">
+							  <% _.each(sails.storage.rings,function(ringItem) { %>
+							  <option value="<%= ringItem.ID %>" <%- ((typeof item.ID_Ring!='undefined' && item.ID_Ring==ringItem.ID) ? 'selected=""' : ring && ring.ID==ringItem.ID ? 'selected=""' : assetType && assetType.ID_Ring==ringItem.ID ? 'selected=""' : '') %> /><%= req.session.getTranslation(ringItem.Name) %></option>
+							  <% }); %>
+							</select>
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<label for="ID_AssetType">Activ suport</label>
+						<div class="controls">
+							<select name="ID_AssetType" id="ID_AssetType" class="form-control required select2" data-inherit="<%- typeof item.ID_AssetType !='undefined' || assetType ? '0' : '1' %>" data-new="<%- typeof item.ID_AssetType !='undefined' || assetType ? '0' : '1' %>">
+							  <% _.each(sails.storage.assetTypes,function(asset_type) { if((typeof item.ID_AssetType !='undefined' && item.ID_Ring==asset_type.ID_Ring) || (assetType && asset_type.ID_Ring==assetType.ID_Ring )) { %>
+							  <option id="asset-type-<%- asset_type.ID %>" value="<%= asset_type.ID %>" data-ring="<%- asset_type.ID_Ring %>" <%- ((typeof item.ID_AssetType!='undefined' && item.ID_AssetType==asset_type.ID) ? 'selected=""' : (assetType && assetType.ID==asset_type.ID ? 'selected=""' : '')) %> data-object="<%= JSON.stringify(asset_type) %>" /><%= req.session.getTranslation(asset_type.Name) %></option>
+							  <% } }); %>
+							</select>
+						</div>
+                      </div>
+					</div>
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-6">
+						<label for="Name_RO">Nume RO</label>
+						<div class="widget-col">
+							<input name="Name_RO" id="Name_RO" type="text" class="form-control required max-length" value="<%- (typeof item.Name!='undefined' ? toolsService.getLangTranslation(item.Name,'RO') : typeof item.Name_RO != 'undefined' ? item.Name_RO : '') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<label for="Name_EN">Nume EN</label>
+						<div class="widget-col">
+							<input name="Name_EN" id="Name_EN" type="text" class="form-control required max-length" value="<%- (typeof item.Name!='undefined'?toolsService.getLangTranslation(item.Name,'EN') : typeof item.Name_EN != 'undefined' ? item.Name_EN : '') %>" />
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-6">
+						<label for="Code">Cod</label>
+						<div class="widget-col">
+							<input name="Code" id="Code" type="text" class="form-control required max-length" value="<%- (typeof item.Code!='undefined'?item.Code:'') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<label for="ID_Terminal">Terminal</label>
+						<div class="controls">
+							<select name="ID_Terminal" id="ID_Terminal" class="form-control required select2">
+							  <% _.each(req.session.terminals,function(terminal) { %>
+							  <option id="terminal-<%- terminal.ID %>" value="<%= terminal.ID %>" <%- (typeof item.ID_Terminal!='undefined' && item.ID_Terminal == terminal.ID ? 'selected=""' : '') %> /><%= req.session.getTranslation(terminal.Name) %></option>
+							  <% }); %>
+							</select>
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-12">
+						<label for="Description_RO">Descriere RO</label>
+						<div class="widget-col">
+							<textarea name="Description_RO" id="Description_RO" class="form-control"><%- (typeof item.Description!='undefined'?toolsService.getLangTranslation(item.Description,'RO') : typeof item.Description_RO != 'undefined' ? item.Description_RO : '') %></textarea>
+						</div>
+					  </div>
+					</div>
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-12">
+						<label for="Description_EN">Descriere EN</label>
+						<div class="widget-col">
+							<textarea name="Description_EN" id="Description_EN" class="form-control"><%- (typeof item.Description!='undefined'?toolsService.getLangTranslation(item.Description,'EN') : typeof item.Description_EN != 'undefined' ? item.Description_EN : '') %></textarea>
+						</div>
+					  </div>
+					</div>
+					<div class="row form-row m-b-10">
+                      <div class="col-md-12">
+						<label for="Instructions_RO">Instructiuni RO</label>
+						<div class="widget-col">
+							<textarea name="Instructions_RO" id="Instructions_RO" class="form-control"><%- (typeof item.Instructions_RO!='undefined'? item.Instructions_RO : '') %></textarea>
+						</div>
+					  </div>
+					</div>
+					<div class="row form-row m-b-10">
+                      <div class="col-md-12">
+						<label for="Instructions_EN">Instructiuni EN</label>
+						<div class="widget-col">
+							<textarea name="Instructions_EN" id="Instructions_EN" class="form-control"><%- (typeof item.Instructions_EN!='undefined'? item.Instructions_EN : '') %></textarea>
+						</div>
+					  </div>
+					</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-6">
+						<label for="AuctionType">Tip licitatie</label>
+						<div class="widget-col">
+							<select name="AuctionType" id="AuctionType" class="form-control required select2">
+							  <option value="simple" <%- ((typeof item.AuctionType != 'undefined' && item.AuctionType == 'simple') ? 'selected=""' : '') %> />Simplu competitiva</option>
+							  <option value="double" <%- ((typeof item.AuctionType != 'undefined' && item.AuctionType == 'double') ? 'selected=""' : '') %> />Dublu competitiva</option>
+							</select>
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-4">
+						<label for="ID_MeasuringUnit">Unitate de masura</label>
+						<div class="widget-col">
+							<select name="ID_MeasuringUnit" id="ID_MeasuringUnit" class="form-control required select2">
+							  <% _.each(sails.storage.measuringUnits,function(mu) { %>
+							  <option value="<%= mu.ID %>" <%- ((typeof item.ID_MeasuringUnit!='undefined' && item.ID_MeasuringUnit==mu.ID)?'selected=""':'') %> /><%= req.session.getTranslation(mu.Name) %></option>
+							  <% }); %>
+							</select>
+						</div>
+                      </div>
+                      <div class="col-md-4 col-md-offset-2">
+						<label for="ID_Currency">Moneda</label>
+						<div class="widget-col">
+							<select name="ID_Currency" id="ID_Currency" class="form-control required select2">
+							  <% _.each(sails.storage.currencies,function(currency) { %>
+							  <option value="<%= currency.ID %>" <%- ((typeof item.ID_Currency!='undefined' && item.ID_Currency==currency.ID)?'selected=""':'') %> /><%= req.session.getTranslation(currency.Name) %></option>
+							  <% }); %>
+							</select>
+						</div>
+                      </div>
+					  <% /* %>
+                      <div class="col-md-4">
+						<label>&nbsp;</label>
+						<div class="widget-col">
+							<div class="checkbox check-default" style="margin-top:10px">
+								<input id="isActive" name="isActive" type="checkbox" value="1" <% if(typeof item.isActive!='undefined' && item.isActive) { %>checked=""<% } %> />
+								<label for="isActive">Activ</label>
+							</div>
+						</div>
+                      </div>
+					  <% */ %>
+                    </div>
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-4">
+						<label for="ID_PaymentCurrency">Moneda plata</label>
+						<div class="widget-col">
+							<select name="ID_PaymentCurrency" id="ID_PaymentCurrency" class="form-control required select2">
+							  <% _.each(sails.storage.currencies,function(currency) { %>
+							  <option value="<%= currency.ID %>" <%- ((typeof item.ID_PaymentCurrency!='undefined' && item.ID_PaymentCurrency==currency.ID)?'selected=""':'') %> /><%= req.session.getTranslation(currency.Name) %></option>
+							  <% }); %>
+							</select>
+						</div>
+                      </div>
+                      <div class="col-md-4 col-md-offset-2">
+						<label for="Visibility">Status</label>
+						<div class="widget-col">
+							<select name="Visibility" id="Visibility" class="form-control required">
+							  <option value="public" <%- ((typeof item.Visibility!='undefined' && item.Visibility=='public')?'selected=""':'') %> />Public</option>
+							  <option value="initiated" <%- ((typeof item.Visibility!='undefined' && item.Visibility=='initiated') || typeof item.Visibility=='undefined' ?'selected=""':'') %> />Initiat</option>
+							  <option value="terminated" <%- ((typeof item.Visibility!='undefined' && item.Visibility=='terminated')?'selected=""':'') %> />Terminat</option>
+							</select>
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row m-b-10" id="spot-contract">
+                      <div class="col-md-4" style="display:none">
+						<div class="widget-col">
+							<div class="checkbox check-default" style="margin-top:10px">
+								<input id="isSpotContract" name="isSpotContract" type="checkbox" value="1" <% if(typeof item.isSpotContract!='undefined' && item.isSpotContract) { %>checked=""<% } %> />
+								<label for="isSpotContract">Contract Spot</label>
+							</div>
+						</div>
+                      </div>
+                      <div class="col-md-3">
+						<label for="SpotQuotation">Cotatie spot</label>
+                      </div>
+                      <div class="col-md-4">
+						<div class="widget-col">
+							<input name="SpotQuotation" id="SpotQuotation" type="text" class="form-control max-length" value="<%- (typeof item.SpotQuotation!='undefined'?item.SpotQuotation:'') %>" />
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-6">
+						<label for="DeliveryTerm">Termen de livrare</label>
+						<div class="widget-col">
+							<input name="DeliveryTerm" id="DeliveryTerm" type="text" class="form-control " value="<%- (typeof item.DeliveryTerm!='undefined' ? item.DeliveryTerm : '') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<label for="DeliveryConditions">Conditia de livrare</label>
+						<div class="widget-col">
+							<input name="DeliveryConditions" id="DeliveryConditions" type="text" class="form-control " value="<%- (typeof item.DeliveryConditions!='undefined' ? item.DeliveryConditions : '') %>" />
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-6">
+						<label for="PackingMethod">Modalitate ambalare</label>
+						<div class="widget-col">
+							<input name="PackingMethod" id="PackingMethod" type="text" class="form-control " value="<%- (typeof item.PackingMethod!='undefined' ? item.PackingMethod : '') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<label for="PaymentMethod">Modalitatea platii</label>
+						<div class="widget-col">
+							<input name="PaymentMethod" id="PaymentMethod" type="text" class="form-control " value="<%- (typeof item.PaymentMethod!='undefined' ? item.PaymentMethod : '') %>" />
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row m-b-10">
+                      <div class="col-md-6">
+						<label for="ContractTerm">Termenul contractului</label>
+						<div class="widget-col">
+							<input name="ContractTerm" id="ContractTerm" type="text" class="form-control " value="<%- (typeof item.ContractTerm!='undefined' ? item.ContractTerm : '') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<label for="WarrantyMethod">Modalitatea constituirii garantiei</label>
+						<div class="widget-col">
+							<input name="WarrantyMethod" id="WarrantyMethod" type="text" class="form-control " value="<%- (typeof item.WarrantyMethod!='undefined' ? item.WarrantyMethod : '') %>" />
+						</div>
+                      </div>
+                    </div>
+				</div>
+              </div>
+				<div class="form-actions">
+					<div class="text-center">
+					  <a class="btn btn-white btn-cons" href="/admin/assets">Renunta</a>
+					  <button class="btn btn-primary btn-cons" type="submit" name="submit" value="schedule"><i class="icon-ok"></i>Salveaza</button>
+					<button class="btn btn-success btn-cons" type="submit" name="Validate" value="1"><i class="icon-ok"></i>Valideaza</button>
+					</div>
+				  </div>
+			</form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

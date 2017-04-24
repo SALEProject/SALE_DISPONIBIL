@@ -1,0 +1,162 @@
+    <div class="content">
+      <div class="page-title"> <i class="icon-custom-left"></i>
+        <h3><%- (req.param('id')?'Modificare':'Adaugare') %> activ</h3>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+			</div>
+            <div class="grid-body no-border">
+			<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">
+              <div class="row column-seperation">
+                <div class="col-md-6">
+					<h4>Detalii activ</h4>
+                    <div class="row form-row">
+                      <div class="col-md-9">
+						<label for="Name">Nume</label>
+						<div class="widget-col">
+							<input name="Name" id="Name" type="text" class="form-control required" value="<%- (typeof item!='undefined'?item.Name:'') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-3">
+						<label for="Code">Cod</label>
+						<div class="widget-col">
+							<input name="Code" id="Code" type="text" class="form-control required" value="<%- (typeof item!='undefined'?item.Code:'') %>" />
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-12">
+						<label for="Description">Descriere</label>
+						<div class="widget-col">
+							<textarea name="Description" id="Description" class="form-control"><%- (typeof item!='undefined'?item.Description:'') %></textarea>
+						</div>
+					  </div>
+					</div>
+                    <div class="row form-row">
+                      <div class="col-md-4">
+						<label for="ID_MeasuringUnit">Unitate de masura</label>
+						<div class="widget-col">
+							<select name="ID_MeasuringUnit" id="ID_MeasuringUnit" class="form-control">
+							  <% _.each(sails.storage.measuringUnits,function(mu) { %>
+							  <option value="<%= mu.ID %>" <%- ((typeof item!='undefined' && item.ID_MeasuringUnit==mu.ID)?'selected=""':'') %> /><%= mu.Name %></option>
+							  <% }); %>
+							</select>
+						</div>
+                      </div>
+                      <div class="col-md-4">
+						<label for="ID_Currency">Moneda</label>
+						<div class="widget-col">
+							<select name="ID_Currency" id="ID_Currency" class="form-control">
+							  <% _.each(sails.storage.currencies,function(currency) { %>
+							  <option value="<%= currency.ID %>" <%- ((typeof item!='undefined' && item.ID_Currency==currency.ID)?'selected=""':'') %> /><%= currency.Name %></option>
+							  <% }); %>
+							</select>
+						</div>
+                      </div>
+                      <div class="col-md-4">
+						<label>&nbsp;</label>
+						<div class="widget-col">
+							<div class="checkbox check-default" style="margin-top:10px">
+								<input id="isActive" name="isActive" type="checkbox" value="1" <% if(typeof item!='undefined' && item.isActive) { %>checked=""<% } %> />
+								<label for="isActive">Activ</label>
+							</div>
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-4">
+						<label for="ID_PaymentCurrency">Moneda plata</label>
+						<div class="widget-col">
+							<select name="ID_PaymentCurrency" id="ID_PaymentCurrency" class="form-control">
+							  <% _.each(sails.storage.currencies,function(currency) { %>
+							  <option value="<%= currency.ID %>" <%- ((typeof item!='undefined' && item.ID_PaymentCurrency==currency.ID)?'selected=""':'') %> /><%= currency.Name %></option>
+							  <% }); %>
+							</select>
+						</div>
+                      </div>
+                      <div class="col-md-4">
+						<label for="Visibility">Status</label>
+						<div class="widget-col">
+							<select name="Visibility" id="Visibility" class="form-control">
+							  <option value="public" <%- ((typeof item!='undefined' && item.Visibility=='public')?'selected=""':'') %> />Public</option>
+							  <option value="initated" <%- ((typeof item!='undefined' && item.Visibility=='initiated')?'selected=""':'') %> />Initiat</option>
+							  <option value="terminated" <%- ((typeof item!='undefined' && item.Visibility=='terminated')?'selected=""':'') %> />Terminat</option>
+							</select>
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-4">
+						<div class="widget-col">
+							<div class="checkbox check-default" style="margin-top:10px">
+								<input id="isSpotContract" name="isSpotContract" type="checkbox" value="1" <% if(typeof item!='undefined' && item.isSpotContract) { %>checked=""<% } %> />
+								<label for="isSpotContract">Contract Spot</label>
+							</div>
+						</div>
+                      </div>
+                      <div class="col-md-2">
+						<label for="SpotQuotation">Cotatie spot</label>
+                      </div>
+                      <div class="col-md-4">
+						<div class="widget-col">
+							<input name="SpotQuotation" id="SpotQuotation" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.SpotQuotation:'') %>" />
+						</div>
+                      </div>
+                    </div>
+					<br />
+                </div>
+                <div class="col-md-6">
+					<h4>Asocieri</h4>
+                      <div class="col-md-6">
+						<div class="form-group">
+							<label class="form-label">Ring</label>
+							<div class="controls">
+								<select name="ID_Ring" id="ID_Ring" class="form-control">
+								  <% _.each(sails.storage.rings,function(ring) { %>
+								  <option value="<%= ring.ID %>" <%- ((typeof item!='undefined' && item.ID_Ring==ring.ID)?'selected=""':'') %> /><%= ring.Name %></option>
+								  <% }); %>
+								</select>
+							</div>
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<div class="form-group">
+							<label class="form-label">Activ suport</label>
+							<div class="controls">
+								<select name="ID_AssetType" id="ID_AssetType" class="form-control">
+								  <% _.each(req.session.asset_types,function(asset_type) { %>
+								  <option value="<%= asset_type.ID %>" data-ring="<%- asset_type.ID_Ring %>" <%- ((typeof item!='undefined' && item.ID_AssetType==asset_type.ID)?'selected=""':'') %> /><%= asset_type.Name %></option>
+								  <% }); %>
+								</select>
+							</div>
+						</div>
+                      </div>
+					<h4>Restrictii</h4>
+                    <div class="row form-row">
+							  <% _.each(req.session.params,function(param) { %>
+                      <div class="col-md-12">
+							<div class="checkbox check-default" style="margin-top:10px">
+								<input id="<%- param.label %>" name="<%- param.label %>" type="checkbox" value="1" <% if(typeof item!='undefined' && item[param.label]) { %>checked=""<% } %> />
+								<label for="<%- param.label %>"><%- param.name %></label>
+							</div>
+                      </div>
+							  <% }); %>
+					</div>
+				</div>
+              </div>
+				<div class="form-actions">
+					<div class="pull-left">
+					  <button class="btn btn-success btn-cons" type="submit" name="submit" value="schedule"><i class="icon-ok"></i> Seteaza ordin initiator</button>
+					  <button class="btn btn-danger btn-cons" type="submit" name="submit" value="save"><i class="icon-ok"></i> Salveaza</button>
+					  <a class="btn btn-white btn-cons" href="/admin/assets">Renunta</a>
+					</div>
+				  </div>
+			</form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,258 @@
+<div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<% if(agency) { %>
+			<li>
+				<a href="/admin/agencies" class="">Agentii</a>
+			</li>
+			<li>
+				<a href="/admin/agencies/edit/<%- agency.ID %>#tab-clients" class=""><%- agency.AgencyName %></a>
+			</li>                    
+			<% } else { %>
+			<li>
+				<a href="/admin/clients" class="">Clienti</a>
+			</li>
+			<% } %>
+			<li>
+				<a href="/admin/clients/<%- (req.param('id') ? 'edit/'+req.param('id') : 'add') %>" class="active"><%- (req.param('id')?'Modificare':'Adaugare') %> client</a>
+			</li>                    
+		</ul>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="grid simple">
+				<div class="grid-title no-border">
+					<%- toolsService.getFlashMessage(req.flash()) %>
+				</div>
+				<div class="grid-body no-border">
+					<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">	
+						<div class="row column-seperation">
+							<div class="col-md-6">
+								<h4>Informatii generale</h4>            
+								<div class="row form-row">
+									<div class="col-md-9">
+										<label for="Name">Nume</label>
+										<div class="widget-col">
+											<input name="Name" id="Name" type="text" class="form-control required max-length" value="<%- (typeof item.ClientName!='undefined' ? item.ClientName : typeof item.Name != 'undefined' ? item.Name : '') %>" />
+										</div>
+									</div>
+									<div class="col-md-3">
+										<label for="Code">Cod</label>
+										<div class="widget-col">
+											<input name="Code" id="Code" type="text" class="form-control required max-length" value="<%- (typeof item!='undefined'?item.Code:'') %>" />
+										</div>
+									</div>
+								</div>
+								<div class="row form-row">
+									<div class="col-md-4">
+										<label for="Status">Status</label>
+										<div class="widget-col">
+											<select name="Status" id="Status" class="form-control required">
+												<option value="active" <%- ((typeof item.Status!='undefined' && item.Status=='active')?'selected=""':'') %> />Activ</option>
+												<option value="inactive" <%- ((typeof item.Status!='undefined' && item.Status=='inactive') ?'selected=""':'') %> />Inactiv</option>
+												<option value="suspended" <%- ((typeof item.Status!='undefined' && item.Status=='suspended')?'selected=""':'') %> />Suspendat</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<br />
+								<h4>Detalii facturare</h4>            
+								<div class="row form-row">
+									<div class="col-md-6">
+										<label for="FiscalCode">Cod fiscal</label>
+										<div class="widget-col">
+											<input name="FiscalCode" id="FiscalCode" type="text" class="form-control max-length" value="<%- (typeof item!='undefined'?item.FiscalCode:'') %>" />
+										</div>
+									</div>
+									<div class="col-md-6">
+										<label for="RegisterCode">Numar inregistrare</label>
+										<div class="widget-col">
+											<input name="RegisterCode" id="RegisterCode" type="text" class="form-control required max-length" value="<%- (typeof item!='undefined'?item.RegisterCode:'') %>" />
+										</div>
+									</div>
+								</div>
+								<br />
+
+								<div class="col-md-6">
+									<label for="ID_Agency">Agentie</label>
+									<div class="widget-col">
+										<% if (req.param('agency')!=null) { %>
+											<input type="hidden" name="ID_Agency" id="ID_Agency" value="<%= req.param('agency') %>" />
+											<h4><a href="/admin/agencies/edit/<%- req.session.agencies[toolsService.searchIdInArray(req.param('agency'),req.session.agencies)].ID %>#tab-clients"><%= req.session.agencies[toolsService.searchIdInArray(req.param('agency'),req.session.agencies)].AgencyName %></a></h4>
+										<% } else { %>
+											<select name="ID_Agency" id="ID_Agency" class="select2 form-control required">
+												<% _.each(req.session.agencies,function(agency) { %>              
+												<option value="<%= agency.ID %>" <%-((typeof item!='undefined' && item.ID_Agency==agency.ID)?'selected=""':'') %> /><%= agency.AgencyName %></option>
+												<% }); %>
+											</select>
+											<br/>
+											<% if(typeof item!='undefined' && typeof item.ID_Agency != 'undefined') { %>
+												<a href="/admin/agencies/edit/<%- item.ID_Agency %>">Vezi detalii agentie</a>
+											<% } %>
+										<% } %>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="checkbox check-default">
+										<input id="isHouse" name="isHouse" type="hidden" value="<%- (typeof item!='undefined' && item.isHouse) ? '1' : '0' %>" />
+										<input type="checkbox" <% if(typeof item!='undefined' && item.isHouse) { %>checked=""<% } %> disabled />
+									<label for="isHouse">Is House</label>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<h4>Contact Client</h4>
+								<div class="row form-row">
+									<div class="col-md-6">
+										<label for="FirstName">Prenume</label>
+										<div class="widget-col">
+											<input name="FirstName" id="FirstName" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.FirstName:'') %>" />
+										</div>
+									</div>
+									<div class="col-md-6">
+										<label for="LastName">Nume</label>
+										<div class="widget-col">
+											<input name="LastName" id="LastName" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.LastName:'') %>" />
+										</div>
+									</div>
+								</div>
+								<div class="row form-row">
+									<div class="col-md-4">
+										<label for="Phone">Telefon</label>
+										<div class="widget-col">
+											<input name="Phone" id="Phone" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.Phone:'') %>" />
+										</div>
+									</div>
+									<div class="col-md-4">
+										<label for="Mobile">Mobil</label>
+										<div class="widget-col">
+											<input name="Mobile" id="Mobile" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.Mobile:'') %>" />
+										</div>
+									</div>
+									<div class="col-md-4">
+										<label for="Fax">Fax</label>
+										<div class="widget-col">
+											<input name="Fax" id="Fax" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.Fax:'') %>" />
+										</div>
+									</div>
+								</div>
+								<div class="row form-row">
+									<div class="col-md-6">
+										<label for="Email">Email</label>
+										<div class="widget-col">
+											<input name="Email" id="Email" type="email" class="form-control" value="<%- (typeof item!='undefined'?item.Email:'') %>" />
+										</div>
+									</div>
+									<div class="col-md-6">
+										<label for="Website">Website</label>
+										<div class="widget-col">
+											<input name="Website" id="Website" type="url" class="form-control" value="<%- (typeof item!='undefined'?item.Website:'') %>" />
+										</div>
+									</div>
+								</div>
+								<br/>
+								<h4>Adresa Client</h4>
+								<div class="row form-row">
+									<div class="col-md-12">
+										<label for="StreetAddress">Strada</label>
+										<div class="widget-col">
+											<input name="StreetAddress" id="StreetAddress" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.StreetAddress:'') %>" />
+										</div>
+									</div>
+								</div>
+								<div class="row form-row">
+									<div class="col-md-4">
+										<label for="City">Oras</label>
+										<div class="widget-col">
+											<input name="City" id="City" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.City:'') %>" />
+										</div>
+									</div>
+									<div class="col-md-4">
+										<label for="ID_County">Judet</label>
+										<div class="widget-col">
+											<select name="ID_County" id="ID_County" class="form-control">
+												<% _.each(req.session.counties,function(county) { %>
+													<option value="<%= county.ID %>" <%- ((typeof item!='undefined' && item.ID_County==county.ID)?'selected=""':'') %> /><%= county.Name %></option>
+												<% }); %>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<label for="PostalCode">Cod Postal</label>
+										<div class="widget-col">
+											<input name="PostalCode" id="PostalCode" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.PostalCode:'') %>" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-actions">
+							<div class="pull-left">
+								<button class="btn btn-primary btn-cons" type="submit"><i class="icon-ok"></i> Salveaza</button>
+								<a class="btn btn-white btn-cons" href="<%- req.param('agency') ? '/admin/agencies/edit/'+req.param('agency')+'#tab-clients' : '/admin/clients' %>">Renunta</a>
+							</div>
+						</div>
+					</form>
+				</div>
+				<% if(typeof item.ID!='undefined') { %>
+						<ul class="nav nav-tabs m-t-20 tabs-nav">
+							<li class="active"><a href="#tab-clients">Garantii Client</a></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="tab-clients">
+								<div class="col-md-12">                       
+									<div class="grid-body no-border">
+										<a class="btn btn-info" href="/admin/warranties/add?client=<%- req.param('id') %>">Adauga garantie client</a>
+										<div class="pull-right p-b-20 row">
+											<div class="col-md-6">
+												<label>Filtreaza:</label>
+											</div>
+											<div class="col-md-6">
+												<input id="ring_client-table-filter" type="text" class="form-control input-sm" />
+											</div>
+										</div>
+										<table class="table table-hover table-condensed admin-table footable" id="ring-clients-table" data-filter="#ring_client-table-filter">
+											<thead>
+												<tr>
+													<th style="width:10%">Tip garantie</th>
+													<th style="width:10%">Activ</th>
+													<th style="width:10%">Valoare totala</th>
+													<th style="width:5%">&nbsp;</th>
+												</tr>
+											</thead>
+											<tbody>
+											<% if(typeof req.session.clientWarranties!='undefined' && req.session.clientWarranties.length>0) { 
+												_.each(req.session.clientWarranties,function(item) { %>
+													<tr>
+														<td class="v-align-middle"><%= req.session.getTranslation(item.WarrantyType) %></td>
+														<td class="v-align-middle"><span class="muted"><%= req.session.getTranslation(item.Asset) %></span></td>
+														<td class="v-align-middle"><span class="muted"><%= item.TotalValue %></span></td>
+														<td>
+														<a class="btn btn-small btn-primary" data-toggle="dropdown" href="/admin/warranties?ID_WarrantyType<%- item.ID_WarrantyType %>&ID_Client=<%- req.param('id') %>&ID_Asset=<%- item.ID_Asset %>">Detalii</a>
+													</tr>
+												<% }); %>
+											<% } %>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="7">
+														<div class="pagination pagination-centered hide-if-no-paging"></div>
+													</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					<% } %>
+			</div>
+		</div>
+	</div>
+</div>
+
+

@@ -1,0 +1,26 @@
+<div class="tile white m-b-10 toggleable-widget" id="chat-container">
+	<div class="tile-title">
+		<div class="controller">
+			<a href="" class="extract pull-right m-l-15" title="<%- req.session.getTranslation('Open_in_popup') %>"><i class="fa fa-external-link"></i></a>
+		</div>
+		<h3 class="no-margin m-b-10"><i class="fa fa-comments"></i> <%- req.session.getTranslation('Chat_panel') %></h3>
+	</div>
+	<div class="tile-body">
+		<div class="chat-holder">
+			<div class="chat-box-holder">
+				<div class="chat-box scroller" data-height="250">
+					<ul class="chat-list" id="chat-list" data-timestamp="" data-prototype="<%= '<li class="chat-message" id="chat-item-__ID__"><div class="timestamp">__TIMESTAMP__</div><div class="message">' + ((accessService.isSessionCoordonator(req.session.currentUser)) ? '<span class="message-owner">__LOGINNAME__:</span> ' : '' ) + '__MESSAGE__</div></li>' %>">
+					</ul>
+					<div class="text-center padding-20 loader" style="display:none"><img src="/img/loader-white.gif"></div>
+				</div>
+			</div>
+		<% if(accessService.checkOperation('dashboard_chat','addChatMessage',req)) { %>
+			<div class="row no-margin">
+				<div class="col-md-12">
+					<input type="text" id="chat-input" placeholder="<%- req.session.getTranslation('Your_message') %>.." autocomplete="off" />
+				</div>
+			</div>
+		<% } %>
+		</div>
+	</div>
+</div>

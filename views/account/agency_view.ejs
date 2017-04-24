@@ -1,0 +1,131 @@
+<div class="tile white m-b-10 padding-20">
+	<div class="tile-title">
+		<%- toolsService.getFlashMessage(req.flash()) %>
+		<div class="pull-right">
+			<a class="btn btn-default btn-cons" href="/account/agency_edit"><%- req.session.getTranslation('Change_it') %></a>
+		</div>
+		<h3 class="m-t-0 m-b-10"><%= title %></h4>
+	</div>
+	<div class="tile-body p-t-20">
+		<div class="account-form">
+			<div class="row m-b-20">
+				<div class="col-md-3">
+					<label><%- req.session.getTranslation('Name') %></label>
+                </div>
+                <div class="col-md-9">
+					<div class="widget-col">
+						<h4 class="no-margin"><strong><%- item.AgencyName %></strong></h4>						
+					</div>
+                </div>
+			</div>
+			<div class="row m-b-20">
+				<div class="col-md-3">
+					<label><%- req.session.getTranslation('Code') %></label>
+                </div>
+                <div class="col-md-3">
+					<div class="widget-col">
+						<h4 class="no-margin"><strong><%- item.Code %></strong></h4>					
+					</div>
+                </div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<label><%- req.session.getTranslation('Registration_info') %></label>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('Fiscal_code') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- item.FiscalCode %></strong>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('Registration_number') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- item.RegisterCode %></strong>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<label><%- req.session.getTranslation('Contact_information') %></label>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('Website') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- item.Website %></strong>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('Email') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- item.Email %></strong>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('Phone') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- item.Phone %></strong>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('Mobile') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- item.Mobile %></strong>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('Fax') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- item.Fax %></strong>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('Address') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- item.StreetAddress %></strong>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('City') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- item.City %></strong>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('County') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- toolsService.getArrayItem(req.session.counties,item.ID_County,'Name') %></strong>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<p><%- req.session.getTranslation('Postal_code') %>:</p>
+						</div>
+						<div class="col-md-9">
+							<strong><%- item.PostalCode %></strong>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

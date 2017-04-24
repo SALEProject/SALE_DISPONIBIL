@@ -1,0 +1,353 @@
+    <div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/assets" class="">Active</a>
+			</li>
+			<li>
+				<a href="/admin/assets/trade_parameters?asset=<%- req.param('asset') %>" class="active"><%- asset.Code %> (<%- req.session.getTranslation(asset.Name) %>) - Pasul <%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'3':'4') %></a>
+			</li>                    
+		</ul>
+	</div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+			</div>
+            <div class="grid-body no-border">
+			<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">	
+					<div id="rootwizard" class="col-md-12">
+						<div class="form-wizard-steps">
+							<ul class="wizard-steps">
+								<li class="">
+									<a href="/admin/assets/edit/<%- typeof asset.ID!='undefined' ? asset.ID : '' %>">
+										<span class="step">1</span>
+										<span class="title">Activ</span>
+									</a>
+								</li>
+								<li class="" id="step-initial-order" <%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'style="display:none"':'') %>>
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/orders/initial?asset='+asset.ID+'"' : '' %>>
+										<span class="step">2</span>
+										<span class="title">Ordin initiator</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/asset_schedules/schedules?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'2':'3') %></span>
+										<span class="title">Sedinta activ</span>
+									</a>
+								</li>
+								<li class="active">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/assets/trade_parameters?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'3':'4') %></span>
+										<span class="title">Parametri tranzactionare</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/clients/asset_clients?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'4':'5') %></span>
+										<span class="title">Clienti</span>
+									</a>
+								</li>
+								<li class="">
+									<a <%- typeof asset.ID!='undefined' ? 'href="/admin/documents/asset_documents?asset='+asset.ID+'"' : '' %>>
+										<span class="step"><%- ((typeof asset.ID_InitialOrder!='undefined' && asset.ID_InitialOrder==0)?'5':'6') %></span>
+										<span class="title">Documente</span>
+									</a>
+								</li>
+							</ul>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<br/><br/><br/>
+				<input type="hidden" id="ID_AssetSchedule" name="ID_AssetSchedule" value="<%- (typeof item.ID!='undefined' && item.ID) ? item.ID :  ((typeof item.ID_AssetSchedule!='undefined' && item.ID_AssetSchedule) ? item.ID_AssetSchedule : '') %>" />
+			<% if (asset!=null) { %>
+				<input type="hidden" name="ID_Asset" id="ID_Asset" value="<%= asset.ID %>" />
+			<% } else { %>
+              <div class="row column-seperation">
+                <div class="col-md-12">
+                    <div class="row form-row">
+                      <div class="col-md-3">
+						<div class="form-group">
+							<label class="form-label">Activ</label>
+							<div class="controls">
+								<select name="ID_Asset" id="ID_Asset" class="select2 form-control">
+								  <% _.each(req.session.assets,function(asset) { %>
+								  <option value="<%= asset.ID %>" <%- ((typeof item.ID_Asset!='undefined' && item.ID_Asset==asset.ID)?'selected=""':'') %> /><%= req.session.getTranslation(asset.Name) %></option>
+								  <% }); %>
+								</select>
+							</div>
+						</div>
+                      </div>
+                    </div>
+					<br />
+                </div>
+              </div>
+			  <% } %>
+              <div class="row column-seperation">
+                <div class="col-md-6">
+					<h4>Garantii</h4>
+					<div class="row form-row">
+						<div class="col-md-6">
+							<label class="form-label">Procent garantie la vanzare (%)</label>
+							<div class="controls">
+								<div class="col-md-6">
+									<input type="number" class="form-control" min="0" max="100" step="any" name="SellWarrantyPercent" id="SellWarrantyPercent" value="<%- (typeof item.SellWarrantyPercent!='undefined' ? item.SellWarrantyPercent : '') %>" />
+								</div>
+								<div class="col-md-6 no-padding">
+									<span class="muted">%</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Procent garantie la cumparare (%)</label>
+							<div class="controls">
+								<div class="col-md-6">
+									<input type="number" class="form-control" min="0" max="100" step="any" name="BuyWarrantyPercent" id="BuyWarrantyPercent" value="<%- (typeof item.BuyWarrantyPercent!='undefined' ? item.BuyWarrantyPercent : '') %>" />
+								</div>
+								<div class="col-md-6 no-padding">
+									<span class="muted">%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row form-row">
+						<div class="col-md-6">
+							<label class="form-label">Valoare garantie pe UM la vanzare (RON)</label>
+							<div class="controls">
+								<div class="col-md-8">
+									<input type="text" class="form-control numeric" name="SellWarrantyMU" id="SellWarrantyMU" value="<%- (typeof item.SellWarrantyMU!='undefined' ? item.SellWarrantyMU : '') %>" data-a-sep="." data-a-dec="," data-m-dec="2" />
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Valoare garantie pe UM la cumparare (RON)</label>
+							<div class="controls">
+								<div class="col-md-8">
+									<input type="text" class="form-control numeric" name="BuyWarrantyMU" id="BuyWarrantyMU" value="<%- (typeof item.BuyWarrantyMU!='undefined' ? item.BuyWarrantyMU : '') %>" data-a-sep="." data-a-dec="," data-m-dec="2" />
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row form-row">
+						<div class="col-md-6">
+							<label class="form-label">Parte fixa garantie la vanzare (RON)	</label>
+							<div class="controls">
+								<div class="col-md-8">
+									<input type="text" class="form-control numeric" name="SellWarrantyFixed" id="SellWarrantyFixed" value="<%- (typeof item.SellWarrantyFixed!='undefined' ? item.SellWarrantyFixed : '') %>" data-a-sep="." data-a-dec="," data-m-dec="2" />
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Parte fixa garantie la cumparare (RON)</label>
+							<div class="controls">
+								<div class="col-md-8">
+									<input type="text" class="form-control numeric" name="BuyWarrantyFixed" id="BuyWarrantyFixed" value="<%- (typeof item.BuyWarrantyFixed!='undefined' ? item.BuyWarrantyFixed : '') %>" data-a-sep="." data-a-dec="," data-m-dec="2" />
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row form-row">
+						  <% if(typeof req.session.warrantyTypes!='undefined' && req.session.warrantyTypes.length>0) {
+							_.each(req.session.warrantyTypes,function(warrantyType) { 
+								if(toolsService.searchIdInArray(warrantyType.ID,req.session.assetWarrantyTypes)==-1) {  %>
+								  	<div class="col-md-12">
+										<div class="checkbox check-default" style="margin-top:10px">
+											<input id="set_<%- warrantyType.ID %>" class="setWarrantyType2Asset" name="set_<%- warrantyType.ID %>" type="checkbox" value="1" data-id="<%= warrantyType.ID %>" data-asset-id="<%- req.param('asset') %>" />
+											<label for="set_<%- warrantyType.ID %>"><%= toolsService.getLangTranslation(warrantyType.Name,'RO') %></label>
+										</div>
+									</div>
+								<% } else { %>
+									<div class="col-md-12">
+										<div class="checkbox check-default" style="margin-top:10px">
+											<input id="set_<%- warrantyType.ID %>" class="setWarrantyType2Asset" name="set_<%- warrantyType.ID %>" type="checkbox" value="1" data-id="<%= warrantyType.ID %>" data-asset-id="<%- req.param('asset') %>" checked=""/>
+											<label for="set_<%- warrantyType.ID %>"><%= toolsService.getLangTranslation(warrantyType.Name,'RO') %></label>
+										</div>
+									</div>
+								<% }  %>
+							<% }); %>
+						<% } %>
+					</div>
+                </div>
+                <div class="col-md-6">
+					<h4>Restrictii</h4>
+					<div class="row form-row">
+							  <% _.each(req.session.params,function(param) { %>
+					  <div class="col-md-12">
+							<div class="checkbox check-default" style="margin-top:10px">
+								<input id="<%- param.label %>" name="<%- param.label %>" type="checkbox" value="1" <% if(typeof item[param.label]!='undefined' && item[param.label]) { %>checked=""<% } %> />
+								<label for="<%- param.label %>"><%- param.name %></label>
+							</div>
+					  </div>
+							  <% }); %>
+					</div>
+					<div class="row form-row" id="DifferentialPriceText-holder" <% if(!typeof item.DifferentialPriceAllowed || !item.DifferentialPriceAllowed) { %>style="display:none" <% } %>>
+						<label class="form-label">Text pret referinta</label>
+						<div class="controls">
+							<div class="col-md-8">
+								<input type="text" class="form-control" name="DifferentialPriceText" id="DifferentialPriceText" value="<%- (typeof item.DifferentialPriceText!='undefined' ? item.DifferentialPriceText : '') %>" />
+							</div>
+						</div>
+					</div>
+                </div>
+              </div>  
+                <div class="row column-seperation">
+                	<div class="col-md-12">
+						<h4>Tipuri Garantii</h4>
+						<div class="row form-row">
+							<div class="tab-pane" id="tab-warranties">
+								<div class="col-md-12">                       
+									<div class="grid-body no-border">
+										<button class="btn btn-info" data-toggle="modal" data-target="#warrantytypes-modal">Adauga tipuri de garantii la acest activ</button>
+										<div class="pull-right p-b-20 row">
+											<div class="col-md-6">
+												<label>Filtreaza:</label>
+											</div>
+											<div class="col-md-6">
+												<input id="ring_client-table-filter" type="text" class="form-control input-sm" />
+											</div>
+										</div>
+										<table class="table table-hover table-condensed admin-table footable warrantyTypesPriority" id="asset-warrantytypes-table" data-filter="#ring_client-table-filter">
+											<thead>
+												<tr>
+													<th class="v-align-middle" style="width:5%">Selectat</th>                                
+													<th style="width:5%">Cod</th>
+													<th style="width:22%">Nume</th>
+													<th style="width:15%">Disponibila pentru Perioada</th>
+													<th style="width:15%">Disponibila pentru Activ</th>
+													<th style="width:15%">Prioritate</th>
+												</tr>
+											</thead>
+											<tbody>
+											<% if(typeof req.session.assetWarrantyTypes!='undefined' && req.session.assetWarrantyTypes.length>0) { 
+												_.each(req.session.assetWarrantyTypes,function(warrantyType) { %>
+													<tr id="<%= warrantyType.Priority %>">
+														<td class="v-align-middle">
+															<div class="checkbox check-default">
+																<input id="set_<%- warrantyType.ID_WarrantyType %>" class="setWarrantyType2Asset" name="" type="checkbox" value="1" data-id="<%= warrantyType.ID_WarrantyType %>" data-asset-id="<%- req.param('id') %>" checked="" />
+																<label for="set_<%- warrantyType.ID_WarrantyType %>"><%  %></label>
+															</div>
+														</td>                                
+														<td class="v-align-middle"><%= warrantyType.Code %></td>
+														<td class="v-align-middle bold"><%= toolsService.getLangTranslation(warrantyType.Name,'RO') %></td>
+														<td class="v-align-middle"><span class="muted"><%= warrantyType.isAvailable4Period %></span></td>
+														<td class="v-align-middle"><span class="muted"><%= warrantyType.isAvailable4Asset %></span></td>  
+														<td class="v-align-middle"><button href="/admin/assets/setWarrantyType2AssetPriority?ID_Asset=<%= item.ID %>&ID_WarrantyType=<%= warrantyType.ID_WarrantyType %>&Direction=up&CurrentPriority=<%= warrantyType.Priority %>" 
+														data-id_warrantytype="<%= warrantyType.ID_WarrantyType %>"
+														data-id_asset="<%= item.ID %>"  
+														data-direction="up" 
+														data-currentpriority="<%= warrantyType.Priority %>"  
+														class="action-icon btn btn-small btn-primary setWarrantyType2AssetPriority" title="Up"><i class="fa fa-arrow-up"></i></button>
+
+														<button href="/admin/assets/setWarrantyType2AssetPriority?ID_Asset=<%= item.ID %>&ID_WarrantyType=<%= warrantyType.ID_WarrantyType %>&Direction=down&CurrentPriority=<%= warrantyType.Priority %>" 
+
+														data-id_warrantytype="<%= warrantyType.ID_WarrantyType %>"
+														data-id_asset="<%= item.ID %>"  
+														data-direction="down" 
+														data-currentpriority="<%= warrantyType.Priority %>"  
+														 class="action-icon btn btn-small btn-primary setWarrantyType2AssetPriority" title="Jos"><i class="fa fa-arrow-down"></i></button>
+														</td>                               
+													</tr>
+												<% }); %>
+											<% } %>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="7">
+														<div class="pagination pagination-centered hide-if-no-paging"></div>
+													</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>   
+							</div>
+						</div>
+					</div>
+                </div>     	
+
+				<div class="form-actions">
+					<div class="text-center">
+					  <a class="btn btn-white btn-cons" href="/admin/asset_schedules/schedules<%- typeof item.ID_Asset!='undefined' ? '?asset='+item.ID_Asset : '' %>">Inapoi</a>
+					  <a class="btn btn-grey btn-cons" href="/admin/assets">Renunta</a>
+					  <button class="btn btn-primary btn-cons" type="submit" name="submit" value="save"><i class="icon-ok"></i> Salveaza</button>
+					  <button class="btn btn-success btn-cons" type="submit" name="Validate" value="1"><i class="icon-ok"></i>Valideaza</button>
+					</div>
+				</div>
+			</form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal wide fade" id="warrantytypes-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          	<div class="modal-content">
+                <div class="modal-header">
+                  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                  	<h4 id="myModalLabel" class="semi-bold">Tipuri Garantii</h4>
+                </div>
+                <div class="modal-body">
+					<div class="pull-right p-b-20 row">
+						<div class="col-md-6">
+							<label>Filtreaza:</label>
+						</div>
+						<div class="col-md-6">
+							<input id="table-filter" type="text" class="form-control input-sm" />
+						</div>
+					</div>
+					<table class="table table-hover table-condensed admin-table footable" id="warrantytypes-table" data-filter="#table-filter">
+						<thead>
+							<tr>
+								<th style="width:25%"></th>
+								<th style="width:25%">Cod</th>
+								<th style="width:25%">Nume</th>
+								<th style="width:25%">Disponibila pentru Perioada</th>
+								<th style="width:25%">Disponibila pentru Activ</th>
+							</tr>
+						</thead>
+						<tbody>
+						<% if(typeof req.session.warrantyTypes!='undefined' && req.session.warrantyTypes.length>0) { 
+							_.each(req.session.warrantyTypes,function(warrantyType) { %>
+								<% if(typeof req.session.assetWarrantyTypes=='undefined' || toolsService.searchIdInArray(warrantyType.ID,req.session.assetWarrantyTypes)==-1) {
+									%>
+									<tr>
+										<td class="v-align-middle">
+											<div class="checkbox check-default">
+												<input id="set_<%- warrantyType.ID %>" class="setWarrantyType2Asset" name="" type="checkbox" value="1" data-id="<%= warrantyType.ID %>" data-asset-id="<%- req.param('id') %>"  />
+												<label for="set_<%- warrantyType.ID %>"><%  %></label>
+											</div>
+										</td>                                
+										<td class="v-align-middle"><%= warrantyType.Code %></td>
+										<td class="v-align-middle bold"><%= toolsService.getLangTranslation(warrantyType.Name,'RO') %></td>
+										<td class="v-align-middle"><span class="muted"><%= warrantyType.isAvailable4Period %></span></td>
+										<td class="v-align-middle"><span class="muted"><%= warrantyType.isAvailable4Asset %></span></td>
+									</tr>
+								<% } %>
+							<% }); %>
+						<% } %>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="7">
+									<div class="pagination pagination-centered hide-if-no-paging"></div>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+          	</div>
+          	<!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->

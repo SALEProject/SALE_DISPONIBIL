@@ -1,0 +1,30 @@
+<div class="tile white m-b-10 padding-20">
+	<div class="tile-title">
+		<h3 class="m-t-0 m-b-10"><%= title %></h4>
+		<%- toolsService.getFlashMessage(req.flash()) %>
+	</div>
+	<div class="tile-body p-t-20">
+		<div class="account-form">
+			<table class="table no-more-tables" id="example-table">
+				<thead>
+					<tr>
+						<th style="width:5%">&nbsp;</th>
+						<th style="width:15%">Data</th>
+						<th style="width:15%">De la</th>
+						<th>Subiect</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% if(items.length>0) { _.each(items.reverse(),function(item) { %>
+					<tr class="notification notification-<%= item.ID %> <%= (item.isRead?'':'unread') %>">
+						<td class="v-align-middle"><a class="notification-action" href="/home/readnotification/<%= item.ID %>" data-id="<%= item.ID %>"><i class="fa"></a></td>
+						<td class="v-align-middle"><%= timeService.formatDate(item.Date,'DD MMM YYYY HH:mm') %></td>
+						<td class="v-align-middle"><%= (item.UserFrom?item.UserForm:'Sistem') %></td>
+						<td class="v-align-middle"><%= item.Subject %></td>
+					</tr>
+					<% }); } %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

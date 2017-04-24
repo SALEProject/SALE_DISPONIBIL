@@ -1,0 +1,47 @@
+<div class="row">
+<div class="col-md-12">
+	<div class="tile white m-b-10 padding-20">
+		<div class="tile-title">
+			<div class="controller">
+				<a href="" class="collapse pull-right m-l-15">&nbsp;</a>
+			</div>
+			<h3 class="no-margin m-b-10"><%= title %></h4>
+			<%- toolsService.getFlashMessage(req.flash()) %>
+		</div>
+		<div class="tile-body p-t-10">
+			<table class="table no-more-tables no-margin tablesorter" id="transaction-history-list" data-prototype="<%= '<tr id="transaction-__ID__"><td class="v-align-middle">__TIME__</td><td class="v-align-middle"><span class="__DIRECTION_LABEL__ semi-bold">__DIRECTION_STRING__</span></td><td class="v-align-middle"><a class="report" href="/reports/download/__ID__" target="_blank">__ASSET__</a></td><td class="v-align-middle">__QUANTITY_NO__</td><td class="v-align-middle">__PRICE_NO__</td></tr>' %>">
+				<thead>
+					<tr>
+						<th class=""><%- req.session.getTranslation('Ring') %></th>
+						<th class=""><%- req.session.getTranslation('Asset') %></th>
+						<th class=""><%- req.session.getTranslation('Date') %></th>
+						<th class=""><%- req.session.getTranslation('Partner') %></th>
+						<th class="alignright"><%- req.session.getTranslation('Quantity') %></th>
+						<th class="alignright"><%- req.session.getTranslation('Price') %></th>
+					</tr>
+				</thead>
+				<tbody>
+				<% if(items.length>0) { %>
+				<% _.each(items,function(item){ %>
+					<tr>
+						<td class="v-align-middle"><%- item.Ring %></td>
+						<td class="v-align-middle"><%- item.Asset %></td>
+						<td class="v-align-middle text-narrow"><%- timeService.formatDate(item.TransactionDate,req.session.lang.dateFormat+' HH:mm') %></td>
+						<td class="v-align-middle text-narrow"><%- item.Direction=='B' ? item.SellClientName : item.BuyClientName %></td>
+						<td class="v-align-middle text-right"><%- req.session.formatLocale(item.Quantity,formatService.getSteppingDecimal(item.QuantityStepping)) %> <span class="muted"><%- item.MeasuringUnit %></span></td>
+						<td class="v-align-middle text-right"><%- req.session.formatLocale(item.Price,formatService.getSteppingDecimal(item.PriceStepping)) %> <span class="muted"><%- item.Currency %></span></td>
+					</tr>
+				<% }) %>
+				<% } else { %>
+					<tr>
+						<td class="v-align-middle text-center" colspan="6"><%- req.session.getTranslation('no_item_available') %></td>
+					</tr>
+				<% } %>
+				</tbody>
+			</table>
+		</div>	
+		<div class="clearfix"></div>
+	</div>	
+</div>
+</div>
+

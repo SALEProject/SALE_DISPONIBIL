@@ -1,0 +1,173 @@
+    <div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/users" class="">Utilizatori</a>
+			</li>
+			<li>
+				<a href="/admin/users/<%- (req.param('id')?'edit/'+req.param('id') : 'add') %>" class="active"><%- (req.param('id')?'Modificare':'Adaugare') %> Utilizator</a>
+			</li>
+		</ul>
+	</div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+			</div>
+            <div class="grid-body no-border">
+			<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">	
+              <div class="row column-seperation">
+                <div class="col-md-6">
+                  <h4>Detalii autentificare</h4>            
+                    <div class="row form-row">
+                      <div class="col-md-9">
+						<label for="LoginName">Username</label>
+						<div class="widget-col">
+							<input name="LoginName" id="LoginName" type="text" class="form-control required" value="<%- (typeof item!='undefined'?item.LoginName:'') %>" />
+						</div>
+                      </div>
+							<div class="col-md-3">
+								<label for="">&nbsp;</label>
+								<div class="widget-col">
+									<div class="checkbox check-default">
+										<input id="isActive" name="isActive" type="checkbox" value="1" <% if(typeof item.isActive!='undefined' && item.isActive) { %>checked=""<% } %> />
+										<label for="isActive"><%- req.session.getTranslation('Active') %></label>
+									</div>
+								</div>
+							</div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-6">
+						<label for="LoginPassword">Parola</label>
+						<div class="widget-col">
+							<input name="LoginPassword" id="LoginPassword" type="password" class="form-control <%- typeof item.ID == 'undefined' ? 'required' : '' %>" value="" />
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<label for="LoginPasswordConfirm">Confirmare parola</label>
+						<div class="widget-col">
+							<input name="LoginPasswordConfirm" id="LoginPasswordConfirm" type="password" class="form-control <%- typeof item.ID == 'undefined' ? 'required' : '' %>" rel="#LoginPassword" value="" />
+						</div>
+                      </div>
+                    </div>
+					<br />
+                  <h4>Informatii personale</h4>            
+                    <div class="row form-row">
+                      <div class="col-md-6">
+						<label for="FirstName">Prenume</label>
+						<div class="widget-col">
+							<input name="FirstName" id="FirstName" type="text"  class="form-control required" value="<%- (typeof item!='undefined'?item.FirstName:'') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<label for="LastName">Nume</label>
+						<div class="widget-col">
+							<input name="LastName" id="LastName" type="text"  class="form-control required" value="<%- (typeof item!='undefined'?item.LastName:'') %>" />
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-6">
+						<label for="SocialCode">CNP</label>
+						<div class="widget-col">
+							<input name="SocialCode" id="SocialCode" type="text"  class="form-control" value="<%- (typeof item.SocialCode!='undefined'?item.SocialCode:'') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<label for="IdentityCard">Carte de identitate</label>
+						<div class="widget-col">
+							<input name="IdentityCard" id="IdentityCard" type="text"  class="form-control" value="<%- (typeof item.IdentityCard!='undefined'?item.IdentityCard:'') %>" />
+						</div>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+				
+                  <h4>Date contact</h4>
+                  
+                    <div class="row form-row">
+                      <div class="col-md-12">
+						<label for="Email">Email</label>
+						<div class="widget-col">
+							<input name="Email" id="Email" type="email"  class="form-control" value="<%- (typeof item.Email!='undefined'?item.Email:'') %>" />
+						</div>
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-4">
+						<label for="Phone">Telefon</label>
+						<div class="widget-col">
+							<input name="Phone" id="Phone" type="text"  class="form-control" value="<%- (typeof item.Phone!='undefined'?item.Phone:'') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-4">
+						<label for="Fax">Fax</label>
+						<div class="widget-col">
+							<input name="Fax" id="Fax" type="text"  class="form-control" value="<%- (typeof item.Fax!='undefined'?item.Fax:'') %>" />
+						</div>
+                      </div>
+                      <div class="col-md-4">
+						<label for="Mobile">Mobile</label>
+						<div class="widget-col">
+							<input name="Mobile" id="Mobile" type="text"  class="form-control" value="<%- (typeof item.Mobile!='undefined'?item.Mobile:'') %>" />
+						</div>
+                      </div>
+                    </div>
+				
+                  <h4>Date acces</h4>
+                  
+                    <div class="row form-row">
+                      <div class="col-md-6">
+						<label for="">&nbsp;</label>
+						<div class="widget-col">
+							<div class="checkbox check-default">
+								<input id="ID_Agency_none" name="ID_Agency_none" type="checkbox" value="1" <% if(typeof item!='undefined' && (item.ID_Agency==-1 || !item.ID_Agency || (typeof item.ID_Agency_none != 'undefined' && item.ID_Agency_none))) { %>checked=""<% } %> />
+								<label for="ID_Agency_none">Utilizator intern</label>
+							</div>
+						</div>
+                      </div>
+                      <div class="col-md-6" id="internal_user" <%- (typeof item!='undefined' && (item.ID_Agency==-1 || !item.ID_Agency)) ? 'style="display:none"' : '' %>>
+						<label for="ID_Agency">Agentie</label>
+						<div class="widget-col">
+							<select name="ID_Agency" id="ID_Agency" class="select2 form-control">
+							  <% _.each(req.session.agencies,function(agency) { %>
+							  <option value="<%= agency.ID %>" <%-((typeof item!='undefined' && item.ID_Agency==agency.ID)?'selected=""':'') %> /><%- agency.AgencyName+' ('+agency.Code+')' %></option>
+							  <% }); %>
+							</select>
+						</div>
+                      </div>
+					</div>
+                    <div class="row form-row m-t-20">
+						<div class="col-md-12">
+							<label for="ID_UserRole">Roluri</label>
+						</div>
+						<% _.each(req.session.userRoles,function(role) { %>
+						<% var itemRoles = typeof item!='undefined' && typeof item.ID_UserRole!='undefined' && item.ID_UserRole ? (typeof item.ID_UserRole == 'array' ? item.ID_UserRole : JSON.parse(item.ID_UserRole)) : []; %>
+						<% if(typeof itemRoles =='number') { itemRoles = [itemRoles]; } %>
+						<div class="col-md-6 role <%- role.isInternalUser ? 'internal_user' : '' %>" <% if(role.isInternalUser && typeof item!='undefined' && (item.ID_Agency==-1 || !item.ID_Agency)) { %>style="display:none"<% } %>>
+							<div class="checkbox check-default">
+								<input id="ID_UserRole_<%= role.ID %>" name="ID_UserRole[]" type="checkbox" value="<%= role.ID %>" <% if(itemRoles.indexOf(role.ID)>-1) { %>checked=""<% } %> />
+								<label for="ID_UserRole_<%= role.ID %>"><%= role.Name %></label>
+							</div>
+						</div>
+						<% }); %>
+					</div>
+             
+                </div>
+              </div>
+				<div class="form-actions">
+					<div class="pull-left">
+					  <button class="btn btn-primary btn-cons" type="submit"><i class="icon-ok"></i> Salveaza</button>
+					  <a class="btn btn-white btn-cons" href="/admin/users">Renunta</a>
+					</div>
+				  </div>
+			</form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

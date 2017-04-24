@@ -1,0 +1,341 @@
+			<div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/agencies" class="">Agentii</a>
+			</li>
+			<li>
+				<a href="/admin/agencies/<%- (req.param('id')?'edit/'+req.param('id') : 'add') %>" class="active"><%- (req.param('id')?'Modificare':'Adaugare') %> agentie</a>
+			</li>
+		</ul>
+	</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="grid simple">
+						<div class="grid-title no-border">
+							<%- toolsService.getFlashMessage(req.flash()) %>
+						</div>
+						<div class="grid-body no-border">
+							<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">
+								<div class="row column-seperation">
+									<div class="col-md-6">
+										<h4>Informatii generale</h4>
+										<div class="row form-row">
+											<div class="col-md-9">
+												<label for="AgencyName"><%- req.session.getTranslation('Name') %></label>
+												<div class="widget-col">
+													<input name="AgencyName" id="AgencyName" type="text" class="form-control required max-length" value="<%- (typeof item.AgencyName!='undefined'?item.AgencyName:'') %>" />
+												</div>
+											</div>
+											<div class="col-md-3">
+												<label for="Code"><%- req.session.getTranslation('Code') %></label>
+												<div class="widget-col">
+													<input name="Code" id="Code" type="text" class="form-control required max-length" value="<%- (typeof item!='undefined'?item.Code:'') %>" />
+												</div>
+											</div>
+										</div>
+										<div class="row form-row">
+											<div class="col-md-4">
+												<label for="Status">Status</label>
+												<div class="widget-col">
+													<select name="Status" id="Status" class="form-control required">
+														<option value="active" <%- ((typeof item.Status!='undefined' && item.Status=='active')?'selected=""':'') %> />Activ</option>
+														<option value="inactive" <%- ((typeof item.Status!='undefined' && item.Status=='inactive') ?'selected=""':'') %> />Inactiv</option>
+														<option value="suspended" <%- ((typeof item.Status!='undefined' && item.Status=='suspended')?'selected=""':'') %> />Suspendat</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="row form-row">
+											<div class="col-md-6">
+												<% var now = new Date(); %>
+												<label class="form-label">Inceput contract</label>
+												<div class="controls">
+													<div class="input-group m-b-5">
+														<input type="text" class="form-control" id="StartDate" name="ContractStart" data-date-format="dd M yyyy" value="<%- (typeof item.ContractStartDate!='undefined' && item.ContractStartDate ? timeService.formatDate(item.ContractStartDate,'DD MMM YYYY') : timeService.formatDate(now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate(),'DD MMM YYYY')) %>" />
+														<span class="input-group-addon primary">		
+															<span class="arrow"></span>
+															<i class="fa fa-calendar"></i>		
+														</span>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<label class="form-label">Sfarsit contract</label>
+												<div class="controls">
+													<div class="input-group m-b-5">
+														<input type="text" class="form-control" id="EndDate" name="ContractEnd" data-date-format="dd M yyyy" value="<%- (typeof item.ContractEndDate!='undefined' && item.ContractEndDate ? timeService.formatDate(item.ContractEndDate,'DD MMM YYYY') : timeService.formatDate(now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate(),'DD MMM YYYY')) %>" />
+														<span class="input-group-addon primary">		
+															<span class="arrow"></span>
+															<i class="fa fa-calendar"></i>		
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row form-row">
+											<div class="col-md-4">
+												<label for="ContractNumber"><%- req.session.getTranslation('Contract_number') %></label>
+												<div class="widget-col">
+													<input name="ContractNumber" id="ContractNumber" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.ContractNumber:'') %>" />
+												</div>
+											</div>
+										</div>
+										<br />
+										<h4>Detalii facturare</h4>
+										<div class="row form-row">
+											<div class="col-md-6">
+												<label for="FiscalCode"><%- req.session.getTranslation('Tax_Code') %></label>
+												<div class="widget-col">
+													<input name="FiscalCode" id="FiscalCode" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.FiscalCode:'') %>" />
+												</div>
+											</div>
+											<div class="col-md-6">
+												<label for="RegisterCode"><%- req.session.getTranslation('Registration_Number') %></label>
+												<div class="widget-col">
+													<input name="RegisterCode" id="RegisterCode" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.RegisterCode:'') %>" />
+												</div>
+											</div>
+										</div>
+										<br />
+									</div>
+									<div class="col-md-6">
+										<h4><%- req.session.getTranslation('Agency_Contact') %></h4>
+										<div class="row form-row">
+											<div class="col-md-4">
+												<label for="Phone"><%- req.session.getTranslation('Phone') %></label>
+												<div class="widget-col">
+													<input name="Phone" id="Phone" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.Phone:'') %>" />
+												</div>
+											</div>
+											<div class="col-md-4">
+												<label for="Mobile"><%- req.session.getTranslation('Mobile_Phone') %></label>
+												<div class="widget-col">
+													<input name="Mobile" id="Mobile" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.Mobile:'') %>" />
+												</div>
+											</div>
+											<div class="col-md-4">
+												<label for="Fax"><%- req.session.getTranslation('Fax') %></label>
+												<div class="widget-col">
+													<input name="Fax" id="Fax" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.Fax:'') %>" />
+												</div>
+											</div>
+										</div>
+										<div class="row form-row">
+											<div class="col-md-6">
+												<label for="Email"><%- req.session.getTranslation('Email') %></label>
+												<div class="widget-col">
+													<input name="Email" id="Email" type="email" class="form-control" value="<%- (typeof item!='undefined'?item.Email:'') %>" />
+												</div>
+											</div>
+											<div class="col-md-6">
+												<label for="Website"><%- req.session.getTranslation('Website') %></label>
+												<div class="widget-col">
+													<input name="Website" id="Website" type="url" class="form-control" value="<%- (typeof item!='undefined'?item.Website:'') %>" />
+												</div>
+											</div>
+										</div>
+										<br/>
+										<h4>Adresa Agentie</h4>
+										<div class="row form-row">
+											<div class="col-md-12">
+												<label for="StreetAddress"><%- req.session.getTranslation('Street') %></label>
+												<div class="widget-col">
+													<input name="StreetAddress" id="StreetAddress" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.StreetAddress:'') %>" />
+												</div>
+											</div>
+										</div>
+										<div class="row form-row">
+											<div class="col-md-4">
+												<label for="City"><%- req.session.getTranslation('City') %></label>
+												<div class="widget-col">
+													<input name="City" id="City" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.City:'') %>" />
+												</div>
+											</div>
+											<div class="col-md-4">
+												<label for="ID_County"><%- req.session.getTranslation('County') %></label>
+												<div class="widget-col">
+													<select name="ID_County" id="ID_County" class="form-control">
+														<% _.each(req.session.counties,function(county) { %>
+															<option value="<%= county.ID %>" <%- ((typeof item!='undefined' && item.ID_County==county.ID)?'selected=""':'') %>><%= county.Name %></option>
+														<% }); %>
+													</select>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<label for="PostalCode"><%- req.session.getTranslation('Postal_Code') %></label>
+												<div class="widget-col">
+													<input name="PostalCode" id="PostalCode" type="text" class="form-control" value="<%- (typeof item!='undefined'?item.PostalCode:'') %>" />
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-actions">
+									<div class="pull-left">
+										<button class="btn btn-primary btn-cons" type="submit"><i class="icon-ok"></i> <%- req.session.getTranslation('Save') %></button>
+										<a class="btn btn-white btn-cons" href="/admin/agencies"><%- req.session.getTranslation('Cancel') %></a>
+									</div>
+								</div>
+							</form>
+						</div>
+						<% if(typeof item.ID!='undefined') { %>
+						<ul class="nav nav-tabs m-t-20 tabs-nav">
+							<li class="active"><a href="#tab-clients"><%- req.session.getTranslation('Clients') %></a></li>
+							<li class=""><a href="#tab-contacts"><%- req.session.getTranslation('Contacts') %></a></li>
+							<li class=""><a href="#tab-brokers"><%- req.session.getTranslation('Brokers') %></a></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="tab-clients">
+								<div class="col-md-12">
+									<div class="grid-body no-border">
+										<a href="/admin/clients/add?agency=<%- req.param('id') %>" class="btn btn-info"><%- req.session.getTranslation('Client_Add') %></a>
+										<div class="pull-right p-b-20 row">
+											<div class="col-md-6">
+												<label><%- req.session.getTranslation('Filter') %>:</label>
+											</div>
+											<div class="col-md-6">
+												<input id="agency_client-table-filter" type="text" class="form-control input-sm" />
+											</div>
+										</div>
+										<table class="table table-condensed admin-table footable" id="agency-clients-table" data-filter="#agency_client-table-filter">
+											<thead>
+												<tr>
+													<th style="width:10%"><%- req.session.getTranslation('Code') %></th>
+													<th style="width:22%"><%- req.session.getTranslation('Name') %></th>
+													<th style="width:22%"><%- req.session.getTranslation('Status') %></th>
+													<th style="width:15%"><%- req.session.getTranslation('Tax_Code') %></th>
+													<th style="width:15%"><%- req.session.getTranslation('Registration_Number') %></th>
+													<th style="width:5%" data-sort-ignore="true">&nbsp;</th>
+													<th style="width:5%" data-sort-ignore="true">&nbsp;</th>
+												</tr>
+											</thead>
+											<tbody>
+											<% if( typeof req.session.agencyClients != 'undefined' && req.session.agencyClients.length>0) { 
+												_.each(req.session.agencyClients,function(client) { %>
+													<tr>
+														<td class="v-align-middle"><%= client.Code %></td>
+														<td class="v-align-middle bold"><%= client.Name %></td>
+														<td class="v-align-middle"><span class="muted"><%- client.Status=='active' ? 'Activ' : client.Status=='inactive' ? 'Inactiv' : client.Status=='suspended' ? 'Suspended' : '' %></span></td>
+														<td class="v-align-middle"><span class="muted"><%= client.FiscalCode %></span></td>
+														<td class="v-align-middle"><span class="muted"><%= client.RegisterCode %></span></td>
+														<td><a href="/admin/clients/edit/<%= client.ID %>?agency=<%= req.param('id') %>" class="action-icon btn btn-small btn-success" title="Modifica" ><i class="fa fa-edit"></i></a></td>
+														<td><a href="/admin/clients/delete/<%- client.ID %>?agency=<%= req.param('id') %>" title="Sterge" class="action-icon delete-confirm btn btn-small btn-danger" <%- ((typeof client!='undefined' && client.isHouse)?'disabled':'') %>><i class="fa fa-trash-o"></i></a></td>
+													</tr>
+												<% }); %>
+											<% } %>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="6">
+														<div class="pagination pagination-centered hide-if-no-paging"></div>
+													</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-contacts">
+								<div class="col-md-12">
+									<div class="grid-body no-border">
+										<a href="/admin/contacts/add?agency=<%- req.param('id') %>" class="btn btn-info"><%- req.session.getTranslation('Add_contact') %></a>
+										<div class="pull-right p-b-20 row">
+											<div class="col-md-6">
+												<label><%- req.session.getTranslation('Filter') %>:</label>
+											</div>
+											<div class="col-md-6">
+												<input id="agency_contact-table-filter" type="text" class="form-control input-sm" />
+											</div>
+										</div>
+										<table class="table table-condensed admin-table footable" id="agency-contacts-table" data-filter="#agency_contact-table-filter">
+											<thead>
+												<tr>
+													<th style="width:22%"><%- req.session.getTranslation('FirstName') %></th>
+													<th style="width:22%"><%- req.session.getTranslation('LastName') %></th>
+													<th style="width:5%" data-sort-ignore="true">&nbsp;</th>
+													<th style="width:5%" data-sort-ignore="true">&nbsp;</th>
+												</tr>
+											</thead>
+											<tbody>
+											<% if( typeof req.session.agencyContacts != 'undefined' && req.session.agencyContacts.length>0) { 
+												_.each(req.session.agencyContacts,function(contact) { %>
+													<tr>
+														<td class="v-align-middle bold"><%- contact.FirstName %></td>
+														<td class="v-align-middle bold"><%- contact.LastName %></td>
+														<td><a href="/admin/contacts/edit/<%= contact.ID %>?agency=<%= req.param('id') %>" class="action-icon btn btn-small btn-success" title="Modifica" ><i class="fa fa-edit"></i></a></td>
+														<td><a href="/admin/contacts/delete/<%- contact.ID %>?agency=<%= req.param('id') %>" title="Sterge" class="action-icon delete-confirm btn btn-small btn-danger"><i class="fa fa-trash-o"></i></a></td>
+													</tr>
+												<% }); %>
+											<% } %>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="6">
+														<div class="pagination pagination-centered hide-if-no-paging"></div>
+													</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-brokers">
+								<div class="col-md-12">
+									<div class="grid-body no-border">
+										<a href="/admin/contacts/add?agency=<%- req.param('id') %>&broker=1" class="btn btn-info"><%- req.session.getTranslation('Add_broker') %></a>
+										<div class="pull-right p-b-20 row">
+											<div class="col-md-6">
+												<label><%- req.session.getTranslation('Filter') %>:</label>
+											</div>
+											<div class="col-md-6">
+												<input id="agency_broker-table-filter" type="text" class="form-control input-sm" />
+											</div>
+										</div>
+										<table class="table table-condensed admin-table footable" id="agency-clients-table" data-filter="#agency_broker-table-filter">
+											<thead>
+												<tr>
+													<th style="width:25%"><%- req.session.getTranslation('LoginName') %></th>
+													<th style="width:25%"><%- req.session.getTranslation('FirstName') %></th>
+													<th style="width:25%"><%- req.session.getTranslation('LastName') %></th>
+													<th style="width:10%"><%- req.session.getTranslation('Status') %></th>
+													<th style="width:5%" data-sort-ignore="true">&nbsp;</th>
+													<th style="width:5%" data-sort-ignore="true">&nbsp;</th>
+													<th style="width:5%" data-sort-ignore="true">&nbsp;</th>
+												</tr>
+											</thead>
+											<tbody>
+											<% if( typeof req.session.agencyBrokers != 'undefined' && req.session.agencyBrokers.length>0) { 
+												_.each(req.session.agencyBrokers,function(user) { %>
+													<tr class="<%- user.isActive ? '' : 'highlighted' %>">
+														<td class="v-align-middle bold"><%= user.LoginName %></td>
+														<td class="v-align-middle"><%= user.FirstName %></td>
+														<td class="v-align-middle"><%= user.LastName %></td>
+														<td class="v-align-middle"><%- user.isActive ? 'Activ' : 'Suspendat' %></td>
+														<td><a href="/admin/contacts/edit/<%= user.ID %>?agency=<%= req.param('id') %>" class="action-icon btn btn-small btn-success" title="Modifica" ><i class="fa fa-edit"></i></a></td>
+														<td><a href="/admin/users/<%- user.isActive ? 'disable' : 'enable' %>/<%= user.ID_User %>?agency=<%= req.param('id') %>" class="action-icon btn btn-small btn-default" title="<%- user.isActive ? 'Dezactiveaza' : 'Activeaza' %> cont"><i class="fa <%- user.isActive ? 'fa-minus-circle' : 'fa-check-circle' %>"></i></a></td>
+														<td><a href="/admin/brokers/delete/<%- user.ID %>?agency=<%= req.param('id') %>" title="Sterge" class="action-icon delete-confirm btn btn-small btn-danger"><i class="fa fa-trash-o"></i></a></td>
+													</tr>
+												<% }); %>
+											<% } %>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="7">
+														<div class="pagination pagination-centered hide-if-no-paging"></div>
+													</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<% } %>
+					</div>
+				</div>
+			</div>
+

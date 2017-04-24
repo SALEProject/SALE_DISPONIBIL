@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Server Error</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link href="/plugins/boostrapv3/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+		<link href="/plugins/boostrapv3/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+		<link href="/css/style.css?_t=<%= Date.now() %>" rel="stylesheet" type="text/css"/>
+		<link href="/css/responsive.css" rel="stylesheet" type="text/css"/>
+		<link href="/css/custom-icon-set.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+		<div class="container">
+			<div class="content text-center">
+				<a href="/" class="p-t-20"><img src="/img/logo.png" alt=""  data-src="/img/logo.png"/></a>
+				<%- toolsService.getFlashMessage(req.flash()) %>
+				<%- body %>
+			</div>
+		</div>
+	<script src="/dictionary.js?_t=<%= Date.now() %>" type="text/javascript"></script>
+	<script src="/plugins/jquery-1.8.3.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+$(document).ready(function() {
+	$(".link-back").click(function(e) {
+		e.preventDefault();
+		window.history.go(-1);
+	});
+});
+		</script>
+	</body>
+</html>

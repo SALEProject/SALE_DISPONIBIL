@@ -1,0 +1,396 @@
+<div class="row m-b-10">
+	<div class="col-md-3 col-sm-3 col-xs-12">
+		<% if(accessService.checkState('dashboard','dashboard_orders',req)) { %>
+			<%- partial('../partials/context') %>
+		<% } %>
+		<% if(accessService.checkState('dashboard','dashboard_myorders',req)) { %>
+			<%- partial('../partials/orders') %>
+		<% } %>
+		<% if(accessService.checkState('dashboard','dashboard_journal',req) || accessService.checkState('dashboard','dashboard_anre',req) || accessService.checkState('dashboard','dashboard_users',req)) { %>
+			<%- partial('../partials/users') %>
+		<% } %>
+		<% if(accessService.checkState('dashboard','dashboard_chat',req)) { %>
+			<%- partial('../partials/chat') %>
+		<% } %>
+		<% if(accessService.checkState('dashboard','dashboard_transactions',req)) { %>
+			<% if(accessService.checkState('dashboard','dashboard_journal',req) || accessService.checkState('dashboard','dashboard_anre',req)) { %>
+				<%- partial('../partials/allTransactions') %>
+			<% } else { %>
+				<%- partial('../partials/transactions') %>
+			<% } %>
+		<% } %>
+	</div>
+	<div class="col-md-9 col-sm-9 col-xs-12">
+		<% if(accessService.checkState('dashboard','dashboard_orders',req)) { %>
+			<%- partial('../partials/assetOrders') %>
+		<% } %>
+		<% if(accessService.checkState('dashboard','dashboard_orders',req)) { %>
+			<%- partial('../partials/assets') %>
+		<% } %>
+		<% if(accessService.checkState('dashboard','dashboard_journal',req)) { %>
+			<%- partial('../partials/journal') %>
+		<% } %>
+	</div>
+  <div class="col-md-3 col-sm-3 col-xs-12 secondary-widgets">
+  </div>
+</div>
+<div id="legend" data-toggle="popup" data-target="#legend-container" data-trigger="hover">
+	<div class="text-center">
+		<i class="fa fa-info-circle fa-2x"></i><br/>
+		<%- req.session.getTranslation('Legend') %>
+	</div>
+	<div class="popover fade left in" id="legend-container">
+		<div class="arrow"></div>
+		<div class="popover-content">
+			<ul class="message-list">
+				<li><span class="ring-status"><i class="fa fa-square"></i></span> <%- req.session.getTranslation('Future_session') %></li>
+				<li><span class="ring-status opening"><i class="fa fa-square"></i></span> <%- req.session.getTranslation('Openning_session') %></li>
+				<li><span class="ring-status opened"><i class="fa fa-square"></i></span> <%- req.session.getTranslation('Transacting_session') %></li>
+				<li><span class="ring-status closing"><i class="fa fa-square"></i></span> <%- req.session.getTranslation('Closing_session') %></li>
+				<li><span class="ring-status closed"><i class="fa fa-square"></i></span> <%- req.session.getTranslation('Closed_session') %></li>
+				<li><strong>ΔT</strong> - <%- req.session.getTranslation('delta_t_legend') %></li>
+				<li><strong>ΔT1</strong> - <%- req.session.getTranslation('delta_t1_legend') %></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="documents-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h4 id="myModalLabel" class="semi-bold"><%- req.session.getTranslation('Documents') %></h4>
+			</div>
+			<div class="modal-body">
+				<div class="pull-right p-b-20 row" id="documents-table-filter" style="display:none">
+					<div class="col-md-6">
+						<label>Filtreaza:</label>
+					</div>
+					<div class="col-md-6">
+						<input id="table-filter" type="text" class="form-control input-sm" />
+					</div>
+				</div>
+				<table class="table table-hover table-condensed admin-table footable" id="documents-table" data-filter="#table-filter" style="display:none">
+					<thead>
+						<tr>
+							<th style="width:30%"><%- req.session.getTranslation('Name') %></th>
+							<th style="width:30%"><%- req.session.getTranslation('Type') %></th>
+							<th class="v-align-middle" style="width:5%" data-sort-ignore="true"><%- req.session.getTranslation('Download') %></th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="7">
+								<div class="pagination pagination-centered hide-if-no-paging"></div>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal"><%- req.session.getTranslation('Close') %></button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div class="modal fade" id="parameters-modal" tabindex="-1" role="dialog" aria-labelledby="parametersModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h4 id="parametersModalLabel" class="semi-bold"><%- req.session.getTranslation('Session_parameters') %></h4>
+			</div>
+			<div class="modal-body">
+				<form id="parameters-form">
+					<input type="hidden" id="params_ID_Asset" name="ID_Asset" value="" />
+					<div class="row">
+						<div class="row form-row">
+							<div class="col-md-9">
+								<h4>Orar</h4>
+								<div class="row form-row">
+									<div class="col-md-3">
+										<% var now = new Date(); %>
+										<label class="form-label">Data inceput</label>
+										<div class="controls">
+											<div class="input-group m-b-5">
+												<input type="text" class="form-control required" id="params_StartDate" name="StartDate" data-date-format="dd M yyyy" value="" />
+												<span class="input-group-addon primary">
+													<span class="arrow"></span>
+													<i class="fa fa-calendar"></i>
+												</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<label class="form-label">Data sfarsit</label>
+										<div class="controls">
+											<div class="input-group m-b-5">
+												<input type="text" class="form-control required" id="params_EndDate" name="EndDate" data-date-format="dd M yyyy" value="" />
+												<span class="input-group-addon primary">
+													<span class="arrow"></span>
+													<i class="fa fa-calendar"></i>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row form-row">
+									<div class="col-md-3">
+										<label class="form-label">Faza 1</label>
+										<div class="controls">
+											<div class="input-append bootstrap-timepicker">
+												<input type="time" class="form-control timepicker" name="PreOpeningTime" id="params_PreOpeningTime" value="" placeholder="00:00" data-placement="top" />
+												<span class="add-on"><i class="fa fa-clock-o"></i></span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<label class="form-label">Faza 2</label>
+										<div class="controls">
+											<div class="input-append bootstrap-timepicker">
+												<input type="time" class="form-control timepicker" name="OpeningTime" id="params_OpeningTime" value="" placeholder="00:00" data-placement="top" />
+												<span class="add-on"><i class="fa fa-clock-o"></i></span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<label class="form-label">Faza 3</label>
+										<div class="controls">
+											<div class="input-append bootstrap-timepicker">
+												<input type="time" class="form-control timepicker" name="PreClosingTime" id="params_PreClosingTime" value="" placeholder="00:00" data-placement="bottom" />
+												<span class="add-on"><i class="fa fa-clock-o"></i></span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<label class="form-label">Sfarsit</label>
+										<div class="controls">
+											<div class="input-append bootstrap-timepicker">
+												<input type="time" class="form-control timepicker" name="ClosingTime" id="params_ClosingTime" value="" placeholder="00:00" data-placement="bottom" />
+												<span class="add-on"><i class="fa fa-clock-o"></i></span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row form-row">
+									<div class="col-md-3">
+										<label class="form-label">Delta T (min)</label>
+										<div class="controls row">
+											<div class="col-md-6">
+												<input type="text" class="form-control required" name="DeltaT" id="params_DeltaT" value="" />
+											</div>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<label class="form-label">Delta T1 (min)</label>
+										<div class="controls row">
+											<div class="col-md-6">
+												<input type="text" class="form-control required" name="DeltaT1" id="params_DeltaT1" value="" />
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3" style="margin-top:40px;">
+								<h4>Programare pe zile</h4>
+								<div class="row form-row">
+										<div class="checkbox check-default">
+											<input id="params_dayMonday" name="DaysOfWeek_dayMonday" type="checkbox" value="1" />
+											<label for="params_dayMonday">Luni</label>
+										</div>
+								</div>
+								<div class="row form-row">
+										<div class="checkbox check-default">
+											<input id="params_dayTuesday" name="DaysOfWeek_dayTuesday" type="checkbox" value="1" />
+											<label for="params_dayTuesday">Marti</label>
+										</div>
+								</div>
+								<div class="row form-row">
+										<div class="checkbox check-default">
+											<input id="params_dayWednesday" name="DaysOfWeek_dayWednesday" type="checkbox" value="1" />
+											<label for="params_dayWednesday">Miercuri</label>
+										</div>
+								</div>
+								<div class="row form-row">
+										<div class="checkbox check-default">
+											<input id="params_dayThursday" name="DaysOfWeek_dayThursday" type="checkbox" value="1" />
+											<label for="params_dayThursday">Joi</label>
+										</div>
+								</div>
+								<div class="row form-row">
+										<div class="checkbox check-default">
+											<input id="params_dayFriday" name="DaysOfWeek_dayFriday" type="checkbox" value="1" />
+											<label for="params_dayFriday">Vineri</label>
+										</div>
+								</div>
+								<div class="row form-row">
+										<div class="checkbox check-default">
+											<input id="params_daySaturday" name="DaysOfWeek_daySaturday" type="checkbox" value="1" />
+											<label for="params_daySaturday">Sambata</label>
+										</div>
+								</div>
+								<div class="row form-row">
+										<div class="checkbox check-default">
+											<input id="params_daySunday" name="DaysOfWeek_daySunday" type="checkbox" value="1" />
+											<label for="params_daySunday">Duminica</label>
+										</div>
+								</div>
+							</div>
+						</div>
+
+						<h4>Restrictii</h4>
+						<div class="row form-row">
+								  <% _.each(req.session.params,function(param) { %>
+						  <div class="col-md-12">
+								<div class="checkbox check-default" style="margin-top:10px">
+									<input id="params_<%- param.label %>" name="<%- param.label %>" type="checkbox" value="1" />
+									<label for="params_<%- param.label %>"><%- param.name %></label>
+								</div>
+						  </div>
+								  <% }); %>
+						</div>
+						<div class="row form-row" id="DifferentialPriceText-holder" style="display:none">
+							<label class="form-label">Text pret diferential</label>
+							<div class="controls">
+								<div class="col-md-8">
+									<input type="text" class="form-control" name="DifferentialPriceText" id="params_DifferentialPriceText" value="" />
+								</div>
+							</div>
+						</div>
+
+						<h4>Validare ordine</h4>
+						<div class="row form-row">
+							<div class="col-md-3">
+								<label class="form-label">Incrementare pret</label>
+								<div class="controls row">
+									<div class="col-md-6">
+										<input type="text" class="form-control numeric" name="PriceStepping" id="params_PriceStepping" value="" data-a-sep="." data-a-dec="," data-m-dec="5" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<label class="form-label">Variatia maxima a pretului</label>
+								<div class="controls row">
+									<div class="col-md-6">
+										<input type="number" class="form-control" min="0" max="100" step="any" name="MaxPriceVariation" id="params_MaxPriceVariation" value="" />
+									</div>
+									<div class="col-md-6 no-padding">
+										<span class="muted">%</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<label class="form-label">Pret minim</label>
+								<div class="controls row">
+									<div class="col-md-6">
+										<input type="text" class="form-control numeric" name="MinPrice" id="params_MinPrice" value="" data-a-sep="." data-a-dec="," data-m-dec="5" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<label class="form-label">Pret maxim</label>
+								<div class="controls row">
+									<div class="col-md-6">
+										<input type="text" class="form-control numeric" name="MaxPrice" id="params_MaxPrice" value="" data-a-sep="." data-a-dec="," data-m-dec="5" />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row form-row">
+							<div class="col-md-3">
+								<label class="form-label">Incrementare cantitate</label>
+								<div class="controls row">
+									<div class="col-md-6">
+										<input type="text" class="form-control numeric" name="QuantityStepping" id="params_QuantityStepping" value="" data-a-sep="." data-a-dec="," data-m-dec="5" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<label class="form-label">Cantitate minima</label>
+								<div class="controls row">
+									<div class="col-md-6">
+										<input type="text" class="form-control numeric" name="MinQuantity" id="params_MinQuantity" value="" data-a-sep="." data-a-dec="," data-m-dec="5" />
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<h4>Garantii</h4>
+						<div class="row form-row">
+							<div class="col-md-4">
+								<label class="form-label">Procent garantie la vanzare (%)</label>
+								<div class="controls row">
+									<div class="col-md-6">
+										<input type="number" class="form-control" min="0" max="100" step="any" name="SellWarrantyPercent" id="params_SellWarrantyPercent" value="" />
+									</div>
+									<div class="col-md-6 no-padding">
+										<span class="muted">%</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<label class="form-label">Parte fixa garantie la vanzare (RON)	</label>
+								<div class="controls row">
+									<div class="col-md-6">
+										<input type="text" class="form-control numeric" name="SellWarrantyFixed" id="params_SellWarrantyFixed" value="" data-a-sep="." data-a-dec="," data-m-dec="2" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<label class="form-label">Valoare garantie pe UM la vanzare (RON)</label>
+								<div class="controls row">
+									<div class="col-md-6">
+										<input type="text" class="form-control numeric" name="SellWarrantyMU" id="params_SellWarrantyMU" value="" data-a-sep="." data-a-dec="," data-m-dec="2" />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row form-row">
+							<div class="col-md-4">
+								<label class="form-label">Procent garantie la cumparare (%)</label>
+								<div class="controls row">
+									<div class="col-md-6">
+										<input type="number" class="form-control" min="0" max="100" step="any" name="BuyWarrantyPercent" id="params_BuyWarrantyPercent" value="" />
+									</div>
+									<div class="col-md-6 no-padding">
+										<span class="muted">%</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<label class="form-label">Parte fixa garantie la cumparare (RON)</label>
+								<div class="controls row">
+									<div class="col-md-6">
+										<input type="text" class="form-control numeric" name="BuyWarrantyFixed" id="params_BuyWarrantyFixed" value="" data-a-sep="." data-a-dec="," data-m-dec="2" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<label class="form-label">Valoare garantie pe UM la cumparare (RON)</label>
+								<div class="controls row">
+									<div class="col-md-6">
+										<input type="text" class="form-control numeric" name="BuyWarrantyMU" id="params_BuyWarrantyMU" value="" data-a-sep="." data-a-dec="," data-m-dec="2" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-primary" id="save-parameters"><%- req.session.getTranslation('Save') %></button>
+			  <button type="button" class="btn btn-default" data-dismiss="modal"><%- req.session.getTranslation('Close') %></button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

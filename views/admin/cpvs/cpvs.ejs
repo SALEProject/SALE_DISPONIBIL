@@ -1,0 +1,40 @@
+    <div class="content">
+      <div class="page-title">
+		<i class="icon-custom-left"></i>
+        <h3>CPV</h3>
+      </div>
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="grid simple">
+			<div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+				<a href="/admin/cpvs/add" class="btn btn-info"><i class="fa fa-plus-circle"></i>&nbsp;Adauga CPV</a>
+			</div>
+			<div class="grid-body no-border">
+				<table class="table table-hover table-condensed admin-table" id="example-table">
+					<thead>
+						<tr>
+							<th style="width:10%">Cod</th>
+							<th style="width:22%">Nume RO</th>						
+							<th style="width:22%">Nume EN</th>						
+							<th style="width:5%">&nbsp;</th>
+							<th style="width:5%">&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% if(items.length>0) { _.each(items,function(item) { %>
+						<tr>
+							<td class="v-align-middle"><%= item.Code %></td>
+							<td class="v-align-middle bold"><%= item.Name_RO %></td>							
+							<td class="v-align-middle bold"><%= item.Name_EN %></td>							
+							<td><a href="/admin/cpvs/edit/<%= item.ID %>" class="action-icon btn btn-small btn-success" title="Modifica"><i class="fa fa-edit"></i></a></td>
+							<td><a href="/admin/cpvs/delete/<%- item.ID %>" title="Sterge" class="action-icon delete-confirm btn btn-small btn-danger"><i class="fa fa-trash-o"></i></a></td>
+						</tr>
+						<% }); } %>
+					</tbody>
+				</table>
+			</div>
+          </div>
+        </div>
+      </div>
+    </div>

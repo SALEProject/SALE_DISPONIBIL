@@ -1,0 +1,61 @@
+    <div class="content">
+      <ul class="breadcrumb">
+        <li>
+          <p>HOME</p>
+        </li>
+        <li><a href="/admin/anre" class="">ANRE Report</a> </li>
+      </ul>
+      <div class="page-title"> <i class="icon-custom-left"></i>
+        <h3><span class="semi-bold">ANRE Report</span></h3>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+				<% if(msg!='') { %>
+				<div class="alert alert-success">
+                  <button class="close" data-dismiss="alert"></button>
+                   <%= msg %>
+				</div>
+				<% } %>
+			</div>
+            <div class="grid-body no-border">
+			<form class="form-no-horizontal-spacing" id="anre-form" method="post" autocomplete="off">	
+              <div class="row column-seperation">
+                <div class="col-md-6">
+                  <h4>Filters</h4>            
+                    <div class="row form-row">
+						<div class="form-group col-md-6">
+							<label class="form-label">Start</label>
+							<div class="input-group">
+								<input type="text" class="form-control required" id="prm_StartDate" name="prm_StartDate" data-date-format="yyyy-mm-dd" />
+								<span class="input-group-addon primary">		
+									<span class="arrow"></span>
+									<i class="fa fa-align-justify"></i>		
+								</span>
+							</div>
+						</div>
+						<div class="form-group col-md-6">
+							<label class="form-label">End</label>
+							<div class="input-group">
+								<input type="text" class="form-control required" id="prm_EndDate" name="prm_EndDate" data-date-format="yyyy-mm-dd" />
+								<span class="input-group-addon primary">		
+									<span class="arrow"></span>
+									<i class="fa fa-align-justify"></i>		
+								</span>
+							</div>
+						</div>
+                    </div>
+                </div>
+              </div>
+				<div class="form-actions">
+					<div class="pull-left">
+					  <button class="btn btn-danger btn-cons" type="submit">Download</button>
+					</div>
+				  </div>
+			</form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

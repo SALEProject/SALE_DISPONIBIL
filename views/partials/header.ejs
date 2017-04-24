@@ -1,0 +1,208 @@
+<!-- BEGIN HEADER -->
+<div class="header navbar navbar-inverse wide">
+  <ul class="nav pull-left notifcation-center" id="main-menu-toggle-wrapper" style="display: flex;">
+    <li class="dropdown">
+      <a id="main-menu-toggle" href="#main-menu" class="">
+        <div class="iconset top-menu-toggle-white"></div>
+      </a>
+    </li>
+  </ul>
+  <div class="container">
+    <div class="row page-sidebar" id="main-menu">
+      <!-- BEGIN MINI-PROFILE -->
+      <div class="page-sidebar-wrapper" id="main-menu-wrapper">
+        <!-- BEGIN SIDEBAR MENU -->
+        <ul>
+
+          <li class="start">
+            <a href="javascript:void(0);">
+              <span class="title"><%- req.session.getTranslation('Alege widget') %></span>
+            </a>
+          </li>
+
+          <% if(accessService.checkState('dashboard','dashboard_orders',req)) { %>
+          <!--<li>-->
+            <!--<a href="javascript:void(0);" class="toggle-widget" data-widget="context-container">-->
+              <!--<span class="title"><%- req.session.getTranslation('Available_assets') %></span>-->
+            <!--</a>-->
+          <!--</li>-->
+          <% } %>
+
+          <% if(accessService.checkState('dashboard','dashboard_myorders',req)) { %>
+          <li>
+            <a href="javascript:void(0);" class="toggle-widget" data-widget="orders-container">
+              <span class="title"><%- req.session.getTranslation('My_orders') %></span>
+            </a>
+          </li>
+          <% } %>
+
+          <% if(accessService.checkState('dashboard','dashboard_journal',req) || accessService.checkState('dashboard','dashboard_anre',req) || accessService.checkState('dashboard','dashboard_users',req)) { %>
+          <li>
+            <a href="javascript:void(0);" class="toggle-widget" data-widget="users-container">
+              <span class="title"><%- req.session.getTranslation('Active_users') %></span>
+            </a>
+          </li>
+          <% } %>
+
+          <% if(accessService.checkState('dashboard','dashboard_chat',req)) { %>
+          <li>
+            <a href="javascript:void(0);" class="toggle-widget" data-widget="chat-container">
+              <span class="title"><%- req.session.getTranslation('Chat_panel') %></span>
+            </a>
+          </li>
+          <% } %>
+
+          <% if(accessService.checkState('dashboard','dashboard_transactions',req)) { %>
+            <% if(accessService.checkState('dashboard','dashboard_journal',req) || accessService.checkState('dashboard','dashboard_anre',req)) { %>
+          <li>
+            <a href="javascript:void(0);" class="toggle-widget" data-widget="all-transactions-container">
+              <span class="title"><%- req.session.getTranslation('Market_transactions_current_day') %></span>
+            </a>
+          </li>
+            <% } else { %>
+          <li>
+            <a href="javascript:void(0);" class="toggle-widget" data-widget="transactions-container">
+              <span class="title"><%- req.session.getTranslation('My_transactions_for_today') %></span>
+            </a>
+          </li>
+            <% } %>
+          <% } %>
+
+          <% if(accessService.checkState('dashboard','dashboard_orders',req)) { %>
+          <!--<li>-->
+            <!--<a href="javascript:void(0);" class="toggle-widget" data-widget="asset-orders-container">-->
+              <!--<span class="title"><%- req.session.getTranslation('Documents') %></span>-->
+            <!--</a>-->
+          <!--</li>-->
+          <% } %>
+
+          <% if(accessService.checkState('dashboard','dashboard_myorders',req)) { %>
+          <!--<li>-->
+            <!--<a href="javascript:void(0);" class="toggle-widget" data-widget="order-form-container">-->
+              <!--<span class="title"><%- req.session.getTranslation('Assets') %></span>-->
+            <!--</a>-->
+          <!--</li>-->
+          <% } %>
+
+          <% if(accessService.checkState('dashboard','dashboard_orders',req)) { %>
+          <li>
+            <a href="javascript:void(0);" class="toggle-widget" data-widget="market-assets-container">
+              <span class="title"><%- req.session.getTranslation('Other_assets_on_the_market') %></span>
+            </a>
+          </li>
+          <% } %>
+
+          <% if(accessService.checkState('dashboard','dashboard_journal',req)) { %>
+          <li class="end">
+            <a href="javascript:void(0);" class="toggle-widget" data-widget="journal-container">
+              <span class="title"><%- req.session.getTranslation('Activity_log') %></span>
+            </a>
+          </li>
+          <% } %>
+
+        </ul>
+        <!-- END SIDEBAR MENU -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-1 col-xs-11 top-section" id="logo-box">
+        <a href="/"><img src="/img/logo.png" class="logo" alt="" data-src="/img/logo.png" width="60" height="60"/></a>
+
+        <div id="time-container"><span class="server-time" class=""></span></div>
+      </div>
+      <div class="col-md-5 col-xs-11 top-section" id="stats-box">
+        <div id="session-container">
+          <div id="session-context">v3.2 Disponibil.ro <span id="session-ring"></span> <span id="session-asset"></span></div>
+          <table border="0" cellpadding="0" cellspacing="0" id="session-details" style="display:none;width:100%">
+            <tbody>
+            <tr>
+              <td>
+                <div id="session-status"></div>
+              </td>
+              <td>
+                <div class="session-price"><span class="muted"><%- req.session.getTranslation('BID_Price') %>:</span>
+                  <strong id="session-bid-price"></strong> <span>Lei</span></div>
+              </td>
+              <td>
+                <div class="session-price"><span class="muted"><%- req.session.getTranslation('ASK_Price') %>:</span>
+                  <strong id="session-ask-price"></strong> <span>Lei</span></div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="alerts-container">
+          <div class="popover alert fade in" id="alerts-popup">
+            <div class="popover-content">
+              <ul id="alerts-list"></ul>
+            </div>
+          </div>
+          <div id="main-alert"><%- req.session.getTranslation('no_recent_alert') %></div>
+        </div>
+      </div>
+      <div class="col-md-2 col-xs-11 top-section" id="menu-box">
+        <ul class="nav second-menu">
+          <li class="">
+            <a href="/"
+               class="<%- ((req.options.action == 'index' && req.options.controller == 'home') ? 'selected' : '') %>"><i
+                class="fa fa-bookmark"></i>&nbsp;&nbsp;<%- req.session.getTranslation('Dashboard') %></a>
+          </li>
+          <li class="">
+            <a href="/reports"
+               class="<%- (((req.options.action == 'index' || req.options.action == 'orders' || req.options.action == 'transactions' || req.options.action == 'events') && req.options.controller == 'report') ? 'selected' : '') %>"><i
+                class="fa fa-bar-chart-o"></i>&nbsp;&nbsp;<%- req.session.getTranslation('Reports_and_statistics') %></a>
+          </li>
+          <li class="">
+            <a href="/account"
+               class="<%- ((req.options.controller == 'account' && (req.options.action == 'profile' || req.options.action == 'edit_profile' || req.options.action == 'change_password' || req.options.action == 'agency_view' || req.options.action == 'agency_edit' || req.options.action == 'agency_clients' || req.options.action == 'agency_users' || req.options.action == 'agency_warranties')) ? 'selected' : '') %>"><i
+                class="fa fa-gear"></i>&nbsp;&nbsp;<%- req.session.getTranslation('Account_admin') %></a>
+          </li>
+          <li class="">
+            <a href="/account/agency_assets"
+               class="<%- ((req.options.controller == 'account' && (req.options.action == 'agency_assets' || req.options.action == 'agency_asset_view')) ? 'selected' : '') %>"><i
+                class="fa fa-bars"></i>&nbsp;&nbsp;<%- req.session.getTranslation('Assets') %></a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-2 col-xs-5 top-section" id="account-box">
+        <i id="account-picture" class="fa fa-user fa-3x"></i>
+
+        <p class="user-info">
+          <% if(req.session.currentUser.FirstName && req.session.currentUser.LastName) { %>
+          <%- req.session.currentUser.FirstName %> <strong><%= req.session.currentUser.LastName %></strong>
+          <% } else { %>
+          <%- req.session.currentUser.LoginName %>
+          <% } %>
+          <br/><span
+            class="italic"><%- req.session.currentUser.ID_Agency != -1 ? req.session.currentUser.CompanyName : req.session.currentUser.role.Name %></span>
+        </p>
+
+        <% if(req.session.currentUser.isAdministrator) { %>
+        <div class="user-data-box">
+          <br/><a href="/admin"><i class="fa fa-gears"></i> Mergi la administrare</a>
+        </div>
+        <% } else { %>
+        <div class="user-data-box">
+          <a href="/account/notifications" id="user-messages" data-count="0"
+             class="user-account-link <%- (req.options.controller == 'account' && req.options.action == 'notifications' ? 'selected' : '') %>"><i
+              class="fa fa-envelope"></i> <%- req.session.getTranslation('Messages') %> <span class="badge">0</span></a>
+        </div>
+        <div class="popover fade bottom in" id="user-messages-list">
+          <div class="arrow"></div>
+          <div class="popover-content">
+            <ul class="message-list">
+            </ul>
+          </div>
+          <div class="p-b-10 text-center bold"><a
+              href="/account/notifications"><%- req.session.getTranslation('See_all') %></a></div>
+        </div>
+        <% } %>
+      </div>
+      <div class="col-md-2 col-xs-4 top-section" id="logout-box">
+        <a class="user-logout-link" href="/logout" title="Logout"><i
+            class="fa fa-power-off fa-2x"></i><br/><%- req.session.getTranslation('Logout') %></a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END HEADER -->

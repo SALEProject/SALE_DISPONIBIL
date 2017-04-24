@@ -1,0 +1,176 @@
+    <div class="content">
+      <div class="page-title"> <i class="icon-custom-left"></i>
+        <h3><%- (req.param('id')?'Modificare':'Adaugare') %> ordin</h3>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+			</div>
+            <div class="grid-body no-border">
+			<form class="form-no-horizontal-spacing" id="user-form" method="post" autocomplete="off">
+              <div class="row column-seperation">
+                <div class="col-md-6">
+					<h4>Detalii ordin</h4>
+                    <div class="row form-row">
+                      <div class="col-md-4">
+							<label class="form-label">Directie</label>
+							<div class="controls">
+								<select name="Direction" id="Direction" class="form-control">
+								  <option value="B" <%- ((typeof item!='undefined' && item.Direction=='B')?'selected=""':'') %> />Cumparare</option>
+								  <option value="S" <%- ((typeof item!='undefined' && item.Direction=='S')?'selected=""':'') %> />Vanzare</option>
+								</select>
+							</div>
+                      </div>
+					</div>
+                    <div class="row form-row">
+                      <div class="col-md-4">
+							<label class="form-label">Cantitate</label>
+							<div class="controls">
+								<input name="Quantity" id="Quantity" type="text" class="form-control required numeric" value="<%- (typeof item!='undefined'?item.Quantity:'') %>" data-a-sep="." data-a-dec="," data-m-dec="3" data-l-zero="deny" />
+							</div>
+                      </div>
+                      <div class="col-md-4">
+							<label class="form-label">Pret</label>
+							<div class="controls">
+								<input name="Price" id="Price" type="text" class="form-control numeric" value="<%- (typeof item!='undefined'?item.Price:'') %>" data-a-sep="." data-a-dec="," data-m-dec="2" data-l-zero="deny" />
+							</div>
+                      </div>
+                    </div>
+                    <div class="row form-row">
+                      <div class="col-md-4">
+							<label class="form-label">Valabilitate</label>
+							<div class="controls">
+								<div class="input-group m-b-5">
+									<input type="text" class="form-control required" id="order-Date" name="Date" data-date-format="dd M yyyy" />
+									<span class="input-group-addon primary">
+										<span class="arrow"></span>
+										<i class="fa fa-calendar"></i>
+									</span>
+								</div>
+								<span class="muted">data (zz Luna aaaa)</span>
+							</div>
+						</div>
+                      <div class="col-md-5">
+							<label class="form-label">&nbsp;</label>
+							<div class="controls">
+								<div class="input-group m-b-5">
+									<div class="controls" style="width:125px;">
+										<div class="input-append bootstrap-timepicker-component">
+											<input type="text" id="order-Time" name="Time" class="timepicker-24 span12">
+											<span class="add-on"><span class="arrow"></span><i class="fa fa-clock-o"></i></span>
+										</div>
+									</div>
+									<span class="muted">ora (oo:mm:ss)</span>
+								</div>
+							</div>
+                      </div>
+                    </div>
+					<div class="row form-row">
+                      <div class="col-md-12">
+							<label class="form-label">Total/Partial</label>
+							<div class="controls">
+								<div class="radio">
+									<input id="Total" type="radio" name="PartialFlag" value="0" <%- ((typeof item!='undefined' && item.PartialFlag=='0')?'checked=""':(typeof item == 'undefined' || (typeof item =='object' && Object.keys(item).length==0)?'checked=""':'')) %> />
+									<label for="Total">Total</label>
+									<input id="Partial" type="radio" name="PartialFlag" value="1" <%- ((typeof item!='undefined' && item.PartialFlag=='1')?'checked=""':'') %> />
+									<label for="Partial">Partial</label>
+								</div>
+							</div>
+                      </div>
+					</div>
+					<br/>
+					<br/>
+					<br/>
+					<br/>
+					<br/>
+					<br/>
+                </div>
+                <div class="col-md-6">
+					<h4>Asocieri</h4>
+                    <div class="row">
+                      <div class="col-md-6">
+						<div class="form-group">
+							<label class="form-label">Ring</label>
+							<div class="controls">
+								<% if (asset!=null) { %>
+									<input type="hidden" name="ID_Asset" id="ID_Ring" value="<%= asset.ID_Ring %>" />
+									<h4><%= sails.storage.rings[toolsService.searchIdInArray(asset.ID_Ring,sails.storage.rings)].Name %></h4>
+								<% } else { %>
+								<select name="ID_Ring" id="ID_Ring" class="form-control">
+								  <% _.each(sails.storage.rings,function(ring) { %>
+								  <option value="<%= ring.ID %>" <%- ((typeof item!='undefined' && item.ID_Ring==ring.ID)?'selected=""':'') %> /><%= ring.Name %></option>
+								  <% }); %>
+								</select>
+								<% } %>
+							</div>
+						</div>
+                      </div>
+                      <div class="col-md-6">
+						<div class="form-group">
+							<label class="form-label">Activ</label>
+							<div class="controls">
+								<% if (asset!=null) { %>
+									<input type="hidden" name="ID_Asset" id="ID_Asset" value="<%= asset.ID %>" />
+									<h4><%= asset.Name %></h4>
+								<% } else { %>
+								<select name="ID_Asset" id="ID_Asset" class="form-control">
+								  <% _.each(req.session.assets,function(asset) { %>
+								  <option value="<%= asset.ID %>" data-ring="<%- asset.ID_Ring %>" <%- ((typeof item!='undefined' && item.ID_Asset==asset.ID)?'selected=""':'') %> /><%= asset.Name %></option>
+								  <% }); %>
+								</select>
+								<% } %>
+							</div>
+						</div>
+                      </div>
+					</div>
+                    <div class="row">
+                      <div class="col-md-6">
+						<div class="form-group">
+							<label class="form-label">Broker</label>
+							<div class="controls">
+								<select name="ID_Broker" id="ID_Broker" class="select2 form-control">
+								  <% _.each(req.session.users,function(user) { %>
+								  <option value="<%= user.ID_Broker %>" <%- ((typeof item!='undefined' && item.ID_Broker==user.ID_Broker)?'selected=""':'') %> /><%= user.FirstName+' '+user.LastName %></option>
+								  <% }); %>
+								</select>
+							</div>
+						</div>
+                      </div>
+                      <div class="col-md-6">
+							<label class="form-label">&nbsp;</label>
+							<div class="checkbox check-default" style="margin-top:10px">
+								<input id="isInitial" name="isInitial" type="checkbox" value="1" <% if(typeof item!='undefined' && typeof item.isInitial != 'undefined' && item.isInitial) { %>checked=""<% } %> />
+								<label for="isInitial">Ordin initiator</label>
+							</div>
+					  </div>
+					</div>
+					<div id="restrictions" <% if(typeof item!='undefined' && typeof item.isInitial != 'undefined' && item.isInitial) {} else { %>style="display:none"<% } %>>
+						<h4>Restrictii</h4>
+						<div class="row form-row">
+								  <% _.each(req.session.params,function(param) { %>
+						  <div class="col-md-12">
+								<div class="checkbox check-default" style="margin-top:10px">
+									<input id="<%- param.label %>" name="<%- param.label %>" type="checkbox" value="1" <% if(typeof item!='undefined' && item[param.label]) { %>checked=""<% } %> />
+									<label for="<%- param.label %>"><%- param.name %></label>
+								</div>
+						  </div>
+								  <% }); %>
+						</div>
+					</div>
+				</div>
+              </div>
+				<div class="form-actions">
+					<div class="pull-left">
+					  <button class="btn btn-success btn-cons" type="submit" name="submit" value="schedule"><i class="icon-ok"></i> Seteaza orar sedinta </button>
+					  <button class="btn btn-danger btn-cons" type="submit" name="submit" value="save"><i class="icon-ok"></i> Salveaza</button>
+					  <a class="btn btn-white btn-cons" href="/admin/orders">Renunta</a>
+					</div>
+				  </div>
+			</form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

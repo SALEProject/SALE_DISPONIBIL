@@ -1,0 +1,63 @@
+<div class="content">
+	<div class="page-title">
+		<ul class="breadcrumb">
+			<li>
+				<a href="/admin"><i class="fa fa-home"></i></a>
+			</li>
+			<li>
+				<a href="/admin/assets" class="">Active</a>
+			</li>
+			<li>
+				<span class="active"><%- asset.Code %> (<%- req.session.getTranslation(asset.Name) %>) - Detalii sedinta tranzactionare</span>
+			</li>                    
+		</ul>
+	</div>
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="grid simple">
+			<div class="grid-title no-border">
+				<%- toolsService.getFlashMessage(req.flash()) %>
+				
+				<div class="clearfix"></div>
+			</div>
+			<div class="grid-body no-border">
+				<table class="table table-hover table-condensed admin-table" id="example-table">
+					<thead>
+							<th aria-controls="example-table" aria-sort="descending"><%- req.session.getTranslation('Date') %></th>
+							<th><%- req.session.getTranslation('Operation') %></th>
+							<th><%- req.session.getTranslation('User') %></th>
+							<th><%- req.session.getTranslation('Agency') %></th>
+							<th><%- req.session.getTranslation('Order') %></th>
+							<th><%- req.session.getTranslation('Client') %></th>
+							<th><%- req.session.getTranslation('Asset') %></th>
+							<th><%- req.session.getTranslation('Quantity') %></th>
+							<th><%- req.session.getTranslation('Price') %></th>
+							<th><%- req.session.getTranslation('Message') %></th>
+					</thead>
+					<tbody>
+						<% if(items.length>0) { _.each(items,function(item) { %>
+						<tr>
+							<td><%= timeService.formatDate(item.Date,'DD-MM-YYYY HH:mm:ss.SSS') %></td>
+							<td><%= item.Operation %></td>
+							<td><%= item.LoginName %></td>
+							<td><%= (item.AgencyName?item.AgencyName:'') %></td>
+							<td><%= (item.ID_Order?item.ID_Order:'') %></td>
+							<td><%= (item.ClientName?item.ClientName:'') %></td>
+							<td><%= (toolsService.searchIdInArray(item.ID_Asset,req.session.assets)>-1 ? req.session.getTranslation(req.session.assets[toolsService.searchIdInArray(item.ID_Asset,req.session.assets)]['Name']) : '-' ) %></td>
+							<td><%= (item.Quantity?item.Quantity:'') %></td>
+							<td><%= (item.Price?item.Price:'') %></td>
+							<td><%= (item.Message?item.Message:'') %></td>
+						</tr>
+						<% }); } %>
+					</tbody>
+				</table>
+			</div>
+          </div>
+          <div class="form-actions">
+					<div class="text-center">
+						<a class="btn btn-white btn-cons" href="javascript:history.back()">Inapoi</a>
+					</div>
+				</div>
+        </div>
+      </div>
+    </div>

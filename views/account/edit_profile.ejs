@@ -1,0 +1,112 @@
+<div class="tile white m-b-10 padding-20">
+	<div class="tile-title">
+		<h3 class="m-t-0 m-b-10"><%= title %></h4>
+		<%- toolsService.getFlashMessage(req.flash()) %>
+	</div>
+	<div class="tile-body p-t-20">
+			<form class="" method="post" autocomplete="off">							
+				<div class="account-form">
+					<div class="m-b-20 col-md-offset-1">
+						<label><strong><%- req.session.getTranslation('Personal_information') %></strong></label>
+					</div>
+					<div class="row m-b-10">
+						<div class="col-md-3 col-md-offset-2">
+							<label for="Title"><%- req.session.getTranslation('Title') %></label>
+						</div>
+						<div class="col-md-4">
+							<div class="widget-col">
+								<input name="Title" id="Title" type="text" class="form-control" value="<%- req.session.currentUser.Title %>" />
+							</div>
+						</div>
+					</div>
+					<div class="row m-b-10">
+						<div class="col-md-3 col-md-offset-2">
+							<label for="FirstName"><%- req.session.getTranslation('Firstname') %></label>
+						</div>
+						<div class="col-md-4">
+							<div class="widget-col">
+								<input name="FirstName" id="FirstName" type="text" class="form-control" value="<%- req.session.currentUser.FirstName %>" />
+							</div>
+						</div>
+					</div>
+					<div class="row m-b-10">
+						<div class="col-md-3 col-md-offset-2">
+							<label for="LastName"><%- req.session.getTranslation('Lastname') %></label>
+						</div>
+						<div class="col-md-4">
+							<div class="widget-col">
+								<input name="LastName" id="LastName" type="text" class="form-control" value="<%- req.session.currentUser.LastName %>" />
+							</div>
+						</div>
+					</div>
+					<div class="row m-b-10">
+						<div class="col-md-3 col-md-offset-2">
+							<label for="SocialCode"><%- req.session.getTranslation('Social_Code') %></label>
+						</div>
+						<div class="col-md-4">
+							<div class="widget-col">
+								<input name="SocialCode" id="SocialCode" type="text" class="form-control" value="<%- req.session.currentUser.SocialCode %>" />
+							</div>
+						</div>
+					</div>
+					<div class="row m-b-10">
+						<div class="col-md-3 col-md-offset-2">
+							<label for="IdentityCard"><%- req.session.getTranslation('Identity_Card') %></label>
+						</div>
+						<div class="col-md-4">
+							<div class="widget-col">
+								<input name="IdentityCard" id="IdentityCard" type="text" class="form-control" value="<%- req.session.currentUser.IdentityCard %>" />
+							</div>
+						</div>
+					</div>
+					<div class="m-b-20 col-md-offset-1">
+						<label><strong><%- req.session.getTranslation('Contact_information') %></strong></label>
+					</div>
+					<div class="row m-b-10">
+						<div class="col-md-3 col-md-offset-2">
+							<label for="Email"><%- req.session.getTranslation('Email') %></label>
+						</div>
+						<div class="col-md-4">
+							<div class="widget-col">
+								<input name="Email" id="Email" type="text" class="form-control" value="<%- req.session.currentUser.Email %>" />
+							</div>
+						</div>
+					</div>
+					<div class="row m-b-10">
+						<div class="col-md-3 col-md-offset-2">
+							<label for="Phone"><%- req.session.getTranslation('Phone') %></label>
+						</div>
+						<div class="col-md-4">
+							<div class="widget-col">
+								<input name="Phone" id="Phone" type="text" class="form-control" value="<%- req.session.currentUser.Phone %>" />
+							</div>
+						</div>
+					</div>
+					<div class="row m-b-10">
+						<div class="col-md-3 col-md-offset-2">
+							<label for="Fax"><%- req.session.getTranslation('Fax') %></label>
+						</div>
+						<div class="col-md-4">
+							<div class="widget-col">
+								<input name="Fax" id="Fax" type="text" class="form-control" value="<%- req.session.currentUser.Fax %>" />
+							</div>
+						</div>
+					</div>
+					<div class="row m-b-10">
+						<div class="col-md-3 col-md-offset-2">
+							<label for="Mobile"><%- req.session.getTranslation('Mobile') %></label>
+						</div>
+						<div class="col-md-4">
+							<div class="widget-col">
+								<input name="Mobile" id="Mobile" type="text" class="form-control" value="<%- req.session.currentUser.Mobile %>" />
+							</div>
+						</div>
+					</div>
+                </div>
+				<div class="text-center m-t-20">
+					<button class="btn btn-primary btn-cons" type="submit"><%- req.session.getTranslation('Save') %></button>
+					<a class="btn btn-white btn-cons" href="/account/profile"><%- req.session.getTranslation('Cancel') %></a>
+				</div>
+			</form>
+	</div>
+</div>

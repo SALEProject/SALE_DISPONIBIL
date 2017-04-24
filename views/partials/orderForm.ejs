@@ -1,0 +1,162 @@
+<div class="tile m-b-10" id="order-form-container" style="display:none">
+	<div class="tile-title">
+		<h5 class="no-margin m-b-10 bold"><%- req.session.getTranslation('Add_order_title') %></h5>
+		<br/>
+	</div>
+	<div class="tile-body">
+		<form class="my-form" id="order-form" method="post">
+			<input type="hidden" id="order-Direction" name="Direction" value="" />
+			<input type="hidden" id="order-ID" name="ID" value="" />
+			<input type="hidden" id="order-ID_Ring" name="ID_Ring" value="" />
+			<input type="hidden" id="order-isInitial" name="isInitial" value="0" />
+			<input type="hidden" id="order-ID_Asset" name="ID_Asset" value="" />
+			<input type="hidden" id="order-SubmitTime" name="SubmitTime" value="" />
+			<div class="row form-row no-margin" id="new-asset-form" style="display:none">
+				<label class="form-label"><%- req.session.getTranslation('Asset') %></label>
+				<div class="padding-10 clearfix">
+					<div class="clearfix m-b-10">
+						<div class="col-md-2">
+							<label class="form-label"><%- req.session.getTranslation('Name') %></label>
+						</div>
+						<div class="col-md-4">
+							<div class="controls">
+								<input type="text" class="input-sm form-control required bold" name="AssetName" id="order-AssetName" />
+							</div>
+						</div>
+						<div class="col-md-2 col-md-offset-1">
+							<label class="form-label"><%- req.session.getTranslation('Code') %></label>
+						</div>
+						<div class="col-md-2">
+							<div class="controls">
+								<input type="text" class="input-sm form-control required bold" name="AssetCode" id="order-AssetCode" />
+							</div>
+						</div>
+					</div>
+					<div class="clearfix">
+						<div class="col-md-2">
+							<label class="form-label"><%- req.session.getTranslation('Asset_type') %></label>
+						</div>
+						<div class="col-md-4">
+							<div class="controls">
+								<select name="ID_AssetType" id="ID_AssetType" class="input-sm form-control">
+								  <% _.each(req.session.asset_types,function(asset_type) { %>
+								  <option value="<%= asset_type.ID %>"><%= asset_type.Name %></option>
+								  <% }); %>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-2 col-md-offset-1">
+							<label class="form-label"><%- req.session.getTranslation('Measuring_unit') %></label>
+						</div>
+						<div class="col-md-2">
+							<div class="controls">
+								<input type="text" class="input-sm form-control required bold" name="AssetMeasuringUnit" id="order-AssetMeasuringUnit" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="">
+				<div class="m-b-10 clearfix">
+					<div class="col-md-4">
+						<div class="row">
+							<div class="col-md-4">
+								<label class="form-label"><%- req.session.getTranslation('Quantity') %></label>
+							</div>
+							<div class="col-md-8">
+								<div class="controls">
+									<input type="text" class="input-sm form-control required bold numeric" min="0" step="any" name="Quantity" id="order-Quantity" data-a-sep="." data-a-dec="," data-m-dec="3" data-l-zero="deny" autocomplete="off" />
+									<span class="muted" id="quantity-stepping-placeholder">(#,## / 0,001)</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="row">
+							<div class="col-md-5" style="text-align:right">
+								<label class="form-label"><%- req.session.getTranslation('Price') %></label>
+								<span class="muted" id="DifferentialPriceLabel"></span>
+							</div>
+							<div class="col-md-7">
+								<div class="controls">
+									<input type="text" class="input-sm form-control required bold numeric" min="0" step="any" name="Price" id="order-Price" data-a-sep="." data-a-dec="," data-m-dec="2" data-l-zero="deny" autocomplete="off" />
+									<span class="muted" id="price-stepping-placeholder">Lei / UM (#,## / 0,01)</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="row">
+							<div class="col-md-4">
+								<label class="form-label"><%- req.session.getTranslation('Client') %></label>
+							</div>
+							<div class="col-md-8">
+								<div class="controls">
+									<select name="ID_Client" id="order-ID_Client" class="input-sm required form-control">
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<p class="p-l-10"><%- req.session.getTranslation('Available_warranties') %>: <span id="clientWarranties"></span></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="m-b-10 clearfix">
+					<div class="col-md-8">
+						<div class="row">
+							<div class="col-md-2">
+								<label class="form-label"><%- req.session.getTranslation('Availability') %></label>
+							</div>
+							<div class="col-md-10">
+								<div class="clearfix">
+									<div class="col-md-6">
+										<div class="input-group">
+											<input type="text" class="input-sm form-control required" id="order-Date" name="Date" data-date-format="dd M yyyy" />
+											<span class="input-group-addon primary">
+												<span class="arrow"></span>
+												<i class="fa fa-calendar"></i>
+											</span>
+										</div>
+										<span class="muted"><%- req.session.getTranslation('date_with_format') %></span>
+									</div>
+									<div class="col-md-6">
+										<div class="input-group">
+											<input type="text" class="input-sm form-control required timepicker-24" id="order-Time" name="Time" />
+											<span class="input-group-addon">
+												<span class="arrow"></span>
+												<i class="fa fa-clock-o"></i>
+											</span>
+										</div>
+										<span class="muted"><%- req.session.getTranslation('hour_with_format') %></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4 isPartial-holder">
+						<div class="controls">
+							<div class="radio">
+								<input id="total" type="radio" name="isPartial" value="0" checked="checked" />
+								<label for="total"><%- req.session.getTranslation('Total') %></label>
+								<input id="partial" type="radio" name="isPartial" value="1" />
+								<label for="partial"><%- req.session.getTranslation('Partial') %></label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row no-margin form-row">
+				<div class="col-md-12">
+					<div class="pull-left">
+						<button class="btn btn-primary btn-cons btn-small" type="submit" id="order-submit"><%- req.session.getTranslation('Publish_order') %></button>
+						<button class="btn btn-cancel btn-cons btn-small" id="order-cancel"><%- req.session.getTranslation('Cancel') %></button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="clearfix"></div>
+	</div>
+</div>
